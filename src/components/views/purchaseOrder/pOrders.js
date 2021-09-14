@@ -1,9 +1,43 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table'
 
 import Header from '../../Header'
+import axios from 'axios'
 
-function pOrders() {
+
+
+
+
+
+function POrders() {
+
+
+
+    const [OrderList, setOrderList] = useState([]);
+
+    const [modalData, setData] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
+
+
+    const HOST = "http://localhost:8060/order"
+
+    useEffect(() => {
+        // view all Orders
+
+        axios.get(HOST + "/pOrders")
+            .then((res) => {
+                setOrderList(res.data);
+                console.log('Data has been received');
+            }).catch(() => {
+                alert('Error while fetching data')
+            })
+
+    }, []);
+
+
+
+
+
     return (
         <div className="page-component-body">
             <Header></Header>
@@ -109,4 +143,4 @@ function pOrders() {
     )
 }
 
-export default pOrders
+export default POrders
