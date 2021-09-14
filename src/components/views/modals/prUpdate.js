@@ -21,11 +21,35 @@ function PrUpdateModal(emp) {
 
     useEffect(() => {
 
-    }, [])
+        try {
+            setRequisition(emp.data.requisition)
+            setSupplier(emp.data.supplier)
+            setstate(emp.data.requisitionDate)
+            setShipToAddress(emp.data.shipToAddress)
+            setAmount(emp.data.amount)
+            setComment(emp.data.comment)
+            setStatus(emp.data.status)
 
-    const sendDate = (e) => {
+        } catch (error) {
+
+        }
+
+    }, [emp.data])
+
+    const sendData = (e) => {
         e.preventDefault();
-        console.log("data in updateee")
+
+        const newPurchaseRequisition = {
+            requisition,
+            supplier,
+            requisitionDate,
+            shipToAddress,
+            amount,
+            comment,
+            status,
+        }
+
+        console.log("data in updateee", newPurchaseRequisition)
     }
 
     console.log("data for update", emp)
@@ -37,9 +61,7 @@ function PrUpdateModal(emp) {
             <Modal.Body className="px-4">
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <form id="addEmp-form" action="post" className="form"
-                        // onSubmit={sendData}
-                        >
+                        <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
                             <div className="row">
                                 <div className="form-group col-md-4 ">
                                     <label className="form-label" for="fName">Requisition:</label>
