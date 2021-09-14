@@ -15,7 +15,7 @@
 }
 
 .navbar {
-  background-color: #3f3f3f;
+  background-color: #292826;
 }
 
 h3 {
@@ -42,7 +42,7 @@ nav.main-menu.expanded {
 }
 
 .main-menu {
-  background: #228164;
+  background: #ffca00;
   border-right: 1px solid #e5e5e5;
   position: fixed;
   top: 7rem;
@@ -72,7 +72,7 @@ nav.main-menu.expanded {
   display: table;
   border-collapse: collapse;
   border-spacing: 0;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   font-family: arial;
   font-size: 16px;
   text-decoration: none;
@@ -132,9 +132,9 @@ nav li {
 nav.main-menu li.active > a,
 .no-touch .dashboard-page nav.dashboard-menu ul li:hover a,
 .dashboard-page nav.dashboard-menu ul li.active a {
-  border-left: 6px solid #1fc191 !important;
-  color: #fff;
-  background-color: #207159;
+  border-left: 6px solid #000000 !important;
+  color: #000000;
+  background-color: #ffa800;
 }
 
 .area {
@@ -588,78 +588,6 @@ a.nav-link:link {
   -ms-transform: rotate(90deg);
   /* IE 9 */
   transform: rotate(90deg);
-}
-
-/*bg*/
-.cube {
-  position: absolute;
-  top: 80vh;
-  left: 45vw;
-  width: 10px;
-  height: 10px;
-  border: solid 1px #088076;
-  transform-origin: top left;
-  transform: scale(0) rotate(0deg) translate(-50%, -50%);
-  animation: cube 12s ease-in forwards infinite;
-  z-index: -1;
-}
-
-.cube:nth-child(2n) {
-  border-color: rgb(54, 54, 54);
-}
-
-.cube:nth-child(2) {
-  animation-delay: 2s;
-  left: 25vw;
-  top: 40vh;
-}
-
-.cube:nth-child(3) {
-  animation-delay: 4s;
-  left: 75vw;
-  top: 50vh;
-}
-
-.cube:nth-child(4) {
-  animation-delay: 6s;
-  left: 90vw;
-  top: 10vh;
-}
-
-.cube:nth-child(5) {
-  animation-delay: 8s;
-  left: 10vw;
-  top: 85vh;
-}
-
-.cube:nth-child(6) {
-  animation-delay: 10s;
-  left: 50vw;
-  top: 10vh;
-}
-
-.cube:nth-child(7) {
-  animation-delay: 12s;
-  left: 50vw;
-  top: 35vh;
-}
-
-.cube:nth-child(8) {
-  animation-delay: 14s;
-  left: 80vw;
-  top: 90vh;
-}
-
-@keyframes cube {
-  from {
-    transform: scale(0) rotate(0deg) translate(-50%, -50%);
-    opacity: 1;
-  }
-
-  to {
-    transform: scale(10) rotate(960deg) translate(-50%, -50%);
-    opacity: 0;
-  }
 }
 
 /*vehicle adding form*/

@@ -8,23 +8,14 @@ function Header(props) {
   let history = useHistory();
   return (
     <div className="page-body ">
-
-      <div class="cube"></div>
-      <div class="cube"></div>
-      <div class="cube"></div>
-      <div class="cube"></div>
-      <div class="cube"></div>
-      <div class="cube"></div>
-      <div class="cube"></div>
-      <div class="cube"></div>
       <header>
         <nav
           className="navbar navbar-expand-lg navbar-light fixed-top"
           id="mainNav"
         >
           <div className="container-fluid">
-            <a className="navbar-brand js-scroll-trigger" href="/dashboard">
-              <img src="https://i.ibb.co/mDn4bQv/spm.png" width="300px" height="100px" alt="todo" border="0" />
+            <a className="navbar-brand js-scroll-trigger" href="/">
+              <img src="https://i.ibb.co/L94jBtF/chi-lanka.png" width="350px" height="100px" alt="todo" border="0" />
 
             </a>
             <button
@@ -41,17 +32,8 @@ function Header(props) {
             <div class="collapse navbar-collapse" id="navbarResponsive">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <button class="btn text-light" href="/dashboard">
-                    Home <span class="sr-only">(current)</span>
-                  </button>
-                </li>
-                <li class="nav-item">
-                  <button class="btn text-light"
-                    onClick={() => {
-                      history.push("/")
-                    }}
-                  >
-                    Logout
+                  <button class="btn text-light" href="/">
+                    Profile <span class="sr-only">(current)</span>
                   </button>
                 </li>
               </ul>
