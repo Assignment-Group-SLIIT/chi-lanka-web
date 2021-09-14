@@ -64,7 +64,7 @@ function Header(props) {
             <hr></hr>
             <li className="has-subnav">
               <li data-toggle="collapse" data-target="#new2" className="collapsed">
-                <a href="/pOrders" >  <i className="fa fa-tags fa-2x fa-cog stroke-transparent"></i> <span className="nav-text">Items</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
+                <a href="" >  <i className="fa fa-tags fa-2x fa-cog stroke-transparent"></i> <span className="nav-text">Items</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
               </li>
 
               <li>
@@ -82,7 +82,7 @@ function Header(props) {
             <hr></hr>
             <li className="has-subnav">
               <li data-toggle="collapse" data-target="#new4" className="collapsed">
-                <a href="javascript:void(0)">  <i className="fa fa-file-archive-o fa-2x"></i> <span className="nav-text">Purchase Orders</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
+                <a href="/pOrders">  <i className="fa fa-file-archive-o fa-2x"></i> <span className="nav-text">Purchase Orders</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
               </li>
 
             </li>
