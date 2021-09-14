@@ -28,37 +28,32 @@ export default function PrList() {
                     <MaterialTable
                         title=""
                         columns={[
-                            { title: "Date", field: "id", type: "string" },
-                            { title: "Requisition", field: "name", type: "string" },
-                            { title: "Supplier", field: "type", type: "string" },
-                            { title: "Request Date", field: "price", type: "numeric" },
-                            { title: "Status", field: "qty", type: "numeric" },
-                            { title: "Amount", field: "qty", type: "numeric" },
-                            { title: "Action", field: "qty", type: "numeric" },
+                            { title: "Date", field: "date", type: "string" },
+                            { title: "Requisition", field: "requisition", type: "string" },
+                            { title: "Supplier", field: "supplier", type: "string" },
+                            { title: "Request Date", field: "reqPrice", type: "numeric" },
+                            { title: "Status", field: "status", type: "string" },
+                            { title: "Amount", field: "amount", type: "numeric" },
                         ]}
                         // data={null}
+                        data={[
+                            { date: '2012-01-12', requisition: 'Baran', supplier: '2012 - 01 - 12', reqPrice: 63, status: 'updated', amount: 100 },
+                        ]}
                         options={{
                             sorting: true,
                             actionsColumnIndex: -1,
                             exportButton: true,
                         }}
                         actions={[
-                            // {
-                            //     icon: () => (
-                            //         <button class="btn btn-sm btn-success">Update</button>
-                            //     ),
-                            //     onClick: (event, rowData) => {
-                            //         setCurrentProductUpdate(rowData);
-                            //         setModalStateUpdate(true);
-                            //     },
-                            // },
-                            // {
-                            //     icon: () => <button class="btn btn-sm btn-danger">Delete</button>,
-                            //     onClick: (event, rowData) => {
-                            //         setCurrentProductDelete(rowData.id);
-                            //         setModalStateDelete(true);
-                            //     },
-                            // },
+                            {
+                                icon: () => (
+                                    <button class="btn btn-sm btn-warning">view</button>
+                                ),
+                                // onClick: (event, rowData) => {
+                                //     setCurrentProductUpdate(rowData);
+                                //     setModalStateUpdate(true);
+                                // },
+                            },
                         ]}
                     />
                 </table>
