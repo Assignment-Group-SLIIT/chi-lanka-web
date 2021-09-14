@@ -20,9 +20,12 @@ export default function PrList() {
             <Header></Header>
 
             <div className="table-emp">
-                <div class="row table-head  mt-3">
+
+                <div class="row table-head  mt-3 mb-5">
+                    <i class="fa fa-check-square fa-o"></i>
                     <div class="col">
-                        <h3 className="float-left">Purchase Requisitions</h3>
+
+                        <h3>Purchase Requisitions</h3>
                     </div>
                     <a href="/addEmployee" className="float-right">
                         <button class="btn btn-ok white">
