@@ -20,7 +20,7 @@ function pOrders() {
                     </div>
 
 
-                    <a href="" className="float-right">
+                    <a href="/placeAnOrder" className="float-right">
                         <button className="btn btn-ok white">
                             + Purchase Order
                         </button>

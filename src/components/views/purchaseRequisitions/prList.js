@@ -37,16 +37,17 @@ export default function PrList() {
                     <MaterialTable
                         title=""
                         columns={[
-                            { title: "Date", field: "date", type: "string" },
                             { title: "Requisition", field: "requisition", type: "string" },
                             { title: "Supplier", field: "supplier", type: "string" },
-                            { title: "Request Date", field: "reqPrice", type: "numeric" },
-                            { title: "Status", field: "status", type: "string" },
-                            { title: "Amount", field: "amount", type: "numeric" },
+                            { title: "Requisition Date", field: "requisitionDate", type: "string" },
+                            { title: "Ship to Address", field: "shipToAddress", type: "numeric" },
+                            { title: "Amount", field: "amount", type: "string" },
+                            { title: "Comment", field: "comment", type: "string" },
+                            { title: "Status", field: "status", type: "numeric" },
                         ]}
                         // data={null}
                         data={[
-                            { date: '2012-01-12', requisition: 'Baran', supplier: 'abs suppliers', reqPrice: 63, status: 'updated', amount: 100 },
+                            { requisitionDate: '2012-01-12', requisition: 'Baran', supplier: 'abs suppliers', amount: 63, status: 'Approved', shipToAddress: "passara, bibilegama", comment: "no comment" },
                         ]}
                         options={{
                             sorting: true,
