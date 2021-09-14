@@ -3,6 +3,8 @@ import MaterialTable from 'material-table'
 
 import Header from '../../Header'
 import axios from 'axios'
+import { Modal } from 'react-bootstrap';
+import POrderUpdateModal from '../modals/pOrderUpdate';
 
 
 
@@ -15,24 +17,24 @@ function POrders() {
 
     const [OrderList, setOrderList] = useState([]);
 
-    const [modalData, setData] = useState([]);
-    const [modalShow, setModalShow] = useState(false);
+    const [modalStateUpdate, setModalStateUpdate] = useState(false);
+    const [currentOrderUpdate, setCurrentOrderUpdate] = useState();
 
 
-    const HOST = "http://localhost:8060/order"
+    // const HOST = "http://localhost:8060/order"
 
-    useEffect(() => {
-        // view all Orders
+    // useEffect(() => {
+    //     // view all Orders
 
-        axios.get(HOST + "/pOrders")
-            .then((res) => {
-                setOrderList(res.data);
-                console.log('Data has been received');
-            }).catch(() => {
-                alert('Error while fetching data')
-            })
+    //     axios.get(HOST + "/pOrders")
+    //         .then((res) => {
+    //             setOrderList(res.data);
+    //             console.log('Data has been received');
+    //         }).catch(() => {
+    //             alert('Error while fetching data')
+    //         })
 
-    }, []);
+    // }, []);
 
 
 
@@ -87,6 +89,10 @@ function POrders() {
                                 icon: () => (
                                     <button class="btn btn-sm btn-warning">View</button>
                                 ),
+                                onClick: (event, rowData) => {
+                                    setCurrentOrderUpdate(rowData);
+                                    setModalStateUpdate(true);
+                                }
                             },
                         ]}
 
@@ -97,47 +103,23 @@ function POrders() {
 
             </div>
 
-
-            {/* modal for display while loading or on error */}
-            {/* <Modal show={modalLoading} size="sm"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered>
-                <Modal.Body>
-                    <div class="d-flex justify-content-center mt-2">
-                        <div class="spinner-grow text-danger" role="status">
-                        </div>
-                        <div class="spinner-grow text-danger" role="status">
-                        </div><div class="spinner-grow text-danger" role="status">
-                        </div>
-
-                        <span class="sr-only">something went wrong...</span>
-                    </div>
-                    <div class="d-flex justify-content-center mt-4 h5"> something went wrong</div>
-
-                </Modal.Body>
-                <Modal.Footer>
-
-                    <div className="col py-3 text-center">
-                        <button type="submit" className="btn btn-delete" onClick={() => { window.location.reload() }}>
-                            Try again
-                        </button>
-                    </div>
-                </Modal.Footer>
-            </Modal> */}
-
-            {/* modal for update the data of employee
-            <Modal
-                show={modalUpdate}
-                onHide={() => setModalUpdate(false)}
+            <Modal show={modalStateUpdate}
+                onHide={() => setModalStateUpdate(false)}
                 size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
+                aria-labelledby="containeed-modal-title-vcenter"
                 centered
+
+
             >
-                <UpdateEmployeeModal
-                    data={modalDataUpdate}
-                    onHide={() => setModalUpdate(false)}
+                <POrderUpdateModal
+                    data={currentOrderUpdate}
+                    onHide={() => setModalStateUpdate(false)}
+
                 />
-            </Modal> */}
+
+            </Modal>
+
+
 
         </div>
     )
