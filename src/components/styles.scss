@@ -10,6 +10,7 @@
 
 /*side nav bar and header*/
 .page-body {
+  // display: ;
   max-height: 8rem;
   margin-bottom: 2rem;
 }
@@ -40,8 +41,8 @@ h3 {
 }
 
 .stroke-transparent {
- -webkit-text-stroke: 1.2px #000;
- -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.2px #000;
+  -webkit-text-fill-color: transparent;
 }
 
 .fa-o {
