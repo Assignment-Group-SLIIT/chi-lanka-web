@@ -73,7 +73,7 @@ function Header(props) {
             <hr></hr>
             <li className="has-subnav">
               <li data-toggle="collapse" data-target="#new3" className="collapsed">
-                <a href="javascript:void(0)">  <i className="fa fa-file-text-o fa-2x"></i> <span className="nav-text">Requisition</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
+                <a href="/prList">  <i className="fa fa-file-text-o fa-2x"></i> <span className="nav-text">Requisition</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
               </li>
 
               <li>
