@@ -3,16 +3,16 @@ import axios from "axios";
 const HOST = "http://localhost:4000";
 
 //to add a purchase order items 
-export const addOrderItems = async () => {
+export const addOrderItems = async (orderItemsPayload) => {
     try {
-        const response = await axios.get(`${HOST}/orderItems/addOrderItems`);
+        const response = await axios.post(`${HOST}/orderItems/addOrderItems`, orderItemsPayload);
         console.log("dataaaaaaaa", response)
         return {
             ok: true
         }
     } catch (error) {
         return {
-            ok: false
+            ok: false, err: error.error.response.data.error
         }
 
     }
