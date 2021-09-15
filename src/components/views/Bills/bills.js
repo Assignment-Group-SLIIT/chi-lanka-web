@@ -2,7 +2,13 @@ import React from 'react'
 import Header from '../../Header'
 import MaterialTable from 'material-table'
 
-function bills() {
+function bills() { 
+
+
+    
+
+
+
     return (
 
         <div className="page-component-body">
