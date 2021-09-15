@@ -101,6 +101,15 @@ function PrUpdateModal(emp) {
                                     <label className="form-label-emp" for="dob">Requisition requested date:</label>
                                 </div>
                                 <div className="form-group col-md-8">
+                                    <input
+                                        required
+                                        id="requisitionDate"
+                                        type="text"
+                                        className="form-control "
+                                        placeholder="supplier name"
+                                        value={requisitionDate}
+                                        disabled
+                                    />
                                     <DatePicker
                                         required
                                         id="requisitionDate"
