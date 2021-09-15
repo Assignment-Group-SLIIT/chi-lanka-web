@@ -15,9 +15,6 @@ function PrUpdateModal(emp) {
     const [amount, setAmount] = useState("")
     const [comment, setComment] = useState("")
     const [status, setStatus] = useState("")
-    const [payload, setPayload] = useState([])
-
-
 
     useEffect(() => {
 

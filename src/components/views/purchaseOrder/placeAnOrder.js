@@ -29,7 +29,7 @@ function PlaceAnOrder() {
                     <div className="container">
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <h3 className="text-left mt-4 mb-4">Place an Order</h3>
+                                <h3 className="text-left mt-4 mb-4">Place an Order - for below Rs.100,000.00</h3>
                             </div>
                         </div>
                         <div className="row">
@@ -44,15 +44,18 @@ function PlaceAnOrder() {
                                         </div>
 
                                         <div className="form-group col-md-8">
-                                            <input
-                                                required
+                                            <select
                                                 id="supplier"
-                                                type="text"
                                                 className="form-control "
-                                                placeholder="supplier name"
-                                                // value={supplier}
-                                                disabled
-                                            />
+                                                //tabindex="3"
+                                                // onChange={e => { setVehicleType(e.target.value); searchModel() }}
+                                                required
+                                            >
+                                                <option  >choose</option>
+                                                <option id="type1" value="Car" >Car</option>
+                                                <option id="type2" value="Van">Van</option>
+                                                <option id="type3" value="Bus">Bus</option>
+                                            </select>
 
                                         </div>
                                     </div>
@@ -68,7 +71,6 @@ function PlaceAnOrder() {
                                                 type="text"
                                                 className="form-control "
                                                 placeholder="poTitle"
-                                                disabled
                                             />
                                         </div>
                                     </div>

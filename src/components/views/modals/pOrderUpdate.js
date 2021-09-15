@@ -14,19 +14,60 @@ function POrderUpdate(emp) {
     const [total, setTotal] = useState("");
     const [ShipAddress, setAddress] = useState("");
 
-    const [orderList, setOrderList] = useState("")
 
 
     useEffect(() => {
+        try {
 
-    }, [])
+            setStatusBorder(emp.data.status);
+
+            setOrder(emp.data.requisitionname)
+            setOrderID(emp.data.orderid)
+            setDate(emp.data.orderdate)
+            setSupplier(emp.data.suppliername)
+            setPOTitle(emp.data.title)
+            setComment(emp.data.comment)
+            setStatus(emp.data.status)
+            setTotal(emp.data.comment)
+            setAddress(emp.data.status)
+
+        } catch (error) {
+
+        }
+
+
+    }, [emp.data])
+
 
     const sendDate = (e) => {
         e.preventDefault();
         console.log("data in updateee")
     }
 
+    const setStatusBorder = (event) => {
+        switch (event) {
+            case 'Approved':
+                document.getElementById('btn-approved').style.border = "solid #000000";
+                console.log("case is approved")
+                break;
+            case 'Pending':
+                document.getElementById('btn-pending').style.border = "solid #000000";
+                console.log("case is pending")
+                break;
+            case 'Declined':
+                document.getElementById('btn-declined').style.border = "solid #000000";
+                console.log("case is declined")
+                break;
 
+            default:
+                break;
+        }
+
+    }
+
+    const setBorderOnClick = (event) => {
+
+    }
 
 
 
@@ -209,20 +250,20 @@ function POrderUpdate(emp) {
 
                                 </div>
                                 <div className="col">
-                                    <button type="button" class="btn btn-success btn-sm btn-block" value="Approved"
+                                    <button type="button" class="btn btn-success btn-sm btn-block" id="btn-approved" value="Approved"
 
-                                    // onClick={setStatus(value)}
+                                        onClick={(e) => { setStatus(e.target.value); console.log("clickedddd", e.target.value) }}
                                     >Approved</button>
 
                                 </div>
                                 <div className="col">
-                                    <button type="button" class="btn btn-danger btn-sm btn-block" value="Declined"
-                                    // onClick={setStatus(value)}
+                                    <button type="button" class="btn btn-danger btn-sm btn-block" id="btn-declined" value="Declined"
+                                        onClick={(e) => { setStatus(e.target.value); console.log("clickedddd", e.target.value) }}
                                     >Declined</button>
                                 </div>
                                 <div className="col">
-                                    <button type="button" class="btn btn-warning btn-sm btn-block" value="Pending"
-                                    // onClick={setStatus(value)}
+                                    <button type="button" class="btn btn-warning btn-sm btn-block" id="btn-pending" value="Pending"
+                                        onClick={(e) => { setStatus(e.target.value); console.log("clickedddd", e.target.value) }}
                                     >Pending</button>
                                 </div>
                             </div>
