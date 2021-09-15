@@ -7,13 +7,9 @@ import { Modal } from 'react-bootstrap';
 import POrderUpdateModal from '../modals/pOrderUpdate';
 
 
-
-
-
+import { getAllPurchaseOrders } from "../../services/purchaseOrderService";
 
 function POrders() {
-
-
 
     const [OrderList, setOrderList] = useState([]);
 
@@ -21,20 +17,19 @@ function POrders() {
     const [currentOrderUpdate, setCurrentOrderUpdate] = useState();
 
 
-    // const HOST = "http://localhost:8060/order"
 
-    // useEffect(() => {
-    //     // view all Orders
+    useEffect(() => {
 
-    //     axios.get(HOST + "/pOrders")
-    //         .then((res) => {
-    //             setOrderList(res.data);
-    //             console.log('Data has been received');
-    //         }).catch(() => {
-    //             alert('Error while fetching data')
-    //         })
+        getAllPurchaseOrders().then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setOrderList(res.data.reverse());
+            }
+        }).catch((error) => {
+            alert(error.message);
+        })
 
-    // }, []);
+    }, []);
 
 
 
@@ -67,18 +62,17 @@ function POrders() {
                     <MaterialTable
                         title=""
                         columns={[
-                            { title: "Date", field: "date", type: "string" },
-                            { title: "Purchase Order", field: "Order", type: "string" },
-                            { title: "Supplier", field: "supplier", type: "String" },
-                            { title: "Modified Date", field: "Mdate", type: "string" },
+                            { title: "PO Number", field: "orderid", type: "string" },
+                            { title: "Purchase Order", field: "title", type: "string" },
+                            { title: "Date", field: "orderdate", type: "string" },
+                            { title: "Supplier", field: "suppliername", type: "String" },
+                            { title: "Ship To Address", field: "shipto", type: "String" },
                             { title: "Status", field: "status", type: "string" },
-                            { title: "Amount", field: "amount", type: "numeric" },
+                            { title: "Amount", field: "total", type: Number },
 
                         ]}
 
-                        data={[
-                            { date: '2021-09-25', Order: 'Cement', supplier: "karu", Mdate: '2021-09-30', status: "pending", amount: 1000 },
-                        ]}
+                        data={OrderList}
                         options={{
                             sorting: true,
                             actionsColumnIndex: -1,

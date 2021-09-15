@@ -2,10 +2,10 @@ import axios from "axios";
 
 const HOST = "http://localhost:4000";
 
-//to add a requisition
+//to add a purchase order
 export const addOrder = async () => {
     try {
-        const response = await axios.get(`${HOST}/order/addRequisition`);
+        const response = await axios.get(`${HOST}/order/addOrder`);
         console.log("dataaaaaaaa", response)
         return {
             ok: true
@@ -18,10 +18,10 @@ export const addOrder = async () => {
     }
 }
 
-//to retrieve all requisition records
-export const getAllRequisition = async () => {
+//to retrieve all purchase orders
+export const getAllPurchaseOrders = async () => {
     try {
-        const response = await axios.get(`${HOST}/requisition/displayRequisition`);
+        const response = await axios.get(`${HOST}/order/displayOrders`);
         console.log("dataaaaaaaa", response)
         return {
             ok: true,
@@ -35,10 +35,10 @@ export const getAllRequisition = async () => {
     }
 }
 
-//to update the status of the requisition record
-export const updateRequisitionStatus = async (reqID, payload) => {
+//to update the status of the purchase order
+export const updateRequisitionStatus = async (orderID, orderPayload) => {
     try {
-        const response = await axios.put(`${HOST}/order/updateRequisition/${reqID}`, payload);
+        const response = await axios.put(`${HOST}/order/updateOrder/${orderID}`, orderPayload);
         return {
             ok: true,
         };
@@ -49,10 +49,10 @@ export const updateRequisitionStatus = async (reqID, payload) => {
     }
 }
 
-//to delete a requisition record
-export const deleteRequisitionRecord = async (payload) => {
+//to delete a purchase order record
+export const deletePurchaseOrderRecord = async (orderID) => {
     try {
-        const response = await axios.post(`${HOST}/order/deleteRequisition`, payload);
+        const response = await axios.delete(`${HOST}/order/deleteOrder/${orderID}`);
         return {
             ok: true,
         };
@@ -63,10 +63,10 @@ export const deleteRequisitionRecord = async (payload) => {
     }
 }
 
-//to view one requisition record
-export const getOneRequisitionRecord = async (reqID) => {
+//to view one purchase order record
+export const getOnePurchaseOrderRecord = async (rID) => {
     try {
-        const response = await axios.get(`${HOST}/order/getRequisitionByID/${reqID}`);
+        const response = await axios.get(`${HOST}/order/getOrderByID/${rID}`);
         return {
             ok: true,
         };
