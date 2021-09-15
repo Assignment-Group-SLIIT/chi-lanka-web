@@ -1,15 +1,32 @@
-import React from 'react'
-import Header from '../../Header'
-import MaterialTable from 'material-table'
+import React, { useState, useEffect } from "react";
 
-function bills() { 
+import MaterialTable from "material-table";
+import { Modal } from "react-bootstrap";
+import moment from 'moment';
 
+import { getAllReceipts } from "../../services/billsService";
 
-    
+import Header from "../../Header";
 
+function Bills() {
 
+    const [receipts, setReceipt] = useState([]);
+
+    useEffect(() => {
+        getAllReceipts().then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setReceipt(res.data.reverse());
+            }
+        }).catch((error) => {
+            alert(error.message);
+        })
+
+    }, []);
 
     return (
+
+
 
         <div className="page-component-body">
             <Header></Header>
@@ -25,26 +42,21 @@ function bills() {
 
                     </div>
 
-
-
                 </div>
 
                 <table class="table table-hover">
                     <MaterialTable
                         title=""
                         columns={[
-                            { title: "Date", field: "date", type: "string" },
-                            { title: "Purchase Order", field: "Order", type: "string" },
-                            { title: "Supplier", field: "supplier", type: "String" },
-                            { title: "Request Date", field: "Rdate", type: "string" },
-                            { title: "Status", field: "status", type: "string" },
-                            { title: "Amount", field: "amount", type: "numeric" },
+                            { title: "Receipt Id", field: "receiptid", type: "string" },
+                            { title: "PO Number", field: "orderno", type: "string" },
+                            { title: "Issued Date", field: "receiptdate", type: "string" },
+                            { title: "Tax", field: "tax", type: Number },
+                            { title: "Amount", field: "totammount", type: Number },
 
                         ]}
 
-                        data={[
-                            { date: '2021-09-25', Order: 'Cement', supplier: "karu", Rdate: '2021-09-30', status: "pending", amount: 1000 },
-                        ]}
+                        data={receipts}
                         options={{
                             sorting: true,
                             actionsColumnIndex: -1,
@@ -111,4 +123,4 @@ function bills() {
     )
 }
 
-export default bills
+export default Bills
