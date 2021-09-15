@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { Modal } from "react-bootstrap";
 import moment from 'moment';
+import { getAllRequisition } from "../../services/requisitionService"
 
 import PrUpdateModal from "../modals/prUpdate"
 
@@ -13,6 +14,16 @@ export default function PrList() {
 
     const [modalStateUpdate, setModalStateUpdate] = useState(false);
     const [currentProductUpdate, setCurrentProductUpdate] = useState();
+    const [prList, setPrList] = useState([]);
+
+    useEffect(() => {
+        getAllRequisition().then((res) => {
+            console.log("data for tableeeee", res.data.reverse())
+            setPrList(res.data.reverse())
+        })
+    }, [])
+
+
 
     return (
         <div className="page-component-body " >
