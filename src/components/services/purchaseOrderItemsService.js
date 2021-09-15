@@ -20,10 +20,12 @@ export const addOrderItems = async () => {
 
 //to view one purchase orders items list record
 export const getOrderItemsforOrder = async (orderID) => {
+    console.log("order id", orderID)
     try {
         const response = await axios.get(`${HOST}/orderItems/displayOrderItems/${orderID}`);
         return {
             ok: true,
+            data: response.data
         };
     } catch (error) {
         return {

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Modal } from 'react-bootstrap';
 import DatePicker from 'react-datetime';
 
+import { getOrderItemsforOrder } from "../../services/purchaseOrderItemsService"
+
 function POrderUpdate(emp) {
 
     const [order, setOrder] = useState("");
@@ -14,13 +16,16 @@ function POrderUpdate(emp) {
     const [total, setTotal] = useState("");
     const [ShipAddress, setAddress] = useState("");
 
+    const [itemsList, setItemsList] = useState([])
+
+    const [tableLoading, setTableLoading] = useState(false);
+
 
 
     useEffect(() => {
         try {
 
             setStatusBorder(emp.data.status);
-
             setOrder(emp.data.requisitionname)
             setOrderID(emp.data.orderid)
             setDate(emp.data.orderdate)
@@ -32,11 +37,23 @@ function POrderUpdate(emp) {
             setAddress(emp.data.status)
 
         } catch (error) {
-
+            console.log(error)
         }
 
-
+        setItemsListData();
     }, [emp.data])
+
+    //to retrieve data for items list
+    const setItemsListData = async () => {
+        try {
+            await getOrderItemsforOrder(emp.data.orderid).then((response) => {
+                console.log("data for table items", response.data);
+                setItemsList(response.data)
+            })
+
+        } catch (error) { }
+
+    }
 
 
     const sendDate = (e) => {
@@ -48,15 +65,12 @@ function POrderUpdate(emp) {
         switch (event) {
             case 'Approved':
                 document.getElementById('btn-approved').style.border = "solid #000000";
-                console.log("case is approved")
                 break;
             case 'Pending':
                 document.getElementById('btn-pending').style.border = "solid #000000";
-                console.log("case is pending")
                 break;
             case 'Declined':
                 document.getElementById('btn-declined').style.border = "solid #000000";
-                console.log("case is declined")
                 break;
 
             default:
@@ -66,7 +80,28 @@ function POrderUpdate(emp) {
     }
 
     const setBorderOnClick = (event) => {
+        setStatus(event);
+        console.log("clickedddd on function", event)
+        switch (event) {
+            case 'Approved':
+                document.getElementById('btn-approved').style.border = "solid #000000";
+                document.getElementById('btn-declined').style.border = "none";
+                document.getElementById('btn-pending').style.border = "none";
+                break;
+            case 'Pending':
+                document.getElementById('btn-approved').style.border = "none";
+                document.getElementById('btn-declined').style.border = "none";
+                document.getElementById('btn-pending').style.border = "solid #000000";
+                break;
+            case 'Declined':
+                document.getElementById('btn-approved').style.border = "none";
+                document.getElementById('btn-declined').style.border = "solid #000000";
+                document.getElementById('btn-pending').style.border = "none";
+                break;
 
+            default:
+                break;
+        }
     }
 
 
@@ -183,27 +218,24 @@ function POrderUpdate(emp) {
 
                                         </thead>
                                         <tbody>
-                                            {/* {orderList.map((orders) => {
-
-                                                return ( */}
                                             <tr>
-
-
-                                                <td class="text-center">001</td>
-                                                <td class="text-center">Cement</td>
-                                                <td class="text-center">4</td>
-                                                <td class="text-right">1000</td>
-
-
-
-
+                                                <td class="text-center">{itemsList.item01}</td>
+                                                <td class="text-center">{itemsList.itemName01}</td>
+                                                <td class="text-center">{itemsList.qty01}</td>
+                                                <td class="text-right">{itemsList.orderid}</td>
                                             </tr>
-                                            {/* );
-
-
-                                            })} */}
-
-
+                                            <tr>
+                                                <td class="text-center">{itemsList.item02}</td>
+                                                <td class="text-center">{itemsList.itemName02}</td>
+                                                <td class="text-center">{itemsList.qty02}</td>
+                                                <td class="text-right">{itemsList.orderid}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">{itemsList.item03}</td>
+                                                <td class="text-center">{itemsList.itemName03}</td>
+                                                <td class="text-center">{itemsList.qty03}</td>
+                                                <td class="text-right">{itemsList.orderid}</td>
+                                            </tr>
                                         </tbody>
                                     </table>
 
@@ -252,18 +284,18 @@ function POrderUpdate(emp) {
                                 <div className="col">
                                     <button type="button" class="btn btn-success btn-sm btn-block" id="btn-approved" value="Approved"
 
-                                        onClick={(e) => { setStatus(e.target.value); console.log("clickedddd", e.target.value) }}
+                                        onClick={(e) => { setBorderOnClick(e.target.value) }}
                                     >Approved</button>
 
                                 </div>
                                 <div className="col">
                                     <button type="button" class="btn btn-danger btn-sm btn-block" id="btn-declined" value="Declined"
-                                        onClick={(e) => { setStatus(e.target.value); console.log("clickedddd", e.target.value) }}
+                                        onClick={(e) => { setBorderOnClick(e.target.value) }}
                                     >Declined</button>
                                 </div>
                                 <div className="col">
                                     <button type="button" class="btn btn-warning btn-sm btn-block" id="btn-pending" value="Pending"
-                                        onClick={(e) => { setStatus(e.target.value); console.log("clickedddd", e.target.value) }}
+                                        onClick={(e) => { setBorderOnClick(e.target.value) }}
                                     >Pending</button>
                                 </div>
                             </div>
