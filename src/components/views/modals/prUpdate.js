@@ -22,11 +22,11 @@ function PrUpdateModal(emp) {
     useEffect(() => {
 
         try {
-            setRequisition(emp.data.requisition)
-            setSupplier(emp.data.supplier)
-            setstate(emp.data.requisitionDate)
-            setShipToAddress(emp.data.shipToAddress)
-            setAmount(emp.data.amount)
+            setRequisition(emp.data.requisitionname)
+            setSupplier(emp.data.suppliername)
+            setstate(emp.data.requisiondate)
+            setShipToAddress(emp.data.shipto)
+            setAmount(emp.data.total)
             setComment(emp.data.comment)
             setStatus(emp.data.status)
 
@@ -109,16 +109,6 @@ function PrUpdateModal(emp) {
                                         placeholder="supplier name"
                                         value={requisitionDate}
                                         disabled
-                                    />
-                                    <DatePicker
-                                        required
-                                        id="requisitionDate"
-                                        name="requisitionDate"
-                                        value={requisitionDate}
-                                        disabled
-                                        dateFormat={"YYYY-MM-DD"}
-                                        timeFormat={false}
-                                    // isValidDate={disableFutureDt}
                                     />
                                 </div>
                             </div>
