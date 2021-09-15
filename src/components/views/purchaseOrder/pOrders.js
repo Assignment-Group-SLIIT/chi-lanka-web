@@ -12,7 +12,6 @@ import { getAllPurchaseOrders } from "../../services/purchaseOrderService";
 function POrders() {
 
     const [OrderList, setOrderList] = useState([]);
-
     const [modalStateUpdate, setModalStateUpdate] = useState(false);
     const [currentOrderUpdate, setCurrentOrderUpdate] = useState();
 
