@@ -27,7 +27,7 @@ export const getAllReceipts = async () => {
         console.log(response, "res");
         return {
             ok: true,
-            data: response.data.data,
+            data: response.data,
         };
     } catch (error) {
         return {
