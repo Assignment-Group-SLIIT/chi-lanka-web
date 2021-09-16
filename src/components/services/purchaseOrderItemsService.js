@@ -12,7 +12,7 @@ export const addOrderItems = async (orderItemsPayload) => {
         }
     } catch (error) {
         return {
-            ok: false, err: error.error.response.data.error
+            ok: false, err: error.response.data.error
         }
 
     }
