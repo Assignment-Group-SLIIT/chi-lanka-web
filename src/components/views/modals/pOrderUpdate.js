@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import DatePicker from 'react-datetime';
 
 import { getOrderItemsforOrder } from "../../services/purchaseOrderItemsService"
+import BillRecModal from './BillRec';
 
 function POrderUpdate(emp) {
 
@@ -19,6 +20,10 @@ function POrderUpdate(emp) {
     const [itemsList, setItemsList] = useState([])
 
     const [tableLoading, setTableLoading] = useState(false);
+
+    const [modalStateUpdate, setModalStateUpdate] = useState(false);
+    const [currentOrderUpdate, setCurrentOrderUpdate] = useState();
+
 
 
 
@@ -102,6 +107,14 @@ function POrderUpdate(emp) {
             default:
                 break;
         }
+    }
+
+    const openModalRecipet = () => {
+
+        // console.log("request came for modal updateeeeeee", data);
+                    setCurrentOrderUpdate();
+                    setModalStateUpdate(true);
+
     }
 
 
@@ -320,23 +333,53 @@ function POrderUpdate(emp) {
                                 </div>
                             </div>
 
-                            <div className="row mb-4">
+                            <div className="row">
                                 <div className="col py-3 text-center">
-                                    <button type="submit" className="btn btn-ok">
+                                    <button type="submit" className="btn btn-ok-rec btn-lg btn-block ml-3">
                                         Submit
                                     </button>
                                 </div>
-                                <div className="col py-3 text-center">
-                                    <button type="reset" className="btn btn-reset" onClick={emp.onHide}>
+                                {/* <div className="col py-3 text-center">
+                                    <button  className="btn btn-reset" onClick={() => openModalRecipet()
+                                        
+                                    }>
+                                        Get Reciept
+                                    </button>
+                                </div> */}
+
+                                
+
+
+                            </div>
+                        </form>
+
+                         <div className="col  text-center ">
+                                    <button  className="btn btn-reset-rec btn-lg btn-block" onClick={() => openModalRecipet()
+                                        
+                                    }>
                                         Get Reciept
                                     </button>
                                 </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
 
             </Modal.Body >
+
+            <Modal show={modalStateUpdate}
+                                            onHide={() => setModalStateUpdate(false)}
+                                            size="lg"
+                                            aria-labelledby="containeed-modal-title-vcenter"
+                                            centered
+
+
+                                        >
+                                            <BillRecModal
+                                                data={currentOrderUpdate}
+                                                onHide={() => setModalStateUpdate(false)}
+
+                                            />
+
+            </Modal>
         </div >
     )
 }
