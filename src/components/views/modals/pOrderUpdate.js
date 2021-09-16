@@ -51,16 +51,19 @@ function POrderUpdate(emp) {
     useEffect(() => {
         switch (status) {
             case 'Approved':
+                document.getElementById('btn-removeReceipt').disabled = false;
                 document.getElementById('btn-getReciept').disabled = false;
                 document.getElementById("btn-getReciept").style.cursor = "pointer";
                 break;
             case 'Pending':
                 document.getElementById("btn-getReciept").style.cursor = "not-allowed";
                 document.getElementById('btn-getReciept').disabled = true;
+                document.getElementById('btn-removeReceipt').disabled = true;
                 break;
             case 'Declined':
                 document.getElementById("btn-getReciept").style.cursor = "not-allowed";
                 document.getElementById('btn-getReciept').disabled = true;
+                document.getElementById('btn-removeReceipt').disabled = true;
                 break;
 
             default:
@@ -383,7 +386,7 @@ function POrderUpdate(emp) {
                             </button>
                         </div>
                         <div className="col  text-center mt-3">
-                            <button className="btn btn-danger-rec btn-lg btn-block" id="btn-getReciept" onClick={() => openModalRecipet()
+                            <button className="btn btn-danger-rec btn-lg btn-block" id="btn-removeReceipt" onClick={() => openModalRecipet()
 
                             }>
                                 Remove From List
