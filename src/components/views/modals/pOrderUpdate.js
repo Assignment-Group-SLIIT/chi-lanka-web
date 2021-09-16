@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import DatePicker from 'react-datetime';
 
 import { getOrderItemsforOrder } from "../../services/purchaseOrderItemsService"
+import BillRecModal from './BillRec';
 
 function POrderUpdate(emp) {
 
@@ -19,6 +20,10 @@ function POrderUpdate(emp) {
     const [itemsList, setItemsList] = useState([])
 
     const [tableLoading, setTableLoading] = useState(false);
+
+    const [modalStateUpdate, setModalStateUpdate] = useState(false);
+    const [currentOrderUpdate, setCurrentOrderUpdate] = useState();
+
 
 
 
@@ -42,6 +47,29 @@ function POrderUpdate(emp) {
 
         setItemsListData();
     }, [emp.data])
+
+    useEffect(() => {
+        switch (status) {
+            case 'Approved':
+                document.getElementById('btn-removeReceipt').disabled = false;
+                document.getElementById('btn-getReciept').disabled = false;
+                document.getElementById("btn-getReciept").style.cursor = "pointer";
+                break;
+            case 'Pending':
+                document.getElementById("btn-getReciept").style.cursor = "not-allowed";
+                document.getElementById('btn-getReciept').disabled = true;
+                document.getElementById('btn-removeReceipt').disabled = true;
+                break;
+            case 'Declined':
+                document.getElementById("btn-getReciept").style.cursor = "not-allowed";
+                document.getElementById('btn-getReciept').disabled = true;
+                document.getElementById('btn-removeReceipt').disabled = true;
+                break;
+
+            default:
+                break;
+        }
+    }, [status])
 
     // if(status)
 
@@ -104,6 +132,14 @@ function POrderUpdate(emp) {
             default:
                 break;
         }
+    }
+
+    const openModalRecipet = () => {
+
+        // console.log("request came for modal updateeeeeee", data);
+        setCurrentOrderUpdate();
+        setModalStateUpdate(true);
+
     }
 
 
@@ -322,23 +358,60 @@ function POrderUpdate(emp) {
                                 </div>
                             </div>
 
-                            <div className="row mb-4">
+                            <div className="row">
                                 <div className="col py-3 text-center">
-                                    <button type="submit" className="btn btn-ok">
+                                    <button type="submit" className="btn btn-ok-rec btn-lg btn-block ml-3">
                                         Submit
                                     </button>
                                 </div>
-                                <div className="col py-3 text-center">
-                                    <button type="reset" className="btn btn-reset" onClick={emp.onHide}>
+                                {/* <div className="col py-3 text-center">
+                                    <button  className="btn btn-reset" onClick={() => openModalRecipet()
+                                        
+                                    }>
                                         Get Reciept
                                     </button>
-                                </div>
+                                </div> */}
+
+
+
+
                             </div>
                         </form>
+
+                        <div className="col  text-center ">
+                            <button className="btn btn-reset-rec btn-lg btn-block" id="btn-getReciept" onClick={() => openModalRecipet()
+
+                            }>
+                                Get Reciept
+                            </button>
+                        </div>
+                        <div className="col  text-center mt-3">
+                            <button className="btn btn-danger-rec btn-lg btn-block" id="btn-removeReceipt" onClick={() => openModalRecipet()
+
+                            }>
+                                Remove From List
+                            </button>
+                        </div>
                     </div>
                 </div>
 
             </Modal.Body >
+
+            <Modal show={modalStateUpdate}
+                onHide={() => setModalStateUpdate(false)}
+                size="lg"
+                aria-labelledby="containeed-modal-title-vcenter"
+                centered
+
+
+            >
+                <BillRecModal
+                    data={currentOrderUpdate}
+                    onHide={() => setModalStateUpdate(false)}
+
+                />
+
+            </Modal>
         </div >
     )
 }
