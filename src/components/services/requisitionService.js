@@ -1,5 +1,8 @@
 import axios from "axios";
 
+import { addOrder } from "./purchaseOrderService"
+import { addOrderItems } from "./purchaseOrderItemsService"
+
 const HOST = "http://localhost:4000";
 
 //to add a requisition
@@ -51,45 +54,57 @@ export const deleteRequisitionRecord = async (payload) => {
 }
 
 //to update the status of the requisition record
-export const updateRequisitionStatus = async (reqID, payload) => {
+export const updateRequisitionStatus = async (reqID, payload, list) => {
 
-    console.log("payload idddddddd", reqID)
-    console.log("payloaddddddddddddd", payload)
+    const newOrder = {
+        orderid: reqID,
+        orderdate: payload.requisitionDate,
+        suppliername: payload.supplier,
+        title: list.title,
+        shipto: payload.shipToAddress,
+        status: payload.status,
+        total: list.total,
+        comment: payload.comment
+    };
+    const newOrderItems = {
+        orderid: reqID,
+        item01: list.item01,
+        item02: list.item02,
+        item03: list.item03,
+        itemName01: list.itemName01,
+        itemName02: list.itemName02,
+        itemName03: list.itemName03,
+        qty01: list.qty01,
+        qty02: list.qty02,
+        qty03: list.qty03,
+        amount1: list.amount01,
+        amount2: list.amount02,
+        amount3: list.amount03
+    }
 
-    // const newOrder = {
-    //     orderid = payload.order,
-    //     orderdate,
-    //     suppliername,
-    //     title,
-    //     shipto,
-    //     status,
-    //     total,
-    //     comment,
-    // };
-
-    // const newOrderItems = {
-    //     orderid,
-    //     item01,
-    //     item02,
-    //     item03,
-    //     itemName01,
-    //     itemName02,
-    //     itemName03,
-    //     qty01,
-    //     qty02,
-    //     qty03,
-    //     amount1,
-    //     amount2,
-    //     amount3
-    // }
+    const newDeleteReq = {
+        requisitionID: reqID,
+        reason: payload.comment
+    }
 
     if (payload.status === "Approved") {
-        const res = deleteRequisitionRecord(payload)
-        console.log("response for delete", res)
+        //remove from requisitions
+        deleteRequisitionRecord(payload).then(() => {
+            addOrder(newOrder)
+            addOrderItems(newOrderItems).then(() => {
+                return {
+                    ok: true,
+                };
+            })
+        })
+        // add to orders and order items list
+
+
     } else if (payload.status === "Declined") {
-        console.log("email sent")
+        // console.log("email sent")
         try {
-            const response = await axios.put(`${HOST}/requisition/updateRequisition/${reqID}`, payload);
+            await axios.post("https://getform.io/f/05caf7a1-a076-469e-b605-46ed909549da", newDeleteReq);
+            await axios.put(`${HOST}/requisition/updateRequisition/${reqID}`, payload);
             return {
                 ok: true,
             };
@@ -100,7 +115,7 @@ export const updateRequisitionStatus = async (reqID, payload) => {
         }
     } else {
         try {
-            const response = await axios.put(`${HOST}/requisition/updateRequisition/${reqID}`, payload);
+            await axios.put(`${HOST}/requisition/updateRequisition/${reqID}`, payload);
             return {
                 ok: true,
             };
