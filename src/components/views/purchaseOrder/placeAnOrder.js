@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 
 import Swal from 'sweetalert2';
 import DatePicker from 'react-datetime';
@@ -12,6 +12,34 @@ import { addOrderItems } from "../../services/purchaseOrderItemsService";
 import Header from '../../Header'
 
 function PlaceAnOrder() {
+
+
+
+    const [orderid, setOrderId] = useState("");
+    const [orderdate, setOrderdate] = useState("");
+    const [suppliername, setSuppliername] = useState("");
+    const [title, setTitle] = useState("");
+    const [shipto, setShipTo] = useState("");
+    const [total, setTotal] = useState("");
+    const [comment, setComment] = useState("");
+    const [item01, setItem01] = useState("");
+    const [item02, setItem02] = useState("");
+    const [item03, setItem03] = useState("");
+    const [itemName01, setItemName01] = useState("");
+    const [itemName02, setItemName02] = useState("");
+    const [itemName03, setItemName03] = useState("");
+    const [qty01, setQty01] = useState("");
+    const [qty02, setQty02] = useState("");
+    const [qty03, setQty03] = useState("");
+    const [amount1, setAmount01] = useState("");
+    const [amount2, setAmount02] = useState("");
+    const [amount3, setAmount03] = useState("");
+
+    useEffect(() => {
+        calculateItem1Amount()
+        calculateTwoItemsAmount()
+        calculateThreeItemsAmount()
+    }, [amount1, amount2, amount3, qty01, qty02, qty03]);
 
     const addNewItem = () => {
         console.log("button clicked")
@@ -43,28 +71,6 @@ function PlaceAnOrder() {
         var thirdAmount = (amount3 * qty03) + calculateTwoItemsAmount();
         document.getElementById("totalAmount").value = thirdAmount;
     }
-
-    const [orderid, setOrderId] = useState("");
-    const [orderdate, setOrderdate] = useState("");
-    const [suppliername, setSuppliername] = useState("");
-    const [title, setTitle] = useState("");
-    const [shipto, setShipTo] = useState("");
-    const [total, setTotal] = useState("");
-    const [comment, setComment] = useState("");
-    const [item01, setItem01] = useState("");
-    const [item02, setItem02] = useState("");
-    const [item03, setItem03] = useState("");
-    const [itemName01, setItemName01] = useState("");
-    const [itemName02, setItemName02] = useState("");
-    const [itemName03, setItemName03] = useState("");
-    const [qty01, setQty01] = useState("");
-    const [qty02, setQty02] = useState("");
-    const [qty03, setQty03] = useState("");
-    const [amount1, setAmount01] = useState("");
-    const [amount2, setAmount02] = useState("");
-    const [amount3, setAmount03] = useState("");
-
-
 
     function sendData(e) {
         e.preventDefault();
@@ -500,7 +506,7 @@ function PlaceAnOrder() {
                                                 //required
                                                 //disabled
                                                 onChange={(event) => { setAmount03(event.target.value); }}
-                                                onDoubleClick={calculateThreeItemsAmount}
+                                            // onDoubleClick={calculateThreeItemsAmount}
                                             //pattern="[0-9]"
                                             />
                                         </div>
