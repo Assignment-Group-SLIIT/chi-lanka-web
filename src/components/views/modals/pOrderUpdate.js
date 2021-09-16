@@ -48,6 +48,25 @@ function POrderUpdate(emp) {
         setItemsListData();
     }, [emp.data])
 
+    useEffect(() => {
+        switch (status) {
+            case 'Approved':
+                document.getElementById('btn-getReciept').disabled = false;
+                break;
+            case 'Pending':
+                document.getElementById("btn-getReciept").style.cursor = "not-allowed";
+                document.getElementById('btn-getReciept').disabled = true;
+                break;
+            case 'Declined':
+                document.getElementById("btn-getReciept").style.cursor = "not-allowed";
+                document.getElementById('btn-getReciept').disabled = true;
+                break;
+
+            default:
+                break;
+        }
+    }, [status])
+
     // if(status)
 
     //to retrieve data for items list
@@ -114,8 +133,8 @@ function POrderUpdate(emp) {
     const openModalRecipet = () => {
 
         // console.log("request came for modal updateeeeeee", data);
-                    setCurrentOrderUpdate();
-                    setModalStateUpdate(true);
+        setCurrentOrderUpdate();
+        setModalStateUpdate(true);
 
     }
 
@@ -349,37 +368,37 @@ function POrderUpdate(emp) {
                                     </button>
                                 </div> */}
 
-                                
+
 
 
                             </div>
                         </form>
 
-                         <div className="col  text-center ">
-                                    <button  className="btn btn-reset-rec btn-lg btn-block" onClick={() => openModalRecipet()
-                                        
-                                    }>
-                                        Get Reciept
-                                    </button>
-                                </div>
+                        <div className="col  text-center ">
+                            <button className="btn btn-reset-rec btn-lg btn-block" id="btn-getReciept" onClick={() => openModalRecipet()
+
+                            }>
+                                Get Reciept
+                            </button>
+                        </div>
                     </div>
                 </div>
 
             </Modal.Body >
 
             <Modal show={modalStateUpdate}
-                                            onHide={() => setModalStateUpdate(false)}
-                                            size="lg"
-                                            aria-labelledby="containeed-modal-title-vcenter"
-                                            centered
+                onHide={() => setModalStateUpdate(false)}
+                size="lg"
+                aria-labelledby="containeed-modal-title-vcenter"
+                centered
 
 
-                                        >
-                                            <BillRecModal
-                                                data={currentOrderUpdate}
-                                                onHide={() => setModalStateUpdate(false)}
+            >
+                <BillRecModal
+                    data={currentOrderUpdate}
+                    onHide={() => setModalStateUpdate(false)}
 
-                                            />
+                />
 
             </Modal>
         </div >
