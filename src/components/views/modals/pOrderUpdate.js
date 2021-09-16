@@ -213,7 +213,7 @@ function POrderUpdate(emp) {
                                                 <th class="text-center">Item Code</th>
                                                 <th class="text-center">Item Name</th>
                                                 <th class="text-center">Quantity</th>
-                                                <th class="text-center">Amount</th>
+                                                <th class="text-right"> Unit Price</th>
                                             </tr>
 
                                         </thead>
@@ -261,7 +261,7 @@ function POrderUpdate(emp) {
                                                 id="requisition"
                                                 type="text"
                                                 className="form-control "
-                                                placeholder="Order No"
+                                                placeholder="0.00"
                                                 disabled
                                             />
                                         </div>

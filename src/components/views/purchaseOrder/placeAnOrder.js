@@ -354,7 +354,7 @@ function PlaceAnOrder() {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount1">Amount:</label>
+                                            <label class="form-label-emp" for="amount1">Unit Price :</label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -425,7 +425,7 @@ function PlaceAnOrder() {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount2">Amount:</label>
+                                            <label class="form-label-emp" for="amount2">Unit Price :</label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -495,7 +495,7 @@ function PlaceAnOrder() {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount3">Amount:</label>
+                                            <label class="form-label-emp" for="amount3">Unit Price :</label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
