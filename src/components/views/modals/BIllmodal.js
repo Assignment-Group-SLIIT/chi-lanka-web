@@ -1,13 +1,98 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Pdf from "react-to-pdf";
 import { Modal } from 'react-bootstrap';
 import { DialerSip } from '@material-ui/icons';
 
+import { getSupplierByID} from "../../services/supplierService"
+import { getOrderItemsforOrder} from "../../services/purchaseOrderItemsService"
+
 const ref = React.createRef();
 
 
-function BIllmodal() {
+function BIllmodal(emp) {
+
+     const [PONo, setPONo] = useState("");
+     const [receiptdate, setreceiptdate] = useState("");
+    
+     const[supAdd, setSupAdd]=useState("");
+     const[contactNO, setcontactNO]=useState("");
+     const [shipTo,setshipTo] = useState("");
+
+
+
+
+     const [supplyList, setSupplyList] = useState([])
+
+     const[itemID, setItemID]=useState("");
+
+     useEffect(() => {
+        try {
+
+            setPONo(emp.data.orderno);
+            setreceiptdate(emp.data.receiptdate)
+            setshipTo(emp.data.shipto)
+
+            
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        // setItemsListData();
+    }, [emp.data])
+
+
+
+    useEffect(()=>{
+
+        setOrderListData();
+        setSupplierData();
+        
+    },[])
+
+        //to retrieve data for supllier list
+        const setOrderListData = async () => {
+            try {
+                await getOrderItemsforOrder(PONo).then((response) => {
+                    console.log("data for table items", response.data);
+                    setItemID(response.data.item01.toUpperCase())
+                })
+    
+            } catch (error) { }
+    
+        }
+
+        const setSupplierData = async () => {
+            try {
+                await getSupplierByID(itemID).then((response) => {
+                    console.log("data for table items", response.data);
+                    setSupAdd(response.data.address)
+                    setcontactNO(response.data.contactnumber)
+                })
+    
+            } catch (error) { }
+    
+        }
+
+      
+
+
+
+
+
+
+     
+
+     
+    
+
+
+
+
+
+
+
     return (
         <div >
             <Modal.Header closeButton>
@@ -42,7 +127,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="No.475, Uniojn Place,"
-                                                    // value={orderID}
+                                                     
                                                     disabled
                                                 />
                                         </div>
@@ -61,7 +146,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Colombo 02,"
-                                                    // value={orderID}
+                                                   
                                                     disabled
                                                 />
                                         </div>
@@ -120,7 +205,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Order No"
-                                                    // value={orderID}
+                                                    value={PONo}
                                                     disabled
                                                 />
                                         </div>
@@ -138,7 +223,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Date"
-                                                    // value={orderID}
+                                                    value={receiptdate}
                                                     disabled
                                                 />
                                         </div>

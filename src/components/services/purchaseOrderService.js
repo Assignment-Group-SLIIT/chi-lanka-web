@@ -69,6 +69,7 @@ export const getOnePurchaseOrderRecord = async (rID) => {
         const response = await axios.get(`${HOST}/order/getOrderByID/${rID}`);
         return {
             ok: true,
+            data : response
         };
     } catch (error) {
         return {
