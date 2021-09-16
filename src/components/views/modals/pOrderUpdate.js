@@ -52,6 +52,7 @@ function POrderUpdate(emp) {
         switch (status) {
             case 'Approved':
                 document.getElementById('btn-getReciept').disabled = false;
+                document.getElementById("btn-getReciept").style.cursor = "pointer";
                 break;
             case 'Pending':
                 document.getElementById("btn-getReciept").style.cursor = "not-allowed";
