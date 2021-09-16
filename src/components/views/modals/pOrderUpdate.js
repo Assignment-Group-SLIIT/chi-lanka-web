@@ -54,16 +54,19 @@ function POrderUpdate(emp) {
                 document.getElementById('btn-removeReceipt').disabled = false;
                 document.getElementById('btn-getReciept').disabled = false;
                 document.getElementById("btn-getReciept").style.cursor = "pointer";
+                document.getElementById("btn-removeReceipt").style.cursor = "pointer";
                 break;
             case 'Pending':
                 document.getElementById("btn-getReciept").style.cursor = "not-allowed";
                 document.getElementById('btn-getReciept').disabled = true;
                 document.getElementById('btn-removeReceipt').disabled = true;
+                document.getElementById("btn-removeReceipt").style.cursor = "not-allowed";
                 break;
             case 'Declined':
                 document.getElementById("btn-getReciept").style.cursor = "not-allowed";
                 document.getElementById('btn-getReciept').disabled = true;
                 document.getElementById('btn-removeReceipt').disabled = true;
+                document.getElementById("btn-removeReceipt").style.cursor = "not-allowed";
                 break;
 
             default:
