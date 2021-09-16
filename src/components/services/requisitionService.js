@@ -3,9 +3,9 @@ import axios from "axios";
 const HOST = "http://localhost:4000";
 
 //to add a requisition
-export const addRequisition = async () => {
+export const addRequisition = async (requisitionPayload) => {
     try {
-        const response = await axios.get(`${HOST}/requisition/addRequisition`);
+        const response = await axios.get(`${HOST}/requisition/addRequisition`, requisitionPayload);
         console.log("dataaaaaaaa", response)
         return {
             ok: true

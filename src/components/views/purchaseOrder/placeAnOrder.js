@@ -10,6 +10,7 @@ import { addOrder } from "../../services/purchaseOrderService";
 import { addOrderItems } from "../../services/purchaseOrderItemsService";
 import { getItemsFromSupplier } from "../../services/supplierService";
 import { getItemDetails } from "../../services/itemServices";
+import { addRequisition } from "../../services/requisitionService";
 
 import Header from '../../Header'
 
@@ -316,7 +317,26 @@ function PlaceAnOrder() {
         // }
 
         if (total > 100000) {
-            alert("Your Total is greater than 100000 please make a requisition instead !");
+            alert("Your Total is greater than 100000 please make a requisition instead pls send a requisition!");
+            const newRequisition = {
+                orderid, orderdate, suppliername, title, shipto, status, total, comment, item01, item02, item03, itemName01, itemName02, itemName03,
+                qty01, qty02, qty03, amount1, amount2, amount3
+            }
+
+            addRequisition(newRequisition).then((response) => {
+                const message = response.ok
+                    ? "Purchase Requisition insertion is successful!"
+                    : response.err;
+
+                if (response.ok) {
+                    alert(`${message}`)
+                }
+                else {
+                    alert(response.err)
+                }
+            })
+
+
         } else {
 
             addOrder(newOrder).then((response) => {
