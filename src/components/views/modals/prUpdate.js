@@ -17,8 +17,7 @@ function PrUpdateModal(emp) {
     const [amount, setAmount] = useState("")
     const [comment, setComment] = useState("")
     const [status, setStatus] = useState("")
-
-    const [modalDeleteConfirm, setModalDeleteConfirm] = useState(false);
+    const [empList, setEmpList] = useState([])
 
     useEffect(() => {
 
@@ -30,6 +29,7 @@ function PrUpdateModal(emp) {
             setAmount(emp.data.total)
             setComment(emp.data.comment)
             setStatus(emp.data.status)
+            setEmpList(emp.data)
 
         } catch (error) {
 
@@ -56,7 +56,18 @@ function PrUpdateModal(emp) {
         }
 
         console.log("data in updateee", newPurchaseRequisition)
-        updateRequisitionStatus(requisition, newPurchaseRequisition);
+        updateRequisitionStatus(requisition, newPurchaseRequisition, empList).then((res) => {
+            console.log("response came from service", res)
+            Swal.fire({
+                text: 'Successfully updated!',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload()
+            })
+
+        })
     }
 
     //function to disable button according to statuse
