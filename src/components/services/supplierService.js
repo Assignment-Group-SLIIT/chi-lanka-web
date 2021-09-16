@@ -18,3 +18,20 @@ export const getItemsFromSupplier = async (suppliername) => {
         };
     }
 };
+
+//for retrieving supplier details
+export const getSupplier = async (suppliername) => {
+    console.log("data",);
+    try {
+        const response = await axios.get(`${HOST}/supplier/getSupplierByName/${suppliername}`);
+        console.log(response, "res");
+        return {
+            ok: true,
+            data: response.data,
+        };
+    } catch (error) {
+        return {
+            ok: false,
+        };
+    }
+};
