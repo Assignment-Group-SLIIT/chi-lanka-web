@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Modal } from 'react-bootstrap';
 import DatePicker from 'react-datetime';
+import { createReceiptService } from '../../services/billsService';
 
 import { getOrderItemsforOrder } from "../../services/purchaseOrderItemsService"
+import { updatePurchaseOrderStatus, deletePurchaseOrderRecord } from "../../services/purchaseOrderService"
 import BillRecModal from './BillRec';
 
-function POrderUpdate(emp) {
+function POrderUpdate(payload) {
 
+    const [orderData, setOrderData] = useState([])
     const [order, setOrder] = useState("");
     const [orderID, setOrderID] = useState("");
     const [Date, setDate] = useState("");
@@ -30,23 +33,24 @@ function POrderUpdate(emp) {
     useEffect(() => {
         try {
 
-            setStatusBorder(emp.data.status);
-            setOrder(emp.data.requisitionname)
-            setOrderID(emp.data.orderid)
-            setDate(emp.data.orderdate)
-            setSupplier(emp.data.suppliername)
-            setPOTitle(emp.data.title)
-            setComment(emp.data.comment)
-            setStatus(emp.data.status)
-            setTotal(emp.data.comment)
-            setAddress(emp.data.status)
+            setOrderData(payload.data);
+            setStatusBorder(payload.data.status);
+            setOrder(payload.data.requisitionname)
+            setOrderID(payload.data.orderid)
+            setDate(payload.data.orderdate)
+            setSupplier(payload.data.suppliername)
+            setPOTitle(payload.data.title)
+            setComment(payload.data.comment)
+            setStatus(payload.data.status)
+            setTotal(payload.data.total)
+            setAddress(payload.data.status)
 
         } catch (error) {
             console.log(error)
         }
 
         setItemsListData();
-    }, [emp.data])
+    }, [payload.data])
 
     useEffect(() => {
         switch (status) {
@@ -76,7 +80,7 @@ function POrderUpdate(emp) {
     //to retrieve data for items list
     const setItemsListData = async () => {
         try {
-            await getOrderItemsforOrder(emp.data.orderid).then((response) => {
+            await getOrderItemsforOrder(payload.data.orderid).then((response) => {
                 console.log("data for table items", response.data);
                 setItemsList(response.data)
             })
@@ -86,9 +90,54 @@ function POrderUpdate(emp) {
     }
 
 
-    const sendDate = (e) => {
+    const sendData = (e) => {
         e.preventDefault();
-        console.log("data in updateee")
+
+        const newPurchaseOrder = {
+            orderid: orderID,
+            orderdate: Date,
+            suppliername: supplier,
+            title: POTitle,
+            shipto: ShipAddress,
+            status,
+            total,
+            comment,
+        }
+
+
+        const newReq = {
+            orderID: orderID,
+            Reason: comment
+        }
+
+        updatePurchaseOrderStatus(orderID, newPurchaseOrder, newReq).then((res) => {
+            if (res.ok) {
+
+                window.alert("success!");
+                window.location.reload();
+            }
+        })
+
+    }
+
+    //when click remove 
+
+    const removeFromList = () => {
+        const newRemoveReq = {
+            orderno: orderID,
+            receiptdate: Date,
+            tax: 10,
+            totammount: total
+        }
+
+
+        createReceiptService(newRemoveReq).then(() => {
+            window.alert("successfully removed!")
+            // console.log("successfully removed!")
+        }).then(() => {
+            deletePurchaseOrderRecord(orderID);
+            window.location.reload();
+        })
     }
 
     const setStatusBorder = (event) => {
@@ -142,6 +191,9 @@ function POrderUpdate(emp) {
 
     }
 
+    //combine two objects
+    const dataForBillModal = Object.assign(itemsList, orderData)
+
 
 
     return (
@@ -152,8 +204,8 @@ function POrderUpdate(emp) {
             <Modal.Body className="px-4">
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <form id="addEmp-form" action="post" className="form"
-                        // onSubmit={sendData}
+                        <form id="addpayload-form" action="post" className="form"
+                            onSubmit={sendData}
                         >
                             <div className="row justify-content-end">
                                 <div className="form-group col-9 ">
@@ -206,7 +258,7 @@ function POrderUpdate(emp) {
                             </div>
                             <div className="row">
                                 <div className="form-group col-md-4">
-                                    <label className="form-label-emp " for="gender">PO Title:</label>
+                                    <label className="form-label-payload " for="gender">PO Title:</label>
                                 </div>
 
                                 <div className="form-group col-md-8">
@@ -224,7 +276,7 @@ function POrderUpdate(emp) {
                             </div>
                             <div className="row">
                                 <div className="form-group col-md-4">
-                                    <label className="form-label-emp" for="dob">Ship To :</label>
+                                    <label className="form-label-payload" for="dob">Ship To :</label>
                                 </div>
                                 <div className="form-group col-md-8">
                                     <input
@@ -288,7 +340,7 @@ function POrderUpdate(emp) {
                                     <div className="row">
 
                                         <div className="col text-right">
-                                            <label className="form-label-emp mt-2" for="dob">Total  :</label>
+                                            <label className="form-label-payload mt-2" for="dob">Total  :</label>
 
                                         </div>
 
@@ -315,7 +367,7 @@ function POrderUpdate(emp) {
                             <div className="row mb-3">
                                 <div className="col-4">
                                     <div className="form-group">
-                                        <label className="form-label-emp" for="dob">Status :</label>
+                                        <label className="form-label-payload" for="dob">Status :</label>
                                     </div>
 
                                 </div>
@@ -386,7 +438,7 @@ function POrderUpdate(emp) {
                             </button>
                         </div>
                         <div className="col  text-center mt-3">
-                            <button className="btn btn-danger-rec btn-lg btn-block" id="btn-removeReceipt" onClick={() => openModalRecipet()
+                            <button className="btn btn-danger-rec btn-lg btn-block" id="btn-removeReceipt" onClick={() => removeFromList()
 
                             }>
                                 Remove From List
@@ -406,7 +458,7 @@ function POrderUpdate(emp) {
 
             >
                 <BillRecModal
-                    data={currentOrderUpdate}
+                    data={dataForBillModal}
                     onHide={() => setModalStateUpdate(false)}
 
                 />
