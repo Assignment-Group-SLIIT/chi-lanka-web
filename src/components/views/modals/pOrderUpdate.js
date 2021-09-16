@@ -130,7 +130,8 @@ function POrderUpdate(payload) {
             orderno: orderID,
             receiptdate: Date,
             tax: 10,
-            totammount: total
+            totammount: total,
+            shipto: ShipAddress
         }
 
 

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Pdf from "react-to-pdf";
 import { Modal } from 'react-bootstrap';
 import { DialerSip } from '@material-ui/icons';
-import { getItemsFromSupplier } from '../../services/supplierService';
+import { getSupplier } from '../../services/supplierService';
 
 const ref = React.createRef();
 
@@ -12,15 +12,19 @@ const ref = React.createRef();
 function BillRec(payload) {
 
     const [dataForModal, setDataForModal] = useState([])
+    const [supplierData, setSupplierData] = useState([])
 
     useEffect(() => {
         setDataForModal(payload.data)
 
-        getItemsFromSupplier(dataForModal.suppliername).then((res) => {
-            console.log("dataaaaaa supplierrrrrr", res)
+        getSupplier(payload.data.suppliername).then((res) => {
+            setSupplierData(res.data);
+            console.log("suppppppppp", supplierData);
 
         })
+
     }, [payload.data])
+
 
     console.log("order data for bill modall", dataForModal);
 
@@ -136,12 +140,11 @@ function BillRec(payload) {
                                             <div className="form-group">
                                                 <input
                                                     required
-                                                    // value={requisition}
+                                                    value={dataForModal.orderid}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Order No"
-                                                    // value={orderID}
                                                     disabled
                                                 />
                                             </div>
@@ -186,7 +189,7 @@ function BillRec(payload) {
                                             <div className="form-group">
                                                 <input
                                                     required
-                                                    value={dataForModal.shipto}
+                                                    value={supplierData.address}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
@@ -197,55 +200,17 @@ function BillRec(payload) {
 
 
                                         </div>
-
                                         <div className="row ml-2">
 
 
                                             <div className="form-group">
                                                 <input
                                                     required
-                                                    // value={requisition}
-                                                    id="requisition"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="Colombo 02,"
-                                                    // value={orderID}
-                                                    disabled
-                                                />
-                                            </div>
-
-
-                                        </div>
-                                        <div className="row ml-2">
-
-
-                                            <div className="form-group">
-                                                <input
-                                                    required
-                                                    // value={requisition}
+                                                    value={supplierData.contactnumber}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="0771111111"
-                                                    // value={orderID}
-                                                    disabled
-                                                />
-                                            </div>
-
-
-                                        </div>
-                                        <div className="row ml-2">
-
-
-                                            <div className="form-group">
-                                                <input
-                                                    required
-                                                    // value={requisition}
-                                                    id="requisition"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="abc@gmail.com"
-                                                    // value={orderID}
                                                     disabled
                                                 />
                                             </div>
@@ -271,12 +236,11 @@ function BillRec(payload) {
                                             <div className="form-group">
                                                 <input
                                                     required
-                                                    // value={requisition}
+                                                    value={dataForModal.shipto}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
-                                                    placeholder="No.475, Uniojn Place,"
-                                                    // value={orderID}
+                                                    placeholder="address"
                                                     disabled
                                                 />
                                             </div>
@@ -294,7 +258,7 @@ function BillRec(payload) {
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
-                                                    placeholder="Colombo 02,"
+                                                    placeholder="address line 2"
                                                     // value={orderID}
                                                     disabled
                                                 />
@@ -312,7 +276,7 @@ function BillRec(payload) {
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
-                                                    placeholder="0771111111"
+                                                    placeholder="mobile"
                                                     // value={orderID}
                                                     disabled
                                                 />
@@ -381,7 +345,7 @@ function BillRec(payload) {
                                             <div className="form-group col-md-6 ">
                                                 <input
                                                     required
-                                                    // value={requisition}
+                                                    value={dataForModal.total}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control text-right"
@@ -414,7 +378,7 @@ function BillRec(payload) {
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control text-right"
-                                                    placeholder="Rs. 180.00"
+                                                    placeholder="tax"
                                                     disabled
                                                 />
                                             </div>
@@ -443,7 +407,7 @@ function BillRec(payload) {
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control text-right"
-                                                    placeholder="Rs. 11880.00"
+                                                    placeholder="amount"
                                                     disabled
                                                 />
                                             </div>
