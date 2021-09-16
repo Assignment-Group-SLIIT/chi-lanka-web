@@ -21,9 +21,7 @@ function BIllmodal() {
 
 
                 <div>
-                    <Pdf targetRef={ref} filename="VehicleReport.pdf">
-                        {({ toPdf }) => <button class="btn btn-download white" onClick={toPdf}><i class="fa fa-download" aria-hidden="true"></i></button>}
-                    </Pdf>
+                    
                     <div ref={ref} className=" pl-4">
                         <div className="report" id="test">
                             <img src="https://i.ibb.co/Vxr5DHc/chi-lanka-report.png"/>

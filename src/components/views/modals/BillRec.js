@@ -25,6 +25,9 @@ function BillRec() {
 
 
                 <div>
+                <Pdf targetRef={ref} filename="VehicleReport.pdf">
+                        {({ toPdf }) => <button class="btn btn-download white" onClick={toPdf}><i class="fa fa-download" aria-hidden="true"></i></button>}
+                    </Pdf>
                     
                     <div ref={ref} className=" pl-4">
                         <div className="report" id="test">

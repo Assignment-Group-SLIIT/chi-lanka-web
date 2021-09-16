@@ -382,6 +382,13 @@ function POrderUpdate(emp) {
                                 Get Reciept
                             </button>
                         </div>
+                        <div className="col  text-center mt-3">
+                            <button className="btn btn-danger-rec btn-lg btn-block" id="btn-getReciept" onClick={() => openModalRecipet()
+
+                            }>
+                                Remove From List
+                            </button>
+                        </div>
                     </div>
                 </div>
 
