@@ -222,19 +222,19 @@ function POrderUpdate(emp) {
                                                 <td class="text-center">{itemsList.item01}</td>
                                                 <td class="text-center">{itemsList.itemName01}</td>
                                                 <td class="text-center">{itemsList.qty01}</td>
-                                                <td class="text-right">{itemsList.orderid}</td>
+                                                <td class="text-right">{itemsList.unitPrice01}</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-center">{itemsList.item02}</td>
                                                 <td class="text-center">{itemsList.itemName02}</td>
                                                 <td class="text-center">{itemsList.qty02}</td>
-                                                <td class="text-right">{itemsList.orderid}</td>
+                                                <td class="text-right">{itemsList.unitPrice02}</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-center">{itemsList.item03}</td>
                                                 <td class="text-center">{itemsList.itemName03}</td>
                                                 <td class="text-center">{itemsList.qty03}</td>
-                                                <td class="text-right">{itemsList.orderid}</td>
+                                                <td class="text-right">{itemsList.unitPrice03}</td>
                                             </tr>
                                         </tbody>
                                     </table>
