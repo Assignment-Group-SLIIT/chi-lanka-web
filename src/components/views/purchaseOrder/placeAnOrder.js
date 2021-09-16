@@ -133,10 +133,10 @@ function PlaceAnOrder() {
                         text: `${message}`,
                         icon: 'success',
                         showConfirmButton: true,
-                showDenyButton: true,
-                confirmButtonText: "Proceed",
-                denyButtonText: "Cancel",
-                confirmButtonColor: "#1fc191",
+                        showDenyButton: true,
+                        confirmButtonText: "Proceed",
+                        denyButtonText: "Cancel",
+                        confirmButtonColor: "#1fc191",
                         //timer: 1500
                     }
                     ).then((result) => {
@@ -159,7 +159,7 @@ function PlaceAnOrder() {
                                 //timer: 1500
                             }
                             ).then(() => {
-                                window.location.reload();
+                                //window.location.reload();
                             })
                         }
                         else {
