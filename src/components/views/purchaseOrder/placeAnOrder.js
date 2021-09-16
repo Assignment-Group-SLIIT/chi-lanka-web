@@ -100,7 +100,10 @@ function PlaceAnOrder() {
             itemName03,
             qty01,
             qty02,
-            qty03
+            qty03,
+            amount1,
+            amount2,
+            amount3
         }
 
         // const newPayment = {
@@ -159,7 +162,7 @@ function PlaceAnOrder() {
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
 
-                                <div className="row mt-5">
+                                    <div className="row mt-5">
 
                                         <div className="form-group col-md-3">
                                             <label className="form-label-emp " for="gender">Supplier:</label>
@@ -180,56 +183,56 @@ function PlaceAnOrder() {
                                             </select>
 
                                         </div>
-                                        </div>
+                                    </div>
 
-                                        <hr></hr>
+                                    <hr></hr>
 
 
 
                                     <div className="row mt-3 mb-3">
-                                            <div className="col-md-6 float-right">
+                                        <div className="col-md-6 float-right">
 
-                                                        <div className="row">
-                                                    
-                                                                <div className="form-group col-md-6">
-                                                                    <label className="form-label-emp " for="orderId">Order Id:</label>
-                                                                </div>
+                                            <div className="row">
 
-                                                                <div className="form-group col-md-6">
-                                                                    <input
-                                                                        required
-                                                                        onChange={e => { setOrderId(e.target.value); }}
-                                                                        id="orderId"
-                                                                        type="text"
-                                                                        className="form-control "
-                                                                        placeholder="orderId"
-                                                                        pattern="OI[0-9]{3}"
-                                                                    />
-
-                                                                </div>
-                                                </div>
-                                                
-
-                                            </div>
-
-                                            <div className="col-md-6 float-right">
-
-                                                    <div className="row">
-                                                    <div class="form-group col-md-6"  >
-                                                        <label for="rfrom" class="form-label-emp float-right mr-5">Order Date</label>
-                                                        
-                                                    </div>
-                                                    <div class="form-group col-md-6"  >
-                                                        
-                                                        <DatePicker required id="orderDate"
-                                                            name="orderDate"
-                                                            onChange={(event) => { setOrderdate(event); }}
-                                                            timeFormat={false}
-                                                        />
-                                                    </div>
+                                                <div className="form-group col-md-6">
+                                                    <label className="form-label-emp " for="orderId">Order Id:</label>
                                                 </div>
 
+                                                <div className="form-group col-md-6">
+                                                    <input
+                                                        required
+                                                        onChange={e => { setOrderId(e.target.value); }}
+                                                        id="orderId"
+                                                        type="text"
+                                                        className="form-control "
+                                                        placeholder="orderId"
+                                                        pattern="OI[0-9]{3}"
+                                                    />
+
+                                                </div>
                                             </div>
+
+
+                                        </div>
+
+                                        <div className="col-md-6 float-right">
+
+                                            <div className="row">
+                                                <div class="form-group col-md-6"  >
+                                                    <label for="rfrom" class="form-label-emp float-right mr-5">Order Date</label>
+
+                                                </div>
+                                                <div class="form-group col-md-6"  >
+
+                                                    <DatePicker required id="orderDate"
+                                                        name="orderDate"
+                                                        onChange={(event) => { setOrderdate(event); }}
+                                                        timeFormat={false}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                        </div>
 
                                     </div>
 
@@ -253,7 +256,7 @@ function PlaceAnOrder() {
                                         </div>
                                     </div> */}
 
-                                    
+
                                     {/* <div className="row">
                                         <div class="form-group col-md-4"  >
                                             <label for="rfrom" class="form-label-emp">Order Date</label>
@@ -269,7 +272,7 @@ function PlaceAnOrder() {
                                         </div>
                                     </div> */}
 
-                                   
+
                                     <div className="row mb-3">
                                         <div className="form-group col-md-3 ">
                                             <label className="form-label" for="fName">PO Title:</label>
@@ -307,7 +310,7 @@ function PlaceAnOrder() {
                                         <div className="col-md-1">
 
                                         </div>
-                                        
+
                                         <div class="form-group col-md-2">
                                             <label class="form-label-emp" for="item1">Item 01:</label>
                                             <select
@@ -376,9 +379,9 @@ function PlaceAnOrder() {
                                         </div>
                                     </div>
                                     <div class="row border pt-3" id="hide2" style={{ display: "none" }}>
-                                    <div className="col-md-1">
+                                        <div className="col-md-1">
 
-                                    </div>
+                                        </div>
                                         <div class="form-group col-md-2">
                                             <label class="form-label-emp" for="item2">Item 02:</label>
                                             <select
@@ -447,9 +450,9 @@ function PlaceAnOrder() {
                                         </div>
                                     </div>
                                     <div class="row border pt-3" id="hide3" style={{ display: "none" }}>
-                                    <div className="col-md-1">
+                                        <div className="col-md-1">
 
-                                    </div>
+                                        </div>
                                         <div class="form-group col-md-2 ">
                                             <label class="form-label-emp" for="item3">Item 03:</label>
                                             <select
@@ -519,24 +522,24 @@ function PlaceAnOrder() {
 
                                         </div>
                                         <div className=" col-8">
-                                            <div className ="row">
+                                            <div className="row">
                                                 <div className="form-group col-md-4">
                                                     <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount :</label>
                                                 </div>
 
-                                                    <div className="form-group col-md-7">
-                                                        <input
-                                                            required
-                                                            onClick={e => { setTotal(e.target.value); }}
-                                                            id="totalAmount"
-                                                            type="text"
-                                                            className="form-control "
-                                                            placeholder="totalAmount"
-                                                            style={{color :"black"}}
-                                                        />
+                                                <div className="form-group col-md-7">
+                                                    <input
+                                                        required
+                                                        onClick={e => { setTotal(e.target.value); }}
+                                                        id="totalAmount"
+                                                        type="text"
+                                                        className="form-control "
+                                                        placeholder="totalAmount"
+                                                        style={{ color: "black" }}
+                                                    />
 
-                                            </div>
-                                        {/* <div className="form-group col-md-4">
+                                                </div>
+                                                {/* <div className="form-group col-md-4">
                                             <label className="form-label-emp " for="totalAmount">Total Amount :</label>
                                         </div>
 
@@ -550,10 +553,10 @@ function PlaceAnOrder() {
                                                 placeholder="totalAmount"
                                             /> */}
 
-                                        </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    
+
 
 
                                     <div className="row">
