@@ -74,7 +74,7 @@ function PlaceAnOrder() {
 
     function sendData(e) {
         e.preventDefault();
-        alert("function called")
+        //alert("function called")
         const status = "Approved"
 
 
@@ -111,17 +111,38 @@ function PlaceAnOrder() {
         // }
 
         if (total > 100000) {
-            alert("Your Total is greater than 100000 please make a requisition instead !");
+           // alert("Your Total is greater than 100000 please make a requisition instead !");
+           Swal.fire({
+            icon: 'error',
+            title: "Opps ! ",
+            text: `${"Your Total is greater than 100000 please make a requisition instead !"}`,
+            confirmButtonColor: "#1fc191",
+        })
         } else {
 
             addOrder(newOrder).then((response) => {
                 const message = response.ok
                     ? "Purchase Order insertion successful!"
-                    : response.err;
+                     : response.err;
 
                 if (response.ok) {
 
-                    alert(`${message}`)
+                    //alert(`${message}`)
+                    Swal.fire({
+                        title: 'Success!',
+                        text: `${message}`,
+                        icon: 'success',
+                        showConfirmButton: true,
+                showDenyButton: true,
+                confirmButtonText: "Proceed",
+                denyButtonText: "Cancel",
+                confirmButtonColor: "#1fc191",
+                        //timer: 1500
+                    }
+                    ).then((result) => {
+                       // window.location.reload();
+                   
+                    if(result.isConfirmed){
 
                     addOrderItems(newOrderItems).then(() => {
                         const message = response.ok
@@ -129,20 +150,53 @@ function PlaceAnOrder() {
                             : response.err;
 
                         if (response.ok) {
-                            alert(`${message}`)
+                            //alert(`${message}`)
+                            Swal.fire({
+                                title: 'Success!',
+                                text: `${message}`,
+                                icon: 'success',
+                                confirmButtonColor: "#1fc191",
+                                //timer: 1500
+                            }
+                            ).then(() => {
+                                window.location.reload();
+                            })
                         }
                         else {
-                            alert(response.err)
+                            //alert(response.err)
+                            Swal.fire({
+                                title: 'Oops!',
+                                text: `${response.err}`,
+                                icon: 'error',
+                                confirmButtonColor: false,
+                                timer: 1500
+                            }
+                            )
                         }
                     })
+                }
+                })
 
                 } else {
-                    alert(response.err)
+                    //alert(response.err)
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: `${response.err}`,
+                        icon: 'error',
+                        confirmButtonColor: "#1fc191",
+                        //timer: 1500
+                    }
+                    )
                 }
             }
             )
         }
     }
+
+    const yesterday = moment().subtract(1, 'day');
+    const disablePastDt = current => {
+        return current.isAfter(yesterday)
+    } 
 
     return (
         <div className="page-component-body">
@@ -208,8 +262,6 @@ function PlaceAnOrder() {
 
                                                                 </div>
                                                 </div>
-                                                
-
                                             </div>
 
                                             <div className="col-md-6 float-right">
@@ -225,6 +277,7 @@ function PlaceAnOrder() {
                                                             name="orderDate"
                                                             onChange={(event) => { setOrderdate(event); }}
                                                             timeFormat={false}
+                                                            isValidDate={disablePastDt}
                                                         />
                                                     </div>
                                                 </div>
@@ -574,7 +627,7 @@ function PlaceAnOrder() {
                                     </div>
                                     <div className="row mb-4 mt-3">
                                         <div className="col py-3 text-center">
-                                            <button type="submit" className="btn btn-ok">
+                                            <button type="submit" className="btn btn-ok"  >
                                                 Submit
                                             </button>
                                         </div>
