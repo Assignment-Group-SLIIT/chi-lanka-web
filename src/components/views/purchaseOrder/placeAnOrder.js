@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-
+import { useHistory } from "react-router";
 import Swal from 'sweetalert2';
 import DatePicker from 'react-datetime';
 import moment from 'moment';
@@ -11,10 +11,13 @@ import { addOrderItems } from "../../services/purchaseOrderItemsService";
 import { getItemsFromSupplier } from "../../services/supplierService";
 import { getItemDetails } from "../../services/itemServices";
 import { addRequisition } from "../../services/requisitionService";
+import { createPayment } from "../../services/paymentService";
 
 import Header from '../../Header'
 
 function PlaceAnOrder() {
+
+    let history = useHistory();
 
     const [orderid, setOrderId] = useState("");
     const [orderdate, setOrderdate] = useState("");
@@ -277,8 +280,8 @@ function PlaceAnOrder() {
 
     function sendData(e) {
         e.preventDefault();
-        alert("function called")
-        const status = "Approved"
+        //alert("function called")
+        var status = "Approved"
 
 
         const newOrder = {
@@ -309,33 +312,66 @@ function PlaceAnOrder() {
             amount3
         }
 
-        // const newPayment = {
-        //     orderid,
-        //     total,
-        //     comment,
-        //     orderdate
-        // }
+        const newPayment = {
+            orderid,
+            total,
+            comment,
+            orderdate
+        }
 
         if (total > 100000) {
-            alert("Your Total is greater than 100000 please make a requisition instead pls send a requisition!");
-            const newRequisition = {
-                orderid, orderdate, suppliername, title, shipto, status, total, comment, item01, item02, item03, itemName01, itemName02, itemName03,
-                qty01, qty02, qty03, amount1, amount2, amount3
-            }
+            Swal.fire({
+                title: "Order Amount Exceeds 100,000 Do you want to submit a purchase Requisition? ",
+                showConfirmButton: true,
+                showDenyButton: true,
+                confirmButtonText: "Proceed",
+                denyButtonText: "Cancel",
+                confirmButtonColor: "#1fc191",
 
-            addRequisition(newRequisition).then((response) => {
-                const message = response.ok
-                    ? "Purchase Requisition insertion is successful!"
-                    : response.err;
+            }).then((result) => {
 
-                if (response.ok) {
-                    alert(`${message}`)
+                if (result.isConfirmed) {
+
+                    var requisitionid = orderid;
+                    status = "Waiting for Approval";
+                    const newRequisition = {
+                        requisitionid, orderdate, suppliername, title, shipto, status, total, comment, item01, item02, item03, itemName01, itemName02, itemName03,
+                        qty01, qty02, qty03, amount1, amount2, amount3
+                    }
+
+                    addRequisition(newRequisition).then((response) => {
+                        const message = response.ok
+                            ? "Purchase Requisition was successful placed!"
+                            : response.err;
+
+                        if (response.ok) {
+                            Swal.fire({
+                                title: "Success! ",
+                                text: `${message}`,
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1500
+
+                            })
+
+                            history.push("/prList")
+                        }
+                        else {
+                            Swal.fire({
+                                title: "Oops! ",
+                                text: response.err,
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 1500
+
+                            })
+                        }
+                    })
+
+
                 }
-                else {
-                    alert(response.err)
-                }
+
             })
-
 
         } else {
 
@@ -346,27 +382,71 @@ function PlaceAnOrder() {
 
                 if (response.ok) {
 
-                    alert(`${message}`)
-
                     addOrderItems(newOrderItems).then(() => {
                         const message = response.ok
                             ? "Purchase Order Items insertion successful!"
                             : response.err;
 
                         if (response.ok) {
-                            alert(`${message}`)
+
+                            createPayment(newPayment).then(() => {
+                                const message = response.ok
+                                    ? "Purchase Order was successfully Placed!"
+                                    : response.err;
+
+                                if (response.ok) {
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: `${message}`,
+                                        icon: 'success',
+                                        confirmButtonColor: false,
+                                        timer: 30000
+                                    }
+                                    )
+                                } else {
+                                    Swal.fire({
+                                        title: 'Oops!',
+                                        text: `${response.err}`,
+                                        icon: 'error',
+                                        confirmButtonColor: false,
+                                        timer: 1500
+                                    })
+
+                                }
+
+                            })
+
                         }
                         else {
-                            alert(response.err)
+                            Swal.fire({
+                                title: 'Oops!',
+                                text: `${response.err}`,
+                                icon: 'error',
+                                confirmButtonColor: false,
+                                timer: 1500
+                            }
+                            )
                         }
                     })
 
                 } else {
-                    alert(response.err)
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: `${response.err}`,
+                        icon: 'error',
+                        confirmButtonColor: false,
+                        timer: 1500
+                    }
+                    )
                 }
             }
             )
         }
+    }
+
+    const yesterday = moment().subtract(1, 'day');
+    const disablePastDt = current => {
+        return current.isAfter(yesterday)
     }
 
     return (
@@ -377,7 +457,7 @@ function PlaceAnOrder() {
                     <div className="container">
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <h3 className="text-left mt-4 mb-4">Place an Order - for below Rs.100,000.00</h3>
+                                <h3 className="text-left mt-4 mb-4">Place an Order/Requisition</h3>
                             </div>
                         </div>
                         <div className="row">
@@ -452,6 +532,7 @@ function PlaceAnOrder() {
                                                         name="orderDate"
                                                         onChange={(event) => { setOrderdate(event); }}
                                                         timeFormat={false}
+                                                        isValidDate={disablePastDt}
                                                     />
                                                 </div>
                                             </div>
@@ -762,7 +843,7 @@ function PlaceAnOrder() {
                                     </div>
                                     <div className="row mb-4 mt-3">
                                         <div className="col py-3 text-center">
-                                            <button type="submit" className="btn btn-ok">
+                                            <button type="submit" className="btn btn-ok"  >
                                                 Submit
                                             </button>
                                         </div>
@@ -773,13 +854,13 @@ function PlaceAnOrder() {
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </div >
+                        </div >
+                    </div >
+                </div >
+            </div >
 
-        </div>
+        </div >
     )
 }
 

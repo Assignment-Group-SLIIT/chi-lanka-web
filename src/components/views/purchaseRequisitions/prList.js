@@ -38,17 +38,17 @@ export default function PrList() {
 
                         <h3>Purchase Requisitions</h3>
                     </div>
-                    <a href="/addEmployee" className="float-right">
+                    <div className="float-right">
                         <button class="btn btn-ok white">
                             Add Requisition
                         </button>
-                    </a>
+                    </div>
                 </div>
                 <table class="table table-hover">
                     <MaterialTable
                         title=""
                         columns={[
-                            { title: "Requisition", field: "requisitionname", type: "string" },
+                            { title: "Requisition", field: "requisitionid", type: "string" },
                             { title: "Date", field: "requisiondate", type: "string" },
                             { title: "Supplier", field: "suppliername", type: "string" },
                             { title: "Title", field: "title", type: "string" },

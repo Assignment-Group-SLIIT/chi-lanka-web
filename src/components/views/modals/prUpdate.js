@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import DatePicker from 'react-datetime';
 import { Modal } from "react-bootstrap";
 
+import { updateRequisitionStatus } from "../../services/requisitionService"
+
 import 'react-datetime/css/react-datetime.css';
 
 function PrUpdateModal(emp) {
@@ -16,10 +18,12 @@ function PrUpdateModal(emp) {
     const [comment, setComment] = useState("")
     const [status, setStatus] = useState("")
 
+    const [modalDeleteConfirm, setModalDeleteConfirm] = useState(false);
+
     useEffect(() => {
 
         try {
-            setRequisition(emp.data.requisitionname)
+            setRequisition(emp.data.requisitionid)
             setSupplier(emp.data.suppliername)
             setstate(emp.data.requisiondate)
             setShipToAddress(emp.data.shipto)
@@ -32,6 +36,11 @@ function PrUpdateModal(emp) {
         }
 
     }, [emp.data])
+
+
+    useEffect(() => {
+        controlButton(status);
+    }, [status])
 
     const sendData = (e) => {
         e.preventDefault();
@@ -47,6 +56,53 @@ function PrUpdateModal(emp) {
         }
 
         console.log("data in updateee", newPurchaseRequisition)
+        updateRequisitionStatus(requisition, newPurchaseRequisition);
+    }
+
+    //function to disable button according to statuse
+    const controlButton = (e) => {
+        console.log("buttonnnn", e)
+        switch (e) {
+            case 'Declined':
+                openModalDelete()
+                break;
+            case 'Approved':
+                document.getElementById('btn-update').disabled = false;
+                break;
+            case 'Referred':
+                document.getElementById('btn-update').disabled = false;
+                break;
+            case 'Waiting for Approval':
+                document.getElementById('btn-update').disabled = false;
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    const openModalDelete = (data) => {
+
+        Swal.fire({
+            title: 'Do you want to decline the requisition?',
+            showDenyButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    text: 'Success!',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    document.getElementById('status').disabled = true;
+                })
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+
     }
 
     console.log("data for update", emp)
@@ -184,7 +240,7 @@ function PrUpdateModal(emp) {
                             </div>
                             <div className="row mb-4">
                                 <div className="col py-3 text-center">
-                                    <button type="submit" className="btn btn-ok">
+                                    <button type="submit" className="btn btn-ok" id="btn-update">
                                         Update
                                     </button>
                                 </div>
