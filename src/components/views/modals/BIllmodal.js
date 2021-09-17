@@ -1,13 +1,127 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Pdf from "react-to-pdf";
 import { Modal } from 'react-bootstrap';
 import { DialerSip } from '@material-ui/icons';
 
+import { getSupplierByID} from "../../services/supplierService"
+import { getOrderItemsforOrder} from "../../services/purchaseOrderItemsService"
+
+
 const ref = React.createRef();
 
 
-function BIllmodal() {
+function BIllmodal(emp) {
+
+     const [PONo, setPONo] = useState("");
+     const [receiptdate, setreceiptdate] = useState("");
+    
+     const[supAdd, setSupAdd]=useState("");
+     const[supName, setSupName]=useState("");
+     const[contactNO, setcontactNO]=useState("");
+     const [shipTo,setshipTo] = useState("");
+     const [Amount,setAmount] = useState("");
+
+     const [taxVal,settaxVal] = useState("");
+     const [totVal,settotVal] = useState("");
+
+     const [itemsList,setItemList] = useState([]);
+
+
+
+
+     const[itemID, setItemID]=useState("");
+
+     useEffect(() => {
+        try {
+
+            setPONo(emp.data.orderno);
+            setreceiptdate(emp.data.receiptdate)
+            setshipTo(emp.data.shipto)
+            setAmount(emp.data.totammount)
+            
+
+            
+            
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        // setItemsListData();
+    }, [emp.data])
+
+
+
+    useEffect(()=>{
+
+        setOrderListData();
+        setSupplierData();
+        calcTax(Amount);
+        
+    },[PONo,itemID,Amount])
+
+        //to retrieve data for supllier list
+        const setOrderListData = async () => {
+            try {
+                await getOrderItemsforOrder(PONo).then((response) => {
+                    console.log("data for table items", response.data);
+                    setItemID(response.data.item01.toUpperCase())
+                    setItemList(response.data)
+
+
+                })
+    
+            } catch (error) { }
+    
+        }
+
+        const setSupplierData = async () => {
+            try {
+                await getSupplierByID(itemID).then((response) => {
+                    console.log("data for table items", response.data);
+                    setSupAdd(response.data.address)
+                    setcontactNO(response.data.contactnumber)
+                    setSupName(response.data.suppliername)
+                })
+    
+            } catch (error) { }
+    
+        }
+
+
+        function calcTax(Amount){
+
+                const taxval = Amount * (10/100)
+                const totVal = Amount + taxval
+
+                settaxVal(taxval)
+                settotVal(totVal)
+
+                
+
+        }
+
+      
+
+      
+
+
+
+
+
+
+     
+
+     
+    
+
+
+
+
+
+
+
     return (
         <div >
             <Modal.Header closeButton>
@@ -21,9 +135,7 @@ function BIllmodal() {
 
 
                 <div>
-                    <Pdf targetRef={ref} filename="VehicleReport.pdf">
-                        {({ toPdf }) => <button class="btn btn-download white" onClick={toPdf}><i class="fa fa-download" aria-hidden="true"></i></button>}
-                    </Pdf>
+                    
                     <div ref={ref} className=" pl-4">
                         <div className="report" id="test">
                             <img src="https://i.ibb.co/Vxr5DHc/chi-lanka-report.png"/>
@@ -44,7 +156,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="No.475, Uniojn Place,"
-                                                    // value={orderID}
+                                                     
                                                     disabled
                                                 />
                                         </div>
@@ -63,7 +175,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Colombo 02,"
-                                                    // value={orderID}
+                                                   
                                                     disabled
                                                 />
                                         </div>
@@ -122,7 +234,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Order No"
-                                                    // value={orderID}
+                                                    value={PONo}
                                                     disabled
                                                 />
                                         </div>
@@ -140,7 +252,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Date"
-                                                    // value={orderID}
+                                                    value={receiptdate}
                                                     disabled
                                                 />
                                         </div>
@@ -167,12 +279,12 @@ function BIllmodal() {
                                         <div className="form-group">
                                                 <input
                                                     required
-                                                    // value={requisition}
+                                                    value={supName}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
-                                                    placeholder="No.475, Uniojn Place,"
-                                                    // value={orderID}
+                                                    // placeholder="No.475, Uniojn Place,"
+                                                    
                                                     disabled
                                                 />
                                         </div>
@@ -191,7 +303,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Colombo 02,"
-                                                    // value={orderID}
+                                                    value={supAdd}
                                                     disabled
                                                 />
                                         </div>
@@ -209,7 +321,7 @@ function BIllmodal() {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="0771111111"
-                                                    // value={orderID}
+                                                    value={contactNO}
                                                     disabled
                                                 />
                                         </div>
@@ -219,18 +331,7 @@ function BIllmodal() {
                                     <div className="row ml-2">
 
                                         
-                                        <div className="form-group">
-                                                <input
-                                                    required
-                                                    // value={requisition}
-                                                    id="requisition"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="abc@gmail.com"
-                                                    // value={orderID}
-                                                    disabled
-                                                />
-                                        </div>
+                                        
                                         
 
                                     </div>
@@ -253,12 +354,12 @@ function BIllmodal() {
                                         <div className="form-group">
                                                 <input
                                                     required
-                                                    // value={requisition}
+                                                    value={shipTo}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="No.475, Uniojn Place,"
-                                                    // value={orderID}
+                                                    
                                                     disabled
                                                 />
                                         </div>
@@ -269,36 +370,14 @@ function BIllmodal() {
                                     <div className="row ml-2">
 
                                         
-                                        <div className="form-group">
-                                                <input
-                                                    required
-                                                    // value={requisition}
-                                                    id="requisition"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="Colombo 02,"
-                                                    // value={orderID}
-                                                    disabled
-                                                />
-                                        </div>
+                                       
                                         
 
                                     </div>
                                     <div className="row ml-2">
 
                                         
-                                        <div className="form-group">
-                                                <input
-                                                    required
-                                                    // value={requisition}
-                                                    id="requisition"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="0771111111"
-                                                    // value={orderID}
-                                                    disabled
-                                                />
-                                        </div>
+                                       
                                         
 
                                     </div>
@@ -314,45 +393,37 @@ function BIllmodal() {
 
 
 
-                            <table class="table table-hover border mt-3">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        
-                                        <th>Vehicle RegNo</th>
-                                        <th>Date</th>
-                                        <th>Type</th>
-                                        <th>Brand</th>
-                                        <th>Model</th>
-                                        <th>Years of rental</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {/* {vehicles.map((vehicle) => {
-                                        console.log("table", vehicle.Date);
-                                        return ( */}
-                                            
-
-                                            <tr >
-
-                                                <td>sss</td>
-                                                <td >25</td>
-                                                <td >525</td>
-                                                <td >5252</td>
-                                                <td >252</td>
-                                                <td >255</td>
-
-                                                {/* <td>{vehicle.VehicleRegNo}</td>
-                                                <td > {vehicle.Date}</td>
-                                                <td >{vehicle.VehicleType}</td>
-                                                <td >{vehicle.VehicleBrand}</td>
-                                                <td >{vehicle.VehicleModel}</td>
-                                                <td >{vehicle.YearsRent}</td> */}
-                                                
+                            <table class="table table-hover border border-secondary mt-3 ">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th class="text-center">Item Code</th>
+                                                <th class="text-center">Item Name</th>
+                                                <th class="text-center">Quantity</th>
+                                                <th class="text-right"> Unit Price</th>
                                             </tr>
-                                        {/* );
-                                    })} */}
-                                </tbody>
-                            </table>
+
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center">{itemsList.item01}</td>
+                                                <td class="text-center">{itemsList.itemName01}</td>
+                                                <td class="text-center">{itemsList.qty01}</td>
+                                                <td class="text-right">{itemsList.unitPrice01}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">{itemsList.item02}</td>
+                                                <td class="text-center">{itemsList.itemName02}</td>
+                                                <td class="text-center">{itemsList.qty02}</td>
+                                                <td class="text-right">{itemsList.unitPrice02}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">{itemsList.item03}</td>
+                                                <td class="text-center">{itemsList.itemName03}</td>
+                                                <td class="text-center">{itemsList.qty03}</td>
+                                                <td class="text-right">{itemsList.unitPrice03}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
                             <div className ="row mt-3">
                                 <div className="col-6">
@@ -369,7 +440,7 @@ function BIllmodal() {
                                             <div className="form-group col-md-6 ">
                                                     <input
                                                         required
-                                                        // value={requisition}
+                                                        value={Amount}
                                                         id="requisition"
                                                         type="text"
                                                         className="form-control text-right"
@@ -398,7 +469,7 @@ function BIllmodal() {
                                             <div className="form-group col-md-6 ">
                                                     <input
                                                         required
-                                                        // value={requisition}
+                                                        value={taxVal}
                                                         id="requisition"
                                                         type="text"
                                                         className="form-control text-right"
@@ -427,7 +498,7 @@ function BIllmodal() {
                                             <div className="form-group col-md-6 " id="test">
                                                     <input
                                                         required
-                                                        // value={requisition}
+                                                         value={totVal}
                                                         id="requisition"
                                                         type="text"
                                                         className="form-control text-right" 

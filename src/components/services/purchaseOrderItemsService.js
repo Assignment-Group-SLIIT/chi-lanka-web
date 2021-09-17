@@ -18,7 +18,7 @@ export const addOrderItems = async (orderItemsPayload) => {
     }
 }
 
-//to view one purchase orders items list record
+//to view one purchase orders item record
 export const getOrderItemsforOrder = async (orderID) => {
     console.log("order id", orderID)
     try {
@@ -61,4 +61,8 @@ export const deleteOrderItemLists = async (orderID) => {
         };
     }
 }
+
+
+
+
 

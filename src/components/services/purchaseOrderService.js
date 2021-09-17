@@ -36,9 +36,12 @@ export const getAllPurchaseOrders = async () => {
 }
 
 //to update the status of the purchase order
-export const updateRequisitionStatus = async (orderID, orderPayload) => {
+export const updatePurchaseOrderStatus = async (orderID, orderPayload, newDeleteReq) => {
     try {
-        const response = await axios.put(`${HOST}/order/updateOrder/${orderID}`, orderPayload);
+        await axios.put(`${HOST}/order/updateOrder/${orderID}`, orderPayload);
+        if (orderPayload.status == "Declined") {
+            await axios.post("https://getform.io/f/05caf7a1-a076-469e-b605-46ed909549da", newDeleteReq);
+        }
         return {
             ok: true,
         };
@@ -69,6 +72,7 @@ export const getOnePurchaseOrderRecord = async (rID) => {
         const response = await axios.get(`${HOST}/order/getOrderByID/${rID}`);
         return {
             ok: true,
+            data : response
         };
     } catch (error) {
         return {
@@ -76,3 +80,4 @@ export const getOnePurchaseOrderRecord = async (rID) => {
         };
     }
 }
+

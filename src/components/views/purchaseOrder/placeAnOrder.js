@@ -283,7 +283,7 @@ function PlaceAnOrder() {
     function sendData(e) {
         e.preventDefault();
         //alert("function called")
-        var status = "Approved"
+        var status = "Pending"
 
 
         const newOrder = {
@@ -326,7 +326,7 @@ function PlaceAnOrder() {
                 title: "Order Amount Exceeds 100,000 Do you want to submit a purchase Requisition? ",
                 showConfirmButton: true,
                 showDenyButton: true,
-                confirmButtonText: "Proceed",
+                confirmButtonText: "Yes",
                 denyButtonText: "Cancel",
                 confirmButtonColor: "#1fc191",
 
@@ -459,7 +459,7 @@ function PlaceAnOrder() {
                     <div className="container">
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <h3 className="text-left mt-4 mb-4">Place an Order/Requisition</h3>
+                                <h3 className="text-left mt-4 mb-4">Place an Order</h3>
                             </div>
                         </div>
                         <div className="row">
