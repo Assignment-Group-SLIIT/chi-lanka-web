@@ -117,15 +117,6 @@ function ItemUpdate(item) {
 
 
 
-    //function to disable button according to statuse
-
-
-    // const openModalDelete = (data) => {
-
-    //     
-
-    // }
-
     console.log("data for update", item)
     return (
         <div>
@@ -187,6 +178,24 @@ function ItemUpdate(item) {
                                         timeFormat={false}
                                         isValidDate={disablePastDt}
                                         onChange={(event) => { setReceivedDate(event); }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group col-md-4 ">
+                                    <label className="form-label" for="itemName">Item Name:</label>
+                                </div>
+                                <div className="form-group col-md-8 ">
+                                    <input
+                                        required
+                                        value={itemName}
+                                        id="itemName"
+                                        type="text"
+                                        className="form-control "
+                                        placeholder="itemName"
+                                        onChange={(e) => {
+                                            setItemName(e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>

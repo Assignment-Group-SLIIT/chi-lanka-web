@@ -6,7 +6,7 @@ import moment from 'moment';
 import 'react-datetime/css/react-datetime.css';
 
 
-import { addOrder } from "../../services/purchaseOrderService";
+import { addOrder, lastAddedOrder } from "../../services/purchaseOrderService";
 import { addOrderItems } from "../../services/purchaseOrderItemsService";
 import { getItemsFromSupplier } from "../../services/supplierService";
 import { getItemDetails } from "../../services/itemServices";
@@ -49,6 +49,7 @@ function PlaceAnOrder() {
     const [Supplier04List, setSupplier04List] = useState([]);
     const [Supplier05List, setSupplier05List] = useState([]);
 
+    var [id, setID] = useState("");
 
     const [OrderIDErr, setOrderIDErr] = useState("");
 
@@ -105,7 +106,21 @@ function PlaceAnOrder() {
         })
 
 
-    }, [amount1, amount2, amount3, qty01, qty02, qty03]);
+        lastAddedOrder().then((response) => {
+            if (response.ok) {
+                setID(response.data.orderid)
+                console.log("iddddd", response.data.orderid)
+            }
+
+            id = id.substring(2)
+            id = Number(id) + 1;
+            id = "IT0" + id;
+            setOrderId(id)
+            //alert(itemid)
+        })
+
+
+    }, [amount1, amount2, amount3, qty01, qty02, qty03, orderid]);
 
 
     function ItemDetails() {
@@ -632,6 +647,7 @@ function PlaceAnOrder() {
                                                 <div className="form-group col-md-6">
                                                     <input
                                                         // required
+                                                        value={orderid}
                                                         onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
                                                         id="orderId"
                                                         type="text"
