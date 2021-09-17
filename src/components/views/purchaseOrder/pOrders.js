@@ -6,6 +6,8 @@ import axios from 'axios'
 import { Modal } from 'react-bootstrap';
 import POrderUpdateModal from '../modals/pOrderUpdate';
 
+import Swal from 'sweetalert2';
+
 
 import { getAllPurchaseOrders } from "../../services/purchaseOrderService";
 
@@ -25,7 +27,15 @@ function POrders() {
                 setOrderList(res.data.reverse());
             }
         }).catch((error) => {
-            alert(error.message);
+            //alert(error.message);
+            Swal.fire({
+                title: "Oops! ",
+                text: error.message,
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+
+            })
         })
 
     }, []);

@@ -13,6 +13,8 @@ import { getItemDetails } from "../../services/itemServices";
 import { addRequisition } from "../../services/requisitionService";
 import { createPayment } from "../../services/paymentService";
 
+
+
 import Header from '../../Header'
 
 function PlaceAnOrder() {
@@ -45,6 +47,9 @@ function PlaceAnOrder() {
     const [Supplier03List, setSupplier03List] = useState([]);
     const [Supplier04List, setSupplier04List] = useState([]);
     const [Supplier05List, setSupplier05List] = useState([]);
+
+
+    const [OrderIDErr, setOrderIDErr] = useState("");
 
     useEffect(() => {
         calculateItem1Amount()
@@ -283,7 +288,9 @@ function PlaceAnOrder() {
         //alert("function called")
         var status = "Pending"
 
+        const OrderIDValid = OrderIDValidation();
 
+        if(OrderIDValid){
         const newOrder = {
             orderid,
             orderdate,
@@ -443,11 +450,96 @@ function PlaceAnOrder() {
             )
         }
     }
+    }
 
     const yesterday = moment().subtract(1, 'day');
     const disablePastDt = current => {
         return current.isAfter(yesterday)
     }
+
+
+
+    const [isOrderIDValid, setOrderIDIsValid] = useState(false);
+    const [Ordermessage, setOrderMessage] = useState('');
+
+    const OrderIdRegex = /^[O][I][0-9][0-9][0-9]$/;
+    
+
+    const validateOrderID = (event) => {
+        const orderid = event.target.value;
+        if (OrderIdRegex.test(orderid)) {
+            setOrderIDIsValid(true);
+            setOrderMessage('Order ID Number looks good!');
+        }
+        else {
+            setOrderIDIsValid(false);
+            setOrderMessage('Please enter a valid Order ID Number !');
+        }
+    };
+
+
+    const OrderIDValidation = () => {//validate function
+
+        const OrderIDErr = {}; //State
+        let isValid = true; //setting flag
+
+
+        if (orderid.trim().length > 5) {
+
+            OrderIDErr.InValidOrderID = " *Invalid Order ID Number"; // error msg
+            // alert("**Invalid Vehicle Registration Number");
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...Invalid Order ID Number',
+                text: 'You enterd invalid Order ID Number , Try Again !!',
+                confirmButtonColor: '#1fc191',
+                // footer: '<a href=""#home">Why do I have this issue?</a>'
+            })
+            isValid = false;
+        } else if (orderid.trim().length < 5) {
+            OrderIDErr.InValidOrderID = " *Invalid Order ID Number"; // error msg
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...Invalid Order ID Number',
+                text: 'You enterd invalid Order ID Number , Try Again !!',
+                confirmButtonColor: '#1fc191',
+                // footer: '<a href=""#home">Why do I have this issue?</a>'
+            })
+            isValid = false;
+        }
+
+
+        setOrderIDErr(OrderIDErr);//update error objects
+        return isValid;
+
+
+    }
+
+
+    
+    const [istotAmtValid, setTotAmntValid] = useState(false);
+    const [Amtmessage, setAmtMessage] = useState('');
+
+    
+    
+
+    const validateTotalID = (event) => {
+        const total = event.target.value;
+        if (total < 100000) {
+            setTotAmntValid(true);
+            // setAmtMessage('This !');
+        }
+        else {
+            setTotAmntValid(false);
+            setAmtMessage('This will be conversion to the purchase requestion !');
+        }
+    };
+
+
+
+
 
     return (
         <div className="page-component-body">
@@ -505,13 +597,21 @@ function PlaceAnOrder() {
                                                 <div className="form-group col-md-6">
                                                     <input
                                                         required
-                                                        onChange={e => { setOrderId(e.target.value); }}
+                                                        onChange={e => { setOrderId(e.target.value);  validateOrderID(e)}}
                                                         id="orderId"
                                                         type="text"
                                                         className="form-control "
                                                         placeholder="orderId"
-                                                        pattern="OI[0-9]{3}"
+                                                        // pattern="OI[0-9]{3}"
                                                     />
+
+                                                    <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
+                                                        {Ordermessage}
+                                                    </div>
+
+                                                    {Object.keys(OrderIDErr).map((key) => {
+                                                        // return<div style={{color :"red"}}>{RegNoErr[key]}</div>
+                                                    })}
 
                                                 </div>
                                             </div>
@@ -796,13 +896,16 @@ function PlaceAnOrder() {
                                                 <div className="form-group col-md-7">
                                                     <input
                                                         required
-                                                        onClick={e => { setTotal(e.target.value); }}
+                                                        onClick={e => { setTotal(e.target.value); validateTotalID(e);}}
                                                         id="totalAmount"
                                                         type="text"
                                                         className="form-control "
                                                         placeholder="totalAmount"
                                                         style={{ color: "black" }}
                                                     />
+                                                    <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
+                                                        {Amtmessage}
+                                                    </div>
 
                                                 </div>
                                                 {/* <div className="form-group col-md-4">

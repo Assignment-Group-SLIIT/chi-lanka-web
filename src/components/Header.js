@@ -1,11 +1,9 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
 import "./styles.scss";
 
 
 function Header(props) {
-  let history = useHistory();
   return (
     <div className="page-body ">
       <header>

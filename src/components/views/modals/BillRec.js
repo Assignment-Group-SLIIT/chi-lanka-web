@@ -21,8 +21,7 @@ function BillRec(payload) {
         setDataForModal(payload.data)
 
         getSupplier(payload.data.suppliername).then((res) => {
-            setSupplierData(res.data);
-            
+            setSupplierData(res.data);          
 
         })
 
@@ -31,8 +30,7 @@ function BillRec(payload) {
 
     
     useEffect(()=>{
-
-        
+       
         calcTax(dataForModal.total);
         
     },[dataForModal.total])
@@ -45,11 +43,7 @@ function BillRec(payload) {
         settaxVal(taxval)
         settotVal(totVal)
 
-        
-
 }
-
-
 
     return (
 
