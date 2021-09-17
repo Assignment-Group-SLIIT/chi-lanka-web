@@ -247,8 +247,6 @@ function PlaceAnOrder() {
 
     }
 
-
-
     const addNewItem = () => {
         console.log("button clicked")
         document.getElementById('btnAdd1').style.display = "none";
