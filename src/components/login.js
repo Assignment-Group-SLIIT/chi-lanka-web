@@ -34,16 +34,16 @@ function Login() {
                         icon: 'success',
                         showConfirmButton: false,
                         timer: 2500
-                         })
+                    })
                     history.push("/rlList");
-                }else if(response.data.login.username == "Supervisor"){
+                } else if (response.data.login.username == "Supervisor") {
                     Swal.fire({
                         title: 'Sucess!',
                         text: 'Welcome back Supervisor',
                         icon: 'success',
                         showConfirmButton: false,
                         timer: 2500
-                         })
+                    })
                     history.push("/pOrders");
                 }
             }
@@ -55,16 +55,6 @@ function Login() {
     return (
         <>
             <div className="page-body">
-
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
-
                 <header>
                     <nav
                         className="navbar navbar-expand-lg navbar-light fixed-top"
@@ -82,7 +72,7 @@ function Login() {
 
             <div className="page-component-body pt-5 mt-5">
 
-                <div class="row no-gutter">
+                <div class="row no-gutter mt-2">
                     <div class="col-md-6 d-none d-md-flex bg-image"></div>
                     <div class="col-md-6 bg-light">
                         <div class="login d-flex align-items-center py-5">
