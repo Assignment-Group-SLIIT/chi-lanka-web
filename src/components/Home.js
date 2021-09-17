@@ -7,7 +7,7 @@ import PrList from "./views/purchaseRequisitions/prList";
 import bills from "./views/Bills/bills"
 import PlaceAnOrder from "./views/purchaseOrder/placeAnOrder";
 import addRequisition from "./views/requisitions/addRequisition";
-import requisitionList from "./views/requisitions/requisitionList";
+import requisitionList from "./views/requisitions/requisitionDraftList";
 
 
 

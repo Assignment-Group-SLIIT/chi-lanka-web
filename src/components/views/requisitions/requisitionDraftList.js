@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderForReq from "./headerForReq"
 
-function requisitionList() {
+function requisitionDraftList() {
     return (
         <div className="component-body">
             <HeaderForReq></HeaderForReq>
@@ -11,4 +11,4 @@ function requisitionList() {
     )
 }
 
-export default requisitionList
+export default requisitionDraftList
