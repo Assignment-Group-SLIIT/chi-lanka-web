@@ -11,15 +11,17 @@ import 'react-datetime/css/react-datetime.css';
 function ItemUpdate(item) {
 
     const [itemID, setItemID] = useState("")
-    const [itemname, setItemName] = useState("")
+    const [itemName, setItemName] = useState("")
     const [price, setPrice] = useState("")
     const [description, setDescription] = useState("")
     const [availability, setAvailability] = useState("")
-    const [quantity, setQuanity] = useState("")
+    const [quantity, setQuantiity] = useState("")
     const [ReceivedDate, setReceivedDate] = useState("")
     const [suppliername, setSuppliername] = useState("")
     const [address, setAddress] = useState("")
     const [contactnumber, setContactNumber] = useState("")
+    const [supplierID, setSupplierID] = useState("")
+    const [siteID, setSiteID] = useState("")
 
 
 
@@ -32,7 +34,7 @@ function ItemUpdate(item) {
             setPrice(item.data.price)
             setDescription(item.data.Description)
             setAvailability(item.data.availability)
-            setQuanity(item.data.Quantity)
+            setQuantiity(item.data.Quantity)
             setReceivedDate(item.data.ReceivedDate)
 
         } catch (error) {
@@ -46,9 +48,11 @@ function ItemUpdate(item) {
         getSupplierByID(itemID.toUpperCase()).then((response) => {
             console.log("data for table", response.data);
             if (response.ok) {
+                setSupplierID(response.data.supplierid)
                 setSuppliername(response.data.suppliername);
                 setAddress(response.data.address);
                 setContactNumber(response.data.contactnumber);
+                setSiteID(response.data.siteid);
             }
         }).catch((error) => {
             alert(error.message);
@@ -65,33 +69,44 @@ function ItemUpdate(item) {
     //     controlButton(status);
     // }, [status])
 
-    // const sendData = (e) => {
-    //     e.preventDefault();
+    const sendData = (e) => {
+        e.preventDefault();
 
-    //     const newPurchaseRequisition = {
-    //         requisition,
-    //         supplier,
-    //         requisitionDate,
-    //         shipToAddress,
-    //         amount,
-    //         comment,
-    //         status,
-    //     }
+        const newSupplierUpdate = {
+            supplierID,
+            suppliername,
+            address,
+            contactnumber,
+            itemID,
+            price,
+            siteID
+        }
 
-    //     console.log("data in updateee", newPurchaseRequisition)
-    //     updateRequisitionStatus(requisition, newPurchaseRequisition, empList).then((res) => {
-    //         console.log("response came from service", res)
-    //         Swal.fire({
-    //             text: 'Successfully updated!',
-    //             icon: 'success',
-    //             showConfirmButton: false,
-    //             timer: 1500
-    //         }).then(() => {
-    //             window.location.reload()
-    //         })
+        const newItemUpdate = {
+            itemID,
+            itemName,
+            price,
+            description,
+            quantity,
+            ReceivedDate,
+            availability
+        }
 
-    //     })
-    // }
+        console.log("data in updateee for item update", newItemUpdate)
+        console.log("data in updateee for supplier", newSupplierUpdate)
+        // updateRequisitionStatus(requisition, newPurchaseRequisition, empList).then((res) => {
+        //     console.log("response came from service", res)
+        //     Swal.fire({
+        //         text: 'Successfully updated!',
+        //         icon: 'success',
+        //         showConfirmButton: false,
+        //         timer: 1500
+        //     }).then(() => {
+        //         window.location.reload()
+        //     })
+
+        // })
+    }
 
     //function to disable button according to statuse
 
@@ -129,7 +144,7 @@ function ItemUpdate(item) {
             <Modal.Body className="px-4">
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <form id="addEmp-form" action="post" className="form" >
+                        <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
                             <div className="row">
                                 <div className="form-group col-md-4 ">
                                     <label className="form-label" for="itemId">Item ID:</label>
@@ -198,9 +213,9 @@ function ItemUpdate(item) {
                                         type="text"
                                         className="form-control "
                                         placeholder="description"
-                                    // onChange={(e) => {
-                                    //     setShipTo(e.target.value);
-                                    // }}
+                                        onChange={(e) => {
+                                            setDescription(e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -233,9 +248,9 @@ function ItemUpdate(item) {
                                         className="form-control "
                                         placeholder="availability"
                                         value={availability}
-                                    // onChange={(e) => {
-                                    //     setComment(e.target.value);
-                                    // }}
+                                        onChange={(e) => {
+                                            setAvailability(e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -251,9 +266,9 @@ function ItemUpdate(item) {
                                         className="form-control "
                                         placeholder="quatntity"
                                         value={quantity}
-                                    // onChange={(e) => {
-                                    //     setComment(e.target.value);
-                                    // }}
+                                        onChange={(e) => {
+                                            setQuantiity(e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -269,9 +284,9 @@ function ItemUpdate(item) {
                                         className="form-control "
                                         placeholder="address"
                                         value={address}
-                                    // onChange={(e) => {
-                                    //     setComment(e.target.value);
-                                    // }}
+                                        onChange={(e) => {
+                                            setAddress(e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -288,9 +303,9 @@ function ItemUpdate(item) {
                                         className="form-control "
                                         placeholder="contact"
                                         value={contactnumber}
-                                    // onChange={(e) => {
-                                    //     setComment(e.target.value);
-                                    // }}
+                                        onChange={(e) => {
+                                            setContactNumber(e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>

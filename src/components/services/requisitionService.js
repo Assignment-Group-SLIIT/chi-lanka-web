@@ -6,16 +6,17 @@ import { addOrderItems } from "./purchaseOrderItemsService"
 const HOST = "http://localhost:4000";
 
 //to add a requisition
-export const addRequisition = async () => {
+export const addRequisition = async (newRequisitionPayload) => {
     try {
-        const response = await axios.get(`${HOST}/requisition/addRequisition`);
+        const response = await axios.post(`${HOST}/requisition/addRequisition`, newRequisitionPayload);
         console.log("dataaaaaaaa", response)
         return {
             ok: true
         }
     } catch (error) {
         return {
-            ok: false
+            ok: false, err: error.response.data.message
+
         }
 
     }

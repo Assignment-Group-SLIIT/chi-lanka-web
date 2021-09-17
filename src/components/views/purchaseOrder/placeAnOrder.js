@@ -288,166 +288,171 @@ function PlaceAnOrder() {
 
         const OrderIDValid = OrderIDValidation();
 
-        if(OrderIDValid){
-        const newOrder = {
-            orderid,
-            orderdate,
-            suppliername,
-            title,
-            shipto,
-            status,
-            total,
-            comment,
-        };
+        if (OrderIDValid) {
+            const newOrder = {
+                orderid,
+                orderdate,
+                suppliername,
+                title,
+                shipto,
+                status,
+                total,
+                comment,
+            };
 
 
-        const newOrderItems = {
-            orderid,
-            item01,
-            item02,
-            item03,
-            itemName01,
-            itemName02,
-            itemName03,
-            qty01,
-            qty02,
-            qty03,
-            amount1,
-            amount2,
-            amount3
-        }
-
-        const newPayment = {
-            orderid,
-            total,
-            comment,
-            orderdate
-        }
-
-        if (total > 100000) {
-            Swal.fire({
-                title: "Order Amount Exceeds 100,000 Do you want to submit a purchase Requisition? ",
-                showConfirmButton: true,
-                showDenyButton: true,
-                confirmButtonText: "Yes",
-                denyButtonText: "Cancel",
-                confirmButtonColor: "#1fc191",
-
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-
-                    var requisitionid = orderid;
-                    status = "Waiting for Approval";
-                    const newRequisition = {
-                        requisitionid, orderdate, suppliername, title, shipto, status, total, comment, item01, item02, item03, itemName01, itemName02, itemName03,
-                        qty01, qty02, qty03, amount1, amount2, amount3
-                    }
-
-                    addRequisition(newRequisition).then((response) => {
-                        const message = response.ok
-                            ? "Purchase Requisition was successful placed!"
-                            : response.err;
-
-                        if (response.ok) {
-                            Swal.fire({
-                                title: "Success! ",
-                                text: `${message}`,
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 1500
-
-                            })
-
-                            history.push("/prList")
-                        }
-                        else {
-                            Swal.fire({
-                                title: "Oops! ",
-                                text: response.err,
-                                icon: 'error',
-                                showConfirmButton: false,
-                                timer: 1500
-
-                            })
-                        }
-                    })
-
-
-                }
-
-            })
-
-        } else {
-
-            addOrder(newOrder).then((response) => {
-                const message = response.ok
-                    ? "Purchase Order insertion successful!"
-                    : response.err;
-
-                if (response.ok) {
-
-                    addOrderItems(newOrderItems).then(() => {
-                        const message = response.ok
-                            ? "Purchase Order Items insertion successful!"
-                            : response.err;
-
-                        if (response.ok) {
-
-                            createPayment(newPayment).then(() => {
-                                const message = response.ok
-                                    ? "Purchase Order was successfully Placed!"
-                                    : response.err;
-
-                                if (response.ok) {
-                                    Swal.fire({
-                                        title: 'Success!',
-                                        text: `${message}`,
-                                        icon: 'success',
-                                        confirmButtonColor: false,
-                                        timer: 30000
-                                    }
-                                    )
-                                } else {
-                                    Swal.fire({
-                                        title: 'Oops!',
-                                        text: `${response.err}`,
-                                        icon: 'error',
-                                        confirmButtonColor: false,
-                                        timer: 1500
-                                    })
-
-                                }
-
-                            })
-
-                        }
-                        else {
-                            Swal.fire({
-                                title: 'Oops!',
-                                text: `${response.err}`,
-                                icon: 'error',
-                                confirmButtonColor: false,
-                                timer: 1500
-                            }
-                            )
-                        }
-                    })
-
-                } else {
-                    Swal.fire({
-                        title: 'Oops!',
-                        text: `${response.err}`,
-                        icon: 'error',
-                        confirmButtonColor: false,
-                        timer: 1500
-                    }
-                    )
-                }
+            const newOrderItems = {
+                orderid,
+                item01,
+                item02,
+                item03,
+                itemName01,
+                itemName02,
+                itemName03,
+                qty01,
+                qty02,
+                qty03,
+                amount1,
+                amount2,
+                amount3
             }
-            )
+
+            const newPayment = {
+                orderid,
+                total,
+                comment,
+                orderdate
+            }
+
+            if (total > 100000) {
+                Swal.fire({
+                    title: "Order Amount Exceeds 100,000 Do you want to submit a purchase Requisition? ",
+                    showConfirmButton: true,
+                    showDenyButton: true,
+                    confirmButtonText: "Yes",
+                    denyButtonText: "Cancel",
+                    confirmButtonColor: "#1fc191",
+
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        var requisitionid = orderid;
+                        var amount01 = amount1;
+                        var amount02 = amount2;
+                        var amount03 = amount3;
+                        status = "Waiting for Approval";
+
+                        alert(amount01 + amount02 + amount03)
+                        const newRequisition = {
+                            requisitionid, orderdate, suppliername, title, shipto, status, total, comment, item01, item02, item03, itemName01, itemName02, itemName03,
+                            qty01, qty02, qty03, amount01, amount02, amount03
+                        }
+
+                        addRequisition(newRequisition).then((response) => {
+                            const message = response.ok
+                                ? "Purchase Requisition was successful placed!"
+                                : response.err;
+
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: "Success! ",
+                                    text: `${message}`,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 1500
+
+                                })
+
+                                history.push("/prList")
+                            }
+                            else {
+                                Swal.fire({
+                                    title: "Oops! ",
+                                    text: `${response.err}`,
+                                    icon: 'error',
+                                    showConfirmButton: false,
+                                    timer: 1500
+
+                                })
+                            }
+                        })
+
+
+                    }
+
+                })
+
+            } else {
+
+                addOrder(newOrder).then((response) => {
+                    const message = response.ok
+                        ? "Purchase Order insertion successful!"
+                        : response.err;
+
+                    if (response.ok) {
+
+                        addOrderItems(newOrderItems).then(() => {
+                            const message = response.ok
+                                ? "Purchase Order Items insertion successful!"
+                                : response.err;
+
+                            if (response.ok) {
+
+                                createPayment(newPayment).then(() => {
+                                    const message = response.ok
+                                        ? "Purchase Order was successfully Placed!"
+                                        : response.err;
+
+                                    if (response.ok) {
+                                        Swal.fire({
+                                            title: 'Success!',
+                                            text: `${message}`,
+                                            icon: 'success',
+                                            confirmButtonColor: false,
+                                            timer: 30000
+                                        }
+                                        )
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Oops!',
+                                            text: `${response.err}`,
+                                            icon: 'error',
+                                            confirmButtonColor: false,
+                                            timer: 1500
+                                        })
+
+                                    }
+
+                                })
+
+                            }
+                            else {
+                                Swal.fire({
+                                    title: 'Oops!',
+                                    text: `${response.err}`,
+                                    icon: 'error',
+                                    confirmButtonColor: false,
+                                    timer: 1500
+                                }
+                                )
+                            }
+                        })
+
+                    } else {
+                        Swal.fire({
+                            title: 'Oops!',
+                            text: `${response.err}`,
+                            icon: 'error',
+                            confirmButtonColor: false,
+                            timer: 1500
+                        }
+                        )
+                    }
+                }
+                )
+            }
         }
-    }
     }
 
     const yesterday = moment().subtract(1, 'day');
@@ -461,7 +466,7 @@ function PlaceAnOrder() {
     const [Ordermessage, setOrderMessage] = useState('');
 
     const OrderIdRegex = /^[O][I][0-9][0-9][0-9]$/;
-    
+
 
     const validateOrderID = (event) => {
         const orderid = event.target.value;
@@ -516,12 +521,12 @@ function PlaceAnOrder() {
     }
 
 
-    
+
     const [istotAmtValid, setTotAmntValid] = useState(false);
     const [Amtmessage, setAmtMessage] = useState('');
 
-    
-    
+
+
 
     const validateTotalID = (event) => {
         const total = event.target.value;
@@ -595,12 +600,12 @@ function PlaceAnOrder() {
                                                 <div className="form-group col-md-6">
                                                     <input
                                                         required
-                                                        onChange={e => { setOrderId(e.target.value);  validateOrderID(e)}}
+                                                        onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
                                                         id="orderId"
                                                         type="text"
                                                         className="form-control "
                                                         placeholder="orderId"
-                                                        // pattern="OI[0-9]{3}"
+                                                    // pattern="OI[0-9]{3}"
                                                     />
 
                                                     <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
@@ -894,7 +899,7 @@ function PlaceAnOrder() {
                                                 <div className="form-group col-md-7">
                                                     <input
                                                         required
-                                                        onClick={e => { setTotal(e.target.value); validateTotalID(e);}}
+                                                        onClick={e => { setTotal(e.target.value); validateTotalID(e); }}
                                                         id="totalAmount"
                                                         type="text"
                                                         className="form-control "
