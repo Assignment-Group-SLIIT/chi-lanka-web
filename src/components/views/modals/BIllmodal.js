@@ -38,11 +38,7 @@ function BIllmodal(emp) {
             setPONo(emp.data.orderno);
             setreceiptdate(emp.data.receiptdate)
             setshipTo(emp.data.shipto)
-            setAmount(emp.data.totammount)
-            
-
-            
-            
+            setAmount(emp.data.totammount)          
 
         } catch (error) {
             console.log(error)
@@ -101,26 +97,6 @@ function BIllmodal(emp) {
                 
 
         }
-
-      
-
-      
-
-
-
-
-
-
-     
-
-     
-    
-
-
-
-
-
-
 
     return (
         <div >

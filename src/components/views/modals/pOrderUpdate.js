@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Modal } from 'react-bootstrap';
 import DatePicker from 'react-datetime';
+import { useHistory } from "react-router";
+import Swal from 'sweetalert2';
 import { createReceiptService } from '../../services/billsService';
 
 import { getOrderItemsforOrder } from "../../services/purchaseOrderItemsService"
@@ -8,6 +10,8 @@ import { updatePurchaseOrderStatus, deletePurchaseOrderRecord } from "../../serv
 import BillRecModal from './BillRec';
 
 function POrderUpdate(payload) {
+
+    let history = useHistory();
 
     const [orderData, setOrderData] = useState([])
     const [order, setOrder] = useState("");
@@ -116,8 +120,20 @@ function POrderUpdate(payload) {
         updatePurchaseOrderStatus(orderID, newPurchaseOrder, newReq).then((res) => {
             if (res.ok) {
 
-                window.alert("success!");
-                window.location.reload();
+                // window.alert("success!");
+                // window.location.reload();
+                    Swal.fire({
+                        title: "Success! ",
+                        text: `${"Update Purchased order status !"}`,
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500
+
+                    })
+
+                    history.push("/pOrders")
+                    window.location.reload();
+                
             }
         })
 
@@ -136,12 +152,27 @@ function POrderUpdate(payload) {
 
 
         createReceiptService(newRemoveReq).then(() => {
-            window.alert("successfully removed!")
+           // window.alert("successfully removed!")
             // console.log("successfully removed!")
-        }).then(() => {
-            deletePurchaseOrderRecord(orderID);
+            Swal.fire({
+                title: "Success! ",
+                text: `${"Successfully removed!"}`,
+                icon: 'success',
+                showConfirmButton: true,
+                confirmButtonText: "Ok",
+                confirmButtonColor: "#1fc191",
+                //timer: 2500
+
+            
+        }).then((result) => {
+            if (result.isConfirmed) {
+            deletePurchaseOrderRecord(orderID);           
             window.location.reload();
+            history.push("/pOrders")
+            }
+           
         })
+    })
     }
 
     const setStatusBorder = (event) => {
