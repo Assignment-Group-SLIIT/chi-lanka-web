@@ -4,28 +4,17 @@ import Swal from 'sweetalert2';
 import DatePicker from 'react-datetime';
 import moment from 'moment';
 import 'react-datetime/css/react-datetime.css';
+import { Modal } from "react-bootstrap";
+import { getAllDrafts, updateDraft } from "../../services/draftsService"
 
+function DraftViewModal(emp) {
 
-import { addOrder } from "../../services/purchaseOrderService";
-import { addOrderItems } from "../../services/purchaseOrderItemsService";
-import { getItemsFromSupplier } from "../../services/supplierService";
-import { getItemDetails } from "../../services/itemServices";
-import { addRequisition } from "../../services/requisitionService";
-import { createPayment } from "../../services/paymentService";
+    console.log("modal draft", emp.data);
 
-
-
-
-import HeaderForReq from "./headerForReq"
-
-
-
-function AddRequisition() {
-    
-
-    let history = useHistory();
 
     const [orderid, setOrderId] = useState("");
+    const [Draftid, setDraftId] = useState("");
+
     const [orderdate, setOrderdate] = useState("");
     const [suppliername, setSuppliername] = useState("");
     const [title, setTitle] = useState("");
@@ -45,456 +34,106 @@ function AddRequisition() {
     const [amount2, setAmount02] = useState("");
     const [amount3, setAmount03] = useState("");
 
+    const [data, setData] = useState([])
 
-    const [Supplier01List, setSupplier01List] = useState([]);
-    const [Supplier02List, seSupplier02List] = useState([]);
-    const [Supplier03List, setSupplier03List] = useState([]);
-    const [Supplier04List, setSupplier04List] = useState([]);
-    const [Supplier05List, setSupplier05List] = useState([]);
+    // const [Comment, setComment] = useState("");
 
 
-    const [OrderIDErr, setOrderIDErr] = useState("");
+    // const [Supplier01List, setSupplier01List] = useState([]);
+    // const [Supplier02List, seSupplier02List] = useState([]);
+    // const [Supplier03List, setSupplier03List] = useState([]);
+    // const [Supplier04List, setSupplier04List] = useState([]);
+    // const [Supplier05List, setSupplier05List] = useState([]);
+
 
 
     useEffect(() => {
 
-        calculateItem1Amount()
-        calculateTwoItemsAmount()
-        calculateThreeItemsAmount()
+        try {
+            setData(emp.data)
+            setSuppliername(emp.data.suppliername);
+            //setOrderdate(emp.data.requisiondate);
+            setOrderId(emp.data.requisitionid);
+            setTitle(emp.data.title);
+            setShipTo(emp.data.shipto);
+            setTotal(emp.data.total);
+            setComment(emp.data.comment);
 
-
-        getItemsFromSupplier("KDH").then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setSupplier01List(res.data);
-            }
-        }).catch((error) => {
-            alert(error.message);
-        })
-
-
-        getItemsFromSupplier("PERERA").then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                seSupplier02List(res.data);
-            }
-        }).catch((error) => {
-            alert(error.message);
-        })
-
-        getItemsFromSupplier("Manual Handlers").then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setSupplier03List(res.data);
-            }
-        }).catch((error) => {
-            alert(error.message);
-        })
-
-        getItemsFromSupplier("Builders Barn").then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setSupplier04List(res.data);
-            }
-        }).catch((error) => {
-            alert(error.message);
-        })
-
-        getItemsFromSupplier("Pinnacle").then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setSupplier05List(res.data);
-            }
-        }).catch((error) => {
-            alert(error.message);
-        })
-        
-
-    }, [amount1, amount2, amount3, qty01, qty02, qty03]);
-
-
-    function ItemDetails() {
-
-        //alert(document.getElementById('item1').value)
-
-        var itemCode1 = document.getElementById('item1').value.trim().toUpperCase();
-        var itemCode2 = document.getElementById('item2').value.trim().toUpperCase();
-        var itemCode3 = document.getElementById('item3').value.trim().toUpperCase();
-
-        getItemDetails(itemCode1).then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setItemName01(res.data.item.itemname);
-                setAmount01(res.data.item.price);
-            }
-        }).catch((error) => {
-            alert(error.message);
-
-        })
-
-        getItemDetails(itemCode2).then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setItemName02(res.data.item.itemname);
-                setAmount02(res.data.item.price);
-            }
-        }).catch((error) => {
-            alert(error.message);
-
-        })
-
-        getItemDetails(itemCode3).then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setItemName03(res.data.item.itemname);
-                setAmount03(res.data.item.price);
-            }
-        }).catch((error) => {
-            alert(error.message);
-
-        })
-
-    }
-
-
-    function populate() {
-        var Stringsplit1 = Supplier01List.split(',')
-        var Stringsplit2 = Supplier02List.split(",")
-        var Stringsplit3 = Supplier03List.split(",")
-        var Stringsplit4 = Supplier04List.split(",")
-        var Stringsplit5 = Supplier05List.split(",")
-
-
-        var s1 = document.getElementById('supplier')
-        var s2 = document.getElementById('item1')
-        var s3 = document.getElementById('item2')
-        var s4 = document.getElementById('item3')
-
-        var arry1 = [Stringsplit1.length];
-
-        for (var a = 0; a < Stringsplit1.length; a++) {
-            arry1[a] = Stringsplit1[a].toLowerCase() + "|" + Stringsplit1[a];
-        }
-        arry1.unshift("choose|Choose");
-
-
-        var arry2 = [Stringsplit2.length];
-
-        for (var a = 0; a < Stringsplit2.length; a++) {
-            arry2[a] = Stringsplit2[a].toLowerCase() + "|" + Stringsplit2[a];
-        }
-        arry2.unshift("choose|Choose");
-
-
-        var arry3 = [Stringsplit3.length];
-
-        for (var a = 0; a < Stringsplit3.length; a++) {
-            arry3[a] = Stringsplit3[a].toLowerCase() + "|" + Stringsplit3[a];
-        }
-        arry3.unshift("choose|Choose");
-
-
-        var arry4 = [Stringsplit4.length];
-
-        for (var a = 0; a < Stringsplit4.length; a++) {
-            arry4[a] = Stringsplit4[a].toLowerCase() + "|" + Stringsplit4[a];
-        }
-        arry4.unshift("choose|Choose");
-
-
-        var arry5 = [Stringsplit5.length];
-
-        for (var a = 0; a < Stringsplit5.length; a++) {
-            arry5[a] = Stringsplit5[a].toLowerCase() + "|" + Stringsplit5[a];
-        }
-        arry5.unshift("choose|Choose");
-
-
-        s2.innerjs = " ";
-        s3.innerjs = " ";
-        s4.innerjs = " ";
-        if (s1.value == "KDH") {
-            var optionArray = arry1;
-        } else if (s1.value == "PERERA") {
-            var optionArray = arry2;
-        } else if (s1.value == "Manual Handlers") {
-            var optionArray = arry3;
-        } else if (s1.value == "Builders Barn") {
-            var optionArray = arry4;
-        } else if (s1.value == "Pinnacle") {
-            var optionArray = arry5;
+        } catch (err) {
+            console.log(err);
         }
 
-        for (var option in optionArray) {
-            var pair = optionArray[option].split('|');
-            var newoption = document.createElement("option")
-            newoption.value = pair[0];
-            newoption.innerHTML = pair[1];
-            s2.options.add(newoption);
+
+    }, [emp.data])
 
 
-        }
 
-        for (var option in optionArray) {
-            var pair = optionArray[option].split('|');
-            var newoption = document.createElement("option")
-            newoption.value = pair[0];
-            newoption.innerHTML = pair[1];
-            s3.options.add(newoption);
+    useEffect(() => {
+        setDrfatListData();
+    }, [])
 
+    const setDrfatListData = async () => {
+        try {
+            await getAllDrafts().then((response) => {
+                console.log("data for table items", response.data);
 
-        }
+                setDraftId(response.data.draftid.toUpperCase())
+                setOrderdate(response.data.modifydat)
+                // setItemID(response.data.draftdate)
+                // setItemList(response.data)
 
-        for (var option in optionArray) {
-            var pair = optionArray[option].split('|');
-            var newoption = document.createElement("option")
-            newoption.value = pair[0];
-            newoption.innerHTML = pair[1];
-            s4.options.add(newoption);
-
-
-        }
-
-    }
-
-    const addNewItem = () => {
-        console.log("button clicked")
-        document.getElementById('btnAdd1').style.display = "none";
-        document.getElementById('hide2').style.display = "";
-        calculateItem1Amount();
-    }
-
-    const addNewItem2 = () => {
-        console.log("button clicked")
-        document.getElementById('btnAdd2').style.display = "none";
-        document.getElementById('hide3').style.display = "";
-        calculateTwoItemsAmount()
-    }
-
-    function calculateItem1Amount() {
-        var firstAmount = amount1 * qty01;
-        document.getElementById("totalAmount").value = firstAmount;
-        return firstAmount;
-    }
-
-    function calculateTwoItemsAmount() {
-        var secondAmount = (amount2 * qty02) + calculateItem1Amount();
-        document.getElementById("totalAmount").value = secondAmount;
-        return secondAmount;
-    }
-
-    function calculateThreeItemsAmount() {
-        var thirdAmount = (amount3 * qty03) + calculateTwoItemsAmount();
-        document.getElementById("totalAmount").value = thirdAmount;
-    }
-
-
-    function sendData(e) {
-        e.preventDefault();
-        //alert("function called")
-        var status = "Pending"
-
-        // const OrderIDValid = OrderIDValidation();
-
-        // if(OrderIDValid){
-        const newOrder = {
-            orderid,
-            orderdate,
-            suppliername,
-            title,
-            shipto,
-            status,
-            total,
-            comment,
-        };
-
-
-        const newOrderItems = {
-            orderid,
-            item01,
-            item02,
-            item03,
-            itemName01,
-            itemName02,
-            itemName03,
-            qty01,
-            qty02,
-            qty03,
-            amount1,
-            amount2,
-            amount3
-        }
-
-        const newPayment = {
-            orderid,
-            total,
-            comment,
-            orderdate
-        }
-
-        if (total > 100000) {
-            Swal.fire({
-                title: "Order Amount Exceeds 100,000 Do you want to submit a purchase Requisition? ",
-                showConfirmButton: true,
-                showDenyButton: true,
-                confirmButtonText: "Yes",
-                denyButtonText: "Cancel",
-                confirmButtonColor: "#1fc191",
-
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-
-                    var requisitionid = orderid;
-                    status = "Waiting for Approval";
-                    const newRequisition = {
-                        requisitionid, orderdate, suppliername, title, shipto, status, total, comment, item01, item02, item03, itemName01, itemName02, itemName03,
-                        qty01, qty02, qty03, amount1, amount2, amount3
-                    }
-
-                    addRequisition(newRequisition).then((response) => {
-                        const message = response.ok
-                            ? "Purchase Requisition was successful placed!"
-                            : response.err;
-
-                        if (response.ok) {
-                            Swal.fire({
-                                title: "Success! ",
-                                text: `${message}`,
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 1500
-
-                            })
-
-                            history.push("/prList")
-                        }
-                        else {
-                            Swal.fire({
-                                title: "Oops! ",
-                                text: response.err,
-                                icon: 'error',
-                                showConfirmButton: false,
-                                timer: 1500
-
-                            })
-                        }
-                    })
-
-
-                }
 
             })
 
-        } else {
+        } catch (error) { }
 
-            addOrder(newOrder).then((response) => {
-                const message = response.ok
-                    ? "Purchase Order insertion successful!"
-                    : response.err;
+    }
 
-                if (response.ok) {
+    const sendData = (e) => { }
 
-                    addOrderItems(newOrderItems).then(() => {
-                        const message = response.ok
-                            ? "Purchase Order Items insertion successful!"
-                            : response.err;
-
-                        if (response.ok) {
-
-                            createPayment(newPayment).then(() => {
-                                const message = response.ok
-                                    ? "Purchase Order was successfully Placed!"
-                                    : response.err;
-
-                                if (response.ok) {
-                                    Swal.fire({
-                                        title: 'Success!',
-                                        text: `${message}`,
-                                        icon: 'success',
-                                        confirmButtonColor: false,
-                                        timer: 30000
-                                    }
-                                    )
-                                } else {
-                                    Swal.fire({
-                                        title: 'Oops!',
-                                        text: `${response.err}`,
-                                        icon: 'error',
-                                        confirmButtonColor: false,
-                                        timer: 1500
-                                    })
-
-                                }
-
-                            })
-
-                        }
-                        else {
-                            Swal.fire({
-                                title: 'Oops!',
-                                text: `${response.err}`,
-                                icon: 'error',
-                                confirmButtonColor: false,
-                                timer: 1500
-                            }
-                            )
-                        }
-                    })
-
-                } else {
-                    Swal.fire({
-                        title: 'Oops!',
-                        text: `${response.err}`,
-                        icon: 'error',
-                        confirmButtonColor: false,
-                        timer: 1500
-                    }
-                    )
-                }
-            }
-            )
+    const saveAsDraft = () => {
+        const newDraft = {
+            draftid: orderid,
+            draftdate: orderdate,
+            modifydate: new Date().toISOString().slice(0, 10),
+            suppliername: suppliername,
+            title: title,
+            shipto: shipto,
+            status: "Waiting for Approval",
+            total: total,
+            comment: comment,
+            item01: item01,
+            item02: item02,
+            item03: item03,
+            itemName01: itemName01,
+            itemName02: itemName02,
+            itemName03: itemName03,
+            qty01: qty01,
+            qty02: qty02,
+            qty03: qty03,
+            amount01: amount1,
+            amount02: amount2,
+            amount03: amount3
         }
-    
+
+        updateDraft(orderid, newDraft).then(() => {
+            window.alert("successfully updated draft")
+        })
+
+
     }
-
-    const yesterday = moment().subtract(1, 'day');
-    const disablePastDt = current => {
-        return current.isAfter(yesterday)
-    }
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
 
 
     return (
+        <div>
+            <Modal.Header closeButton>
+                <Modal.Title> Update a Draft : {title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="px-4">
 
-        <div className="component-body">
-            <HeaderForReq></HeaderForReq>
-
-
-            <div className="page-component-body">
-            
-            <div className="container input-main-form-emp mb-5">
                 <div className="tab-content-emp" id="myTabContent">
                     <div className="container">
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <h3 className="text-left mt-4 mb-4">Place an Order</h3>
-                            </div>
-                        </div>
+
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
@@ -502,15 +141,20 @@ function AddRequisition() {
                                     <div className="row mt-5">
 
                                         <div className="form-group col-md-3">
-                                            <label className="form-label-emp " for="gender">Supplier:</label>
+                                            <label className="form-label-emp " for="gender">Supplier: </label>
                                         </div>
 
                                         <div className="form-group col-md-9">
                                             <select
                                                 id="supplier"
                                                 className="form-control "
+                                                value={suppliername}
                                                 //tabindex="3"
-                                                onChange={e => { setSuppliername(e.target.value); populate(); }}
+                                                onChange={e => {
+                                                    setSuppliername(e.target.value);
+                                                    //  populate()
+                                                    ;
+                                                }}
                                                 required
                                             >
                                                 <option  >choose</option>
@@ -534,18 +178,19 @@ function AddRequisition() {
                                             <div className="row">
 
                                                 <div className="form-group col-md-6">
-                                                    <label className="form-label-emp " for="orderId">Order Id:</label>
+                                                    <label className="form-label-emp " for="orderId">Order Id: </label>
                                                 </div>
 
                                                 <div className="form-group col-md-6">
                                                     <input
+                                                        value={data.draftid}
                                                         required
-                                                        onChange={e => { setOrderId(e.target.value);  }}
+                                                        // onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
                                                         id="orderId"
                                                         type="text"
                                                         className="form-control "
                                                         placeholder="orderId"
-                                                        // pattern="OI[0-9]{3}"
+                                                    // pattern="OI[0-9]{3}"
                                                     />
 
                                                     {/* <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
@@ -575,7 +220,8 @@ function AddRequisition() {
                                                         name="orderDate"
                                                         onChange={(event) => { setOrderdate(event); }}
                                                         timeFormat={false}
-                                                        isValidDate={disablePastDt}
+                                                        value={data.draftdate}
+                                                    // isValidDate={disablePastDt}
                                                     />
                                                 </div>
                                             </div>
@@ -587,7 +233,7 @@ function AddRequisition() {
 
                                     <div className="row mb-3">
                                         <div className="form-group col-md-3 ">
-                                            <label className="form-label" for="fName">PO Title:</label>
+                                            <label className="form-label" for="fName">PO Title: </label>
                                         </div>
                                         <div className="form-group col-md-9 ">
                                             <input
@@ -597,15 +243,17 @@ function AddRequisition() {
                                                 type="text"
                                                 className="form-control "
                                                 placeholder="poTitle"
+                                                value={data.title}
                                             />
                                         </div>
                                     </div>
                                     <div className="row mb-3">
                                         <div className="form-group col-md-3 ">
-                                            <label className="form-label" for="shipTo">Ship to:</label>
+                                            <label className="form-label" for="shipTo">Ship to: </label>
                                         </div>
                                         <div className="form-group col-md-9 ">
                                             <input
+                                                value={data.shipto}
                                                 required
                                                 id="shipTo"
                                                 type="text"
@@ -624,12 +272,12 @@ function AddRequisition() {
                                         </div>
 
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="item1">Item 01:</label>
+                                            <label class="form-label-emp" for="item1">Item 01: </label>
                                             <select
                                                 id="item1"
                                                 className="form-control "
                                                 value={item01}
-                                                onChange={e => { setItem01(e.target.value); ItemDetails() }}
+                                                // onChange={e => { setItem01(e.target.value); ItemDetails() }}
                                                 required
                                             >
 
@@ -637,7 +285,7 @@ function AddRequisition() {
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp ml-2" for="itemName1">Item Name:</label>
+                                            <label class="form-label-emp ml-2" for="itemName1">Item Name: </label>
                                             <div className="form-group">
                                                 <input
                                                     required
@@ -653,7 +301,7 @@ function AddRequisition() {
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity1">Quantity:</label>
+                                            <label class="form-label-emp" for="quantity1">Quantity: </label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
@@ -668,7 +316,7 @@ function AddRequisition() {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount1">Unit Price :</label>
+                                            <label class="form-label-emp" for="amount1">Unit Price: </label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -685,7 +333,9 @@ function AddRequisition() {
                                             />
                                         </div>
                                         <div className="form-group col-md-1 " id="btnAdd1" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" onClick={addNewItem}>
+                                            <button class="btn btn-sm btn-primary" >
+
+                                                {/* onClick={addNewItem} */}
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -695,19 +345,19 @@ function AddRequisition() {
 
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="item2">Item 02:</label>
+                                            <label class="form-label-emp" for="item2">Item 02: </label>
                                             <select
                                                 id="item2"
                                                 className="form-control "
                                                 value={item02}
-                                                onChange={e => { setItem02(e.target.value); ItemDetails() }}
+                                            // onChange={e => { setItem02(e.target.value); ItemDetails() }}
                                             //required
                                             >
 
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp" for="itemName2">Item Name:</label>
+                                            <label class="form-label-emp" for="itemName2">Item Name: </label>
                                             <div className="form-group ">
                                                 <input
                                                     //required
@@ -722,7 +372,7 @@ function AddRequisition() {
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity2">Quantity:</label>
+                                            <label class="form-label-emp" for="quantity2">Quantity: </label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
@@ -738,7 +388,7 @@ function AddRequisition() {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount2">Unit Price :</label>
+                                            <label class="form-label-emp" for="amount2">Unit Price: </label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -750,12 +400,14 @@ function AddRequisition() {
                                                 //disabled
                                                 //onChange={(event) => { setAmount02(event.target.value); }}
                                                 value={amount2}
-                                                onDoubleClick={calculateTwoItemsAmount}
+                                            // onDoubleClick={calculateTwoItemsAmount}
 
                                             />
                                         </div>
                                         <div className="form-group col" id="btnAdd2" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" onClick={addNewItem2}>
+                                            <button class="btn btn-sm btn-primary"
+                                            // onClick={addNewItem2}
+                                            >
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -765,18 +417,19 @@ function AddRequisition() {
 
                                         </div>
                                         <div class="form-group col-md-2 ">
-                                            <label class="form-label-emp" for="item3">Item 03:</label>
+                                            <label class="form-label-emp" for="item3">Item 03: </label>
                                             <select
                                                 id="item3"
                                                 className="form-control "
                                                 value={item03}
-                                                onChange={e => { setItem03(e.target.value); ItemDetails() }}
+                                            // onChange={e => {
+                                            //      setItem03(e.target.value); ItemDetails() }}
                                             //required
                                             >
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp" for="itemName3">Item Name:</label>
+                                            <label class="form-label-emp" for="itemName3">Item Name: </label>
                                             <div className="form-group  ">
                                                 <input
                                                     //required
@@ -791,7 +444,7 @@ function AddRequisition() {
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity3">Quantity:</label>
+                                            <label class="form-label-emp" for="quantity3">Quantity: </label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
@@ -806,7 +459,7 @@ function AddRequisition() {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount3">Unit Price :</label>
+                                            <label class="form-label-emp" for="amount3">Unit Price: </label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -833,17 +486,19 @@ function AddRequisition() {
                                         <div className=" col-8">
                                             <div className="row">
                                                 <div className="form-group col-md-4">
-                                                    <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount :</label>
+                                                    <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount: </label>
                                                 </div>
 
                                                 <div className="form-group col-md-7">
                                                     <input
                                                         required
-                                                        onClick={e => { setTotal(e.target.value); ;}}
+                                                        // onClick={e => { 
+                                                        //     setTotal(e.target.value); validateTotalID(e); }}
                                                         id="totalAmount"
                                                         type="text"
                                                         className="form-control "
                                                         placeholder="totalAmount"
+                                                        value={data.total}
                                                         style={{ color: "black" }}
                                                     />
                                                     {/* <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
@@ -873,7 +528,7 @@ function AddRequisition() {
 
                                     <div className="row">
                                         <div className="form-group col-md-3">
-                                            <label className="form-label" for="CurrAdd">Comment:</label>
+                                            <label className="form-label" for="CurrAdd">Comment: </label>
                                         </div>
                                         <div className="form-group col-md-9">
                                             <input
@@ -882,6 +537,7 @@ function AddRequisition() {
                                                 type="textarea"
                                                 className="form-control "
                                                 placeholder="comment"
+                                                value={data.comment}
                                                 onChange={e => { setComment(e.target.value); }}
 
                                             />
@@ -900,20 +556,29 @@ function AddRequisition() {
                                         </div>
                                     </div>
                                 </form>
+
+                                <div className="col py-3 text-center">
+                                    <button className="btn btn-reset"
+                                        onClick={() => { saveAsDraft() }
+
+                                        }
+                                    >
+                                        Save as Draft
+                                    </button>
+                                </div>
                             </div >
                         </div >
                     </div >
                 </div >
-            </div >
+
+
+
+
+
+            </Modal.Body >
 
         </div >
-
-
-
-
-
-        </div>
     )
 }
 
-export default AddRequisition
+export default DraftViewModal

@@ -60,11 +60,7 @@ function POrders() {
                     </div>
 
 
-                    <a href="/placeAnOrder" className="float-right">
-                        <button className="btn btn-ok white">
-                            + Purchase Order
-                        </button>
-                    </a>
+                    
                 </div>
 
                 <table class="table table-hover">

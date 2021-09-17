@@ -2,15 +2,12 @@
 .page-component-body {
   min-height: 900px;
   font-family: "Titillium Web", sans-serif;
-  src: local("Titillium WebLight"), local("TitilliumWeb-Light"),
-    url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff)
-      format("woff");
+  src: local("Titillium WebLight"), local("TitilliumWeb-Light"), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format("woff");
   font-weight: 600;
 }
 
 /*side nav bar and header*/
 .page-body {
-  // display: ;
   max-height: 8rem;
   margin-bottom: 2rem;
 }
@@ -95,7 +92,7 @@ nav.main-menu.expanded {
   display: table;
   border-collapse: collapse;
   border-spacing: 0;
-  color: rgb(0, 0, 0);
+  color: black;
   font-family: arial;
   font-size: 16px;
   text-decoration: none;
@@ -171,13 +168,10 @@ nav.main-menu li.active > a,
   font-family: "Titillium Web";
   font-style: normal;
   font-weight: 300;
-  src: local("Titillium WebLight"), local("TitilliumWeb-Light"),
-    url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff)
-      format("woff");
+  src: local("Titillium WebLight"), local("TitilliumWeb-Light"), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format("woff");
 }
 
 /*header css part*/
-
 .main-menubox {
   display: none;
 }
@@ -232,60 +226,57 @@ li.nav-item {
 }
 
 .bg-image {
-  background-image: url("https://i.ibb.co/PT7yhwn/login-chi-lanka.png");
+  background-image: url("https://i.ibb.co/c6kFNFX/19199058.png");
   background-size: cover;
   background-position: center center;
 }
 
 .login-container {
   display: flex;
-  background-color: rgb(255, 255, 255);
+  background-color: white;
   max-width: 500px;
   min-height: 600px;
   justify-content: center;
   padding: 3rem 1rem 1rem 1rem;
   border-radius: 30px;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .btn-login {
-  background-color: #ffa800;
-  color: black !important;
+  background-color: #1fc191;
+  color: black;
   width: 200px;
   border: none;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .login-form-input {
   width: 400px;
   height: 3rem;
   margin: 3rem 0 0rem 0;
-  background-color: rgb(255, 255, 255);
+  background-color: white;
   border: none;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 /*empForm*/
 .tab-content-emp {
-  background-color: rgb(255, 255, 255);
+  background-color: white;
 }
 
 /*tab-content*/
 .tab-content {
-  background-color: rgb(255, 255, 255);
+  background-color: white;
 }
 
 .formInput {
-  background-color: rgb(255, 255, 255);
+  background-color: white;
 }
 
 .formInput:focus {
-  background-color: rgb(255, 255, 255);
+  background-color: white;
 }
 
 .input-main-form {
@@ -293,8 +284,7 @@ li.nav-item {
   position: relative;
   margin-left: 8rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 /*for center a form*/
@@ -302,8 +292,7 @@ li.nav-item {
   width: 800px;
   position: relative;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 /*add rental form*/
@@ -378,8 +367,7 @@ textarea {
   width: 200px;
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .btn-close {
@@ -388,18 +376,16 @@ textarea {
   width: 100px;
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .btn-reset {
   background-color: #ffd200;
-  color: black;
+  color: white;
   width: 200px;
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .btn-delete {
@@ -408,8 +394,7 @@ textarea {
   width: 200px;
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .btn-download {
@@ -420,9 +405,7 @@ textarea {
   width: 80px;
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
-  //height: 20px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 /*hasani*/
@@ -433,8 +416,7 @@ textarea {
   width: 400px;
   height: 550px;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .form-row-change {
@@ -546,8 +528,7 @@ a.nav-link:link {
   padding: 1rem 2rem;
   width: auto;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .table-head {
@@ -571,7 +552,6 @@ a.nav-link:link {
 }
 
 /*searchbar*/
-
 .searchbar {
   margin-right: -5px;
   height: 40px;
@@ -632,11 +612,9 @@ a.nav-link:link {
   width: 200px;
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
-//validation styles
 .message {
   font-size: 14px;
 }
@@ -656,20 +634,17 @@ a.nav-link:link {
   width: 300px;
   height: 300px;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
-//dashboard
 .comp-one {
-  background-color: rgb(255, 255, 255);
+  background-color: white;
   max-width: 1110px;
   min-height: 200px;
   justify-content: center;
   padding: 1rem 1rem 1rem 1rem;
   border-radius: 30px;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .links {
@@ -685,17 +660,16 @@ a.nav-link:link {
   border-color: #b1b1b1;
   border-width: 0.1rem;
 }
+
 .btn-info-total {
   background-color: #1fc191;
   color: white;
   width: 200px;
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
-//report
 .report {
   border-color: #1fc191;
   border-width: 0.5rem !important;
@@ -707,8 +681,7 @@ a.nav-link:link {
   width: 750px;
   position: relative;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .modal-body {
@@ -731,7 +704,7 @@ a.nav-link:link {
 
 #test .form-control {
   border-radius: 0;
-  border-color: rgb(255, 255, 255);
+  border-color: white;
   border-width: 0 0 2px 0;
   border-style: none none solid none;
   box-shadow: none;
@@ -741,6 +714,7 @@ a.nav-link:link {
   box-shadow: none;
   border-color: #5e9bfc;
 }
+
 #test input[type="text"]:disabled {
   background: #ffffff;
 }
@@ -756,26 +730,23 @@ a.nav-link:link {
   font-size: 1.1rem;
   border-radius: 0.5rem;
   padding: 0 3 0 3;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .btn-reset-rec {
   background-color: #ffd200;
   color: white;
-
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
 
 .btn-danger-rec {
   background-color: #fd1a12d0;
   color: white;
-
   font-size: 1.1rem;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2),
-    0px 0px 10px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.19);
 }
+
+/*# sourceMappingURL=styles.css.map */
