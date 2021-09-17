@@ -6,7 +6,7 @@ import { Modal } from "react-bootstrap";
 
 import { getAllDrafts } from '../../services/draftsService';
 
-import { draftModal } from "./draftViewModal"
+import  DraftModal  from "./draftViewModal";
 
 function RequisitionDraftList() {
 
@@ -33,6 +33,13 @@ function RequisitionDraftList() {
 
                         <h3>Drafts</h3>
                     </div>
+
+                    
+                    <a href="/placeAnOrder" className="float-right">
+                        <button className="btn btn-ok white">
+                            + Purchase Order
+                        </button>
+                    </a>
                 </div>
                 <table class="table table-hover">
                     <MaterialTable
@@ -61,6 +68,7 @@ function RequisitionDraftList() {
                                 ),
                                 onClick: (event, rowData) => {
                                     setCurrentOrderUpdate(rowData);
+                                    // console.log("modal dataaa",rawdata);
                                     setModalStateUpdate(true);
                                 },
                             },
@@ -76,7 +84,7 @@ function RequisitionDraftList() {
 
 
             >
-                <draftModal
+                <DraftModal
                     data={currentOrderUpdate}
                     onHide={() => setModalStateUpdate(false)}
 

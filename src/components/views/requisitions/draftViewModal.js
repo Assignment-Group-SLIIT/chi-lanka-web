@@ -5,11 +5,16 @@ import DatePicker from 'react-datetime';
 import moment from 'moment';
 import 'react-datetime/css/react-datetime.css';
 import { Modal } from "react-bootstrap";
+import { getAllDrafts } from "../../services/draftsService"
 
-function draftViewModal(emp) {
+function DraftViewModal(emp) {
+
+    console.log("modal draft", emp.data);
 
 
     const [orderid, setOrderId] = useState("");
+    const [Draftid, setDraftId] = useState("");
+
     const [orderdate, setOrderdate] = useState("");
     const [suppliername, setSuppliername] = useState("");
     const [title, setTitle] = useState("");
@@ -29,35 +34,63 @@ function draftViewModal(emp) {
     const [amount2, setAmount02] = useState("");
     const [amount3, setAmount03] = useState("");
 
+    // const [Comment, setComment] = useState("");
 
-    const [Supplier01List, setSupplier01List] = useState([]);
-    const [Supplier02List, seSupplier02List] = useState([]);
-    const [Supplier03List, setSupplier03List] = useState([]);
-    const [Supplier04List, setSupplier04List] = useState([]);
-    const [Supplier05List, setSupplier05List] = useState([]);
+
+    // const [Supplier01List, setSupplier01List] = useState([]);
+    // const [Supplier02List, seSupplier02List] = useState([]);
+    // const [Supplier03List, setSupplier03List] = useState([]);
+    // const [Supplier04List, setSupplier04List] = useState([]);
+    // const [Supplier05List, setSupplier05List] = useState([]);
 
 
 
     useEffect(() => {
 
+        try{
+
         setSuppliername(emp.data.suppliername);
-        setOrderdate(emp.data.requisiondate);
+        //setOrderdate(emp.data.requisiondate);
         setOrderId(emp.data.requisitionid);
         setTitle(emp.data.title);
         setShipTo(emp.data.shipto);
         setTotal(emp.data.total);
-        setTotal(emp.data.total);
-        
-        
+        setComment(emp.data.comment);
 
+        } catch(err) {
+                console.log(err);
+        }
         
         
+    }, [emp.data])
+
+  
+
+    useEffect(() => {
+        setDrfatListData();
+    }, [])
+
+    const setDrfatListData = async () => {
+        try {
+            await getAllDrafts().then((response) => {
+                console.log("data for table items", response.data);
+                
+                setDraftId(response.data.draftid.toUpperCase())
+                setOrderdate(response.data.modifydat)
+                // setItemID(response.data.draftdate)
+                // setItemList(response.data)
 
 
-        
-        
-        
-    }, [input])
+            })
+
+        } catch (error) { }
+
+    }
+
+    const sendData = (e) => {}
+
+
+
 
     
 
@@ -77,20 +110,16 @@ function draftViewModal(emp) {
     return (
         <div>
             <Modal.Header closeButton>
-                <Modal.Title>Draft :  </Modal.Title>
+                <Modal.Title> Update a Draft : </Modal.Title>
             </Modal.Header>
             <Modal.Body className="px-4">
 
             <div className="page-component-body">
-            <Header></Header>
-            <div className="container input-main-form-emp mb-5">
+            
+            {/* <div className="container input-main-form-emp mb-5"> */}
                 <div className="tab-content-emp" id="myTabContent">
                     <div className="container">
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <h3 className="text-left mt-4 mb-4">Place an Order</h3>
-                            </div>
-                        </div>
+                        
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
@@ -105,8 +134,9 @@ function draftViewModal(emp) {
                                             <select
                                                 id="supplier"
                                                 className="form-control "
+                                                value={suppliername}
                                                 //tabindex="3"
-                                                onChange={e => { setSuppliername(e.target.value); populate(); }}
+                                                // onChange={e => { setSuppliername(e.target.value); populate(); }}
                                                 required
                                             >
                                                 <option  >choose</option>
@@ -136,7 +166,7 @@ function draftViewModal(emp) {
                                                 <div className="form-group col-md-6">
                                                     <input
                                                         required
-                                                        onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
+                                                        // onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
                                                         id="orderId"
                                                         type="text"
                                                         className="form-control "
@@ -144,13 +174,13 @@ function draftViewModal(emp) {
                                                     // pattern="OI[0-9]{3}"
                                                     />
 
-                                                    <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
+                                                    {/* <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
                                                         {Ordermessage}
                                                     </div>
 
                                                     {Object.keys(OrderIDErr).map((key) => {
                                                         // return<div style={{color :"red"}}>{RegNoErr[key]}</div>
-                                                    })}
+                                                    })} */}
 
                                                 </div>
                                             </div>
@@ -171,7 +201,7 @@ function draftViewModal(emp) {
                                                         name="orderDate"
                                                         onChange={(event) => { setOrderdate(event); }}
                                                         timeFormat={false}
-                                                        isValidDate={disablePastDt}
+                                                        // isValidDate={disablePastDt}
                                                     />
                                                 </div>
                                             </div>
@@ -225,7 +255,7 @@ function draftViewModal(emp) {
                                                 id="item1"
                                                 className="form-control "
                                                 value={item01}
-                                                onChange={e => { setItem01(e.target.value); ItemDetails() }}
+                                                // onChange={e => { setItem01(e.target.value); ItemDetails() }}
                                                 required
                                             >
 
@@ -281,7 +311,9 @@ function draftViewModal(emp) {
                                             />
                                         </div>
                                         <div className="form-group col-md-1 " id="btnAdd1" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" onClick={addNewItem}>
+                                            <button class="btn btn-sm btn-primary" >
+
+                                            {/* onClick={addNewItem} */}
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -296,7 +328,7 @@ function draftViewModal(emp) {
                                                 id="item2"
                                                 className="form-control "
                                                 value={item02}
-                                                onChange={e => { setItem02(e.target.value); ItemDetails() }}
+                                                // onChange={e => { setItem02(e.target.value); ItemDetails() }}
                                             //required
                                             >
 
@@ -346,12 +378,14 @@ function draftViewModal(emp) {
                                                 //disabled
                                                 //onChange={(event) => { setAmount02(event.target.value); }}
                                                 value={amount2}
-                                                onDoubleClick={calculateTwoItemsAmount}
+                                                // onDoubleClick={calculateTwoItemsAmount}
 
                                             />
                                         </div>
                                         <div className="form-group col" id="btnAdd2" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" onClick={addNewItem2}>
+                                            <button class="btn btn-sm btn-primary" 
+                                            // onClick={addNewItem2}
+                                            >
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -366,7 +400,8 @@ function draftViewModal(emp) {
                                                 id="item3"
                                                 className="form-control "
                                                 value={item03}
-                                                onChange={e => { setItem03(e.target.value); ItemDetails() }}
+                                                // onChange={e => {
+                                                //      setItem03(e.target.value); ItemDetails() }}
                                             //required
                                             >
                                             </select>
@@ -435,16 +470,17 @@ function draftViewModal(emp) {
                                                 <div className="form-group col-md-7">
                                                     <input
                                                         required
-                                                        onClick={e => { setTotal(e.target.value); validateTotalID(e); }}
+                                                        // onClick={e => { 
+                                                        //     setTotal(e.target.value); validateTotalID(e); }}
                                                         id="totalAmount"
                                                         type="text"
                                                         className="form-control "
                                                         placeholder="totalAmount"
                                                         style={{ color: "black" }}
                                                     />
-                                                    <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
+                                                    {/* <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
                                                         {Amtmessage}
-                                                    </div>
+                                                    </div> */}
 
                                                 </div>
                                                 {/* <div className="form-group col-md-4">
@@ -500,7 +536,7 @@ function draftViewModal(emp) {
                         </div >
                     </div >
                 </div >
-            </div >
+            {/* </div > */}
 
         </div >
            
@@ -513,4 +549,4 @@ function draftViewModal(emp) {
     )
 }
 
-export default draftViewModal
+export default DraftViewModal

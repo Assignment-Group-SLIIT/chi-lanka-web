@@ -955,13 +955,27 @@ function PlaceAnOrder() {
                                                 Submit
                                             </button>
                                         </div>
+                                       
                                         <div className="col py-3 text-center">
-                                            <button type="reset" className="btn btn-reset">
-                                                Cancel
+                                            <button type="reset" className="btn btn-delete">
+                                                Reset
                                             </button>
                                         </div>
                                     </div>
                                 </form>
+
+
+                                <div className="col py-3 text-center">
+                                            <button  className="btn btn-reset" 
+                                                    onClick={()=>{
+                                                        console.log("dhjfhuyduihf");
+                                                    }
+                                                        
+                                                    }
+                                            >
+                                                Save as Draft
+                                            </button>
+                                        </div>
                             </div >
                         </div >
                     </div >
