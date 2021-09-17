@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-
+import Login from "./login"
 import Header from "./Header";
 import pOrders from "./views/purchaseOrder/pOrders";
 import PrList from "./views/purchaseRequisitions/prList";
@@ -18,7 +18,8 @@ function Home() {
     return (
         <Router>
             <Switch>
-                <Route path="/" exact component={requisitionList} />
+                <Route path="/" exact component={Login} />
+                <Route path="/rlList" exact component={requisitionList} />
                 <Route path="/prList" exact component={PrList} />
                 <Route path="/pOrders" exact component={pOrders} />
                 <Route path="/bills" exact component={bills} />
