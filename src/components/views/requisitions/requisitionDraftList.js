@@ -45,8 +45,8 @@ function RequisitionDraftList() {
                     <MaterialTable
                         title=""
                         columns={[
-                            { title: "Requisition", field: "requisitionid", type: "string" },
-                            { title: "Date", field: "requisiondate", type: "string" },
+                            { title: "Requisition", field: "draftid", type: "string" },
+                            { title: "Date", field: "draftdate", type: "string" },
                             { title: "Supplier", field: "suppliername", type: "string" },
                             { title: "Title", field: "title", type: "string" },
                             { title: "Ship to Address", field: "shipto", type: "string" },

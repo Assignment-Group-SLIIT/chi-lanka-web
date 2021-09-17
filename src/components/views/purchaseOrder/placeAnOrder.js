@@ -314,8 +314,8 @@ function PlaceAnOrder() {
     }
 
     function sendData(e) {
-        e.preventDefault();
-        //alert("function called")
+        // e.preventDefault();
+        alert("function called")
         var status = "Pending"
 
         const OrderIDValid = OrderIDValidation();
@@ -589,7 +589,7 @@ function PlaceAnOrder() {
                         </div>
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
+                                <form id="addEmp-form" action="post" className="form" >
 
                                     <div className="row mt-5">
 
@@ -983,7 +983,11 @@ function PlaceAnOrder() {
                                     </div>
                                     <div className="row mb-4 mt-3">
                                         <div className="col py-3 text-center">
-                                            <button type="submit" className="btn btn-ok"  >
+                                            <button type="submit" className="btn btn-ok" 
+                                                  onClick={() => { sendData() }
+
+                                        }
+                                            >
                                                 Submit
                                             </button>
                                         </div>
@@ -999,9 +1003,9 @@ function PlaceAnOrder() {
 
                                 <div className="col py-3 text-center">
                                     <button className="btn btn-reset"
-                                        onClick={() => { saveAsDraft() }
+                                        // onClick={() => { saveAsDraft() }
 
-                                        }
+                                        // }
                                     >
                                         Save as Draft
                                     </button>
