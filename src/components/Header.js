@@ -1,11 +1,9 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
 import "./styles.scss";
 
 
 function Header(props) {
-  let history = useHistory();
   return (
     <div className="page-body ">
       <header>
@@ -64,7 +62,7 @@ function Header(props) {
             <hr></hr>
             <li className="has-subnav">
               <li data-toggle="collapse" data-target="#new2" className="collapsed">
-                <a href="javascript:void(0)" >  <i className="fa fa-tags fa-2x fa-cog stroke-transparent"></i> <span className="nav-text">Items</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
+                <a href="/itemsList" >  <i className="fa fa-tags fa-2x fa-cog stroke-transparent"></i> <span className="nav-text">Items</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
               </li>
 
               <li>
