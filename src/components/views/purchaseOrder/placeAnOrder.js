@@ -6,7 +6,7 @@ import moment from 'moment';
 import 'react-datetime/css/react-datetime.css';
 
 
-import { addOrder, lastAddedOrder } from "../../services/purchaseOrderService";
+import { addOrder } from "../../services/purchaseOrderService";
 import { addOrderItems } from "../../services/purchaseOrderItemsService";
 import { getItemsFromSupplier } from "../../services/supplierService";
 import { getItemDetails } from "../../services/itemServices";
@@ -16,7 +16,7 @@ import { createPayment } from "../../services/paymentService";
 
 
 import Header from '../../Header'
-
+import { addNewDraft } from "../../services/draftsService";
 
 function PlaceAnOrder() {
 
@@ -49,7 +49,6 @@ function PlaceAnOrder() {
     const [Supplier04List, setSupplier04List] = useState([]);
     const [Supplier05List, setSupplier05List] = useState([]);
 
-    var [id, setID] = useState("");
 
     const [OrderIDErr, setOrderIDErr] = useState("");
 
@@ -104,20 +103,6 @@ function PlaceAnOrder() {
         }).catch((error) => {
             alert(error.message);
         })
-
-
-        // //lastAddedOrder().then((response) => {
-        //     if (response.ok) {
-        //         setID(response.data.orderid)
-        //         console.log("iddddd", response.data.orderid)
-        //     }
-
-        //     id = id.substring(2)
-        //     id = Number(id) + 1;
-        //     id = "IT0" + id;
-        //     setOrderId(id)
-        //     //alert(itemid)
-        // })
 
 
     }, [amount1, amount2, amount3, qty01, qty02, qty03]);
@@ -298,39 +283,39 @@ function PlaceAnOrder() {
     }
 
     //to save as draft
-    // const saveAsDraft = () => {
-    //     const newDraft = {
-    //         draftid: orderid,
-    //         draftdate: orderdate,
-    //         modifydate: new Date().toISOString().slice(0, 10),
-    //         suppliername: suppliername,
-    //         title: title,
-    //         shipto: shipto,
-    //         status: "Waiting for Approval",
-    //         total: total,
-    //         comment: comment,
-    //         item01: item01,
-    //         item02: item02,
-    //         item03: item03,
-    //         itemName01: itemName01,
-    //         itemName02: itemName02,
-    //         itemName03: itemName03,
-    //         qty01: qty01,
-    //         qty02: qty02,
-    //         qty03: qty03,
-    //         amount01: amount1,
-    //         amount02: amount2,
-    //         amount03: amount3
-    //     }
+    const saveAsDraft = () => {
+        const newDraft = {
+            draftid: orderid,
+            draftdate: orderdate,
+            modifydate: new Date().toISOString().slice(0, 10),
+            suppliername: suppliername,
+            title: title,
+            shipto: shipto,
+            status: "Waiting for Approval",
+            total: total,
+            comment: comment,
+            item01: item01,
+            item02: item02,
+            item03: item03,
+            itemName01: itemName01,
+            itemName02: itemName02,
+            itemName03: itemName03,
+            qty01: qty01,
+            qty02: qty02,
+            qty03: qty03,
+            amount01: amount1,
+            amount02: amount2,
+            amount03: amount3
+        }
 
-    //     addNewDraft(newDraft).then((res) => {
-    //         window.alert("draft saved", res)
-    //     })
-    // }
+        addNewDraft(newDraft).then((res) => {
+            window.alert("draft saved", res)
+        })
+    }
 
-    function sendDatas(e) {
+    function sendData(e) {
         e.preventDefault();
-        alert("function called")
+        //alert("function called")
         var status = "Pending"
 
         const OrderIDValid = OrderIDValidation();
@@ -604,7 +589,7 @@ function PlaceAnOrder() {
                         </div>
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <form id="addEmp-form" action="post" className="form" onSubmit={sendDatas}>
+                                <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
 
                                     <div className="row mt-5">
 
@@ -647,7 +632,6 @@ function PlaceAnOrder() {
                                                 <div className="form-group col-md-6">
                                                     <input
                                                         required
-                                                        value={orderid}
                                                         onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
                                                         id="orderId"
                                                         type="text"
@@ -795,7 +779,7 @@ function PlaceAnOrder() {
                                             />
                                         </div>
                                         <div className="form-group col-md-1 " id="btnAdd1" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" onClick={addNewItem}>
+                                            <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem}>
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -811,7 +795,7 @@ function PlaceAnOrder() {
                                                 className="form-control "
                                                 value={item02}
                                                 onChange={e => { setItem02(e.target.value); ItemDetails() }}
-                                                required
+                                            // required
                                             >
 
                                             </select>
@@ -820,7 +804,7 @@ function PlaceAnOrder() {
                                             <label class="form-label-emp" for="itemName2">Item Name:</label>
                                             <div className="form-group ">
                                                 <input
-                                                    required
+                                                    // required
                                                     // value={shipToAddress}
                                                     id="itemName2"
                                                     type="text"
@@ -842,7 +826,7 @@ function PlaceAnOrder() {
                                                 min="1"
                                                 //tabindex="5"
                                                 pattern="[0-9]"
-                                                required
+                                                // required
                                                 onChange={e => { setQty02(e.target.value); }}
 
                                             />
@@ -856,16 +840,16 @@ function PlaceAnOrder() {
                                                 name="amount2"
                                                 placeholder="0.00"
                                                 //tabindex="5"
-                                                required
+                                                // required
                                                 //disabled
                                                 onChange={(event) => { setAmount02(event.target.value); }}
                                                 value={amount2}
-                                            //onDoubleClick={calculateTwoItemsAmount}
+                                            // onDoubleClick={calculateTwoItemsAmount}
 
                                             />
                                         </div>
                                         <div className="form-group col" id="btnAdd2" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" onClick={addNewItem2}>
+                                            <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem2}>
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -881,7 +865,7 @@ function PlaceAnOrder() {
                                                 className="form-control "
                                                 value={item03}
                                                 onChange={e => { setItem03(e.target.value); ItemDetails() }}
-                                                required
+                                            // required
                                             >
                                             </select>
                                         </div>
@@ -889,7 +873,7 @@ function PlaceAnOrder() {
                                             <label class="form-label-emp" for="itemName3">Item Name:</label>
                                             <div className="form-group  ">
                                                 <input
-                                                    required
+                                                    // required
                                                     // value={shipToAddress}
                                                     id="itemName3"
                                                     type="text"
@@ -911,7 +895,7 @@ function PlaceAnOrder() {
                                                 min="1"
                                                 //tabindex="5"
                                                 pattern="[0-9]"
-                                                required
+                                                // required
                                                 onChange={e => { setQty03(e.target.value); }}
                                             />
                                         </div>
@@ -925,7 +909,7 @@ function PlaceAnOrder() {
                                                 placeholder="0.00"
                                                 value={amount3}
                                                 //tabindex="5"
-                                                required
+                                                // required
                                                 //disabled
                                                 onChange={(event) => { setAmount03(event.target.value); }}
                                             // onDoubleClick={calculateThreeItemsAmount}
@@ -1012,8 +996,17 @@ function PlaceAnOrder() {
                                     </div>
                                 </form>
 
-                            </div >
 
+                                <div className="col py-3 text-center">
+                                    <button type="button" className="btn btn-reset"
+                                        onClick={() => { saveAsDraft() }
+
+                                        }
+                                    >
+                                        Save as Draft
+                                    </button>
+                                </div>
+                            </div >
                         </div >
                     </div >
                 </div >
