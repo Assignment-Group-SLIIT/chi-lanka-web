@@ -238,6 +238,24 @@ function ItemUpdate(item) {
                                     />
                                 </div>
                             </div>
+                            <div className="row">
+                                <div className="form-group col-md-4 ">
+                                    <label className="form-label" for="itemName">Item Name: </label>
+                                </div>
+                                <div className="form-group col-md-8 ">
+                                    <input
+                                        required
+                                        value={itemName}
+                                        id="itemName"
+                                        type="text"
+                                        className="form-control "
+                                        placeholder="itemName"
+                                        onChange={(e) => {
+                                            setItemName(e.target.value);
+                                        }}
+                                    />
+                                </div>
+                            </div>
                              <div className="row mt-3 mb-3">
                             
                                 <div className="form-group col-md-4">
