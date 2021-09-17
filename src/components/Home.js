@@ -23,11 +23,8 @@ function Home() {
                 <Route path="/pOrders" exact component={pOrders} />
                 <Route path="/bills" exact component={bills} />
                 <Route path="/placeAnOrder" exact component={PlaceAnOrder} />
-<<<<<<< HEAD
-    <Route path="/itemsList" exact component={ItemList} />
-=======
+                <Route path="/itemsList" exact component={ItemList} />
                 <Route path="/sendRequisition" exact component={addRequisition} />
->>>>>>> e7488a3f49fc79d884aca6a024961504732103c9
             </Switch >
         </Router >
     );
