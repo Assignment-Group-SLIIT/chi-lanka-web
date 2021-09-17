@@ -5,6 +5,7 @@ import { Modal } from "react-bootstrap";
 import moment from 'moment';
 
 import ReceiptModal from '../modals/BIllmodal'
+import Swal from 'sweetalert2';
 
 import { getAllReceipts } from "../../services/billsService";
 
@@ -23,14 +24,19 @@ function Bills() {
                 setReceipt(res.data.reverse());
             }
         }).catch((error) => {
-            alert(error.message);
+            //alert(error.message);
+            Swal.fire({
+                title: "Oops! ",
+                text: error.message,
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+            })
         })
 
     }, []);
 
     return (
-
-
 
         <div className="page-component-body">
             <Header></Header>
@@ -101,9 +107,6 @@ function Bills() {
                 />
 
             </Modal>
-
-
-           
 
         </div>
     )
