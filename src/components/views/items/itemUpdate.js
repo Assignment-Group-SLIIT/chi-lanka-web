@@ -117,15 +117,6 @@ function ItemUpdate(item) {
 
 
 
-    //function to disable button according to statuse
-
-
-    // const openModalDelete = (data) => {
-
-    //     
-
-    // }
-
     console.log("data for update", item)
     return (
         <div>
@@ -137,46 +128,46 @@ function ItemUpdate(item) {
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
                             <div className="row mt-3 mb-3">
-                            <div className="col-md-6 float-right">
-                            
-                            <div className="row">
-                                <div className="form-group col-md-4 ">
-                                    <label className="form-label" for="itemId">Item ID:</label>
-                                </div>
-                                <div className="form-group col-md-8 ">
-                                    <input
-                                        required
-                                        value={itemID}
-                                        id="itemId"
-                                        type="text"
-                                        className="form-control "
-                                        placeholder="itemId"
-                                        disabled
-                                    />
-                                </div>
-                            </div>
-                            </div>
-                            <div className="col-md-6 float-right">
-                                <div className="row">
-                                <div className="form-group col-md-4">
-                                    <label className="form-label-emp" for="date">Received Date:</label>
-                                </div>
-                                <div className="form-group col-md-8">
-                                    <DatePicker required id="receivedDate"
-                                        name="receivedDate"
-                                        value={moment(ReceivedDate).format("MM/DD/YYYY")}
+                                <div className="col-md-6 float-right">
 
-                                        timeFormat={false}
-                                        isValidDate={disablePastDt}
-                                        onChange={(event) => { setReceivedDate(event); }}
-                                    />
+                                    <div className="row">
+                                        <div className="form-group col-md-4 ">
+                                            <label className="form-label" for="itemId">Item ID: </label>
+                                        </div>
+                                        <div className="form-group col-md-8 ">
+                                            <input
+                                                required
+                                                value={itemID}
+                                                id="itemId"
+                                                type="text"
+                                                className="form-control "
+                                                placeholder="itemId"
+                                                disabled
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
+                                <div className="col-md-6 float-right">
+                                    <div className="row">
+                                        <div className="form-group col-md-4">
+                                            <label className="form-label-emp" for="date">Received Date: </label>
+                                        </div>
+                                        <div className="form-group col-md-8">
+                                            <DatePicker required id="receivedDate"
+                                                name="receivedDate"
+                                                value={moment(ReceivedDate).format("MM/DD/YYYY")}
+
+                                                timeFormat={false}
+                                                isValidDate={disablePastDt}
+                                                onChange={(event) => { setReceivedDate(event); }}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                             <div className="row">
                                 <div className="form-group col-md-4">
-                                    <label className="form-label-emp " for="supplier">Supplier:</label>
+                                    <label className="form-label-emp " for="supplier">Supplier: </label>
                                 </div>
                                 <div className="form-group col-md-8 ">
 
@@ -197,10 +188,10 @@ function ItemUpdate(item) {
                                 </div>
 
                             </div>
-                        
+
                             <div className="row">
                                 <div className="form-group col-md-4">
-                                    <label className="form-label" for="address">Supplier Address:</label>
+                                    <label className="form-label" for="address">Supplier Address: </label>
                                 </div>
                                 <div className="form-group col-md-8">
                                     <input
@@ -256,104 +247,116 @@ function ItemUpdate(item) {
                                     />
                                 </div>
                             </div>
-                             <div className="row mt-3 mb-3">
-                            
+                            <div className="row mt-3 mb-3">
+
                                 <div className="form-group col-md-4">
                                     <label className="form-label" for="unitPrice">Unit Price:</label>
-                               
-                                <div className="form-group ">
-                                    <input
-                                        required
-                                        id="unitPrice"
-                                        type="number"
-                                        className="form-control "
-                                        placeholder="unitPrice"
-                                        onChange={(e) => {
-                                            setPrice(e.target.value);
-                                        }}
-                                        value={price}
-                                    />
+
+                                    <div className="form-group ">
+                                        <input
+                                            required
+                                            id="unitPrice"
+                                            type="number"
+                                            className="form-control "
+                                            placeholder="unitPrice"
+                                            onChange={(e) => {
+                                                setPrice(e.target.value);
+                                            }}
+                                            value={price}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            
+
                                 <div className="form-group col-md-4">
                                     <label className="form-label-emp " for="availability">Availability:</label>
-                                
-                                <div className="form-group ">
 
-                                    <select
-                                        id="availability"
-                                        className="form-control "
-                                        value={availability}
-                                        onChange={e => { setAvailability(e.target.value); }}
-                                        required
-                                    >
-                                        <option  >choose</option>
-                                        <option id="InStock" value="InStock" >InStock</option>
-                                        <option id="Out-of Stock" value="Out-of Stock">Out-of Stock</option>
-                                        <option id="Requested" value="Requested" >Requested</option>
-                                    </select>
+                                    <div className="form-group ">
+
+                                        <select
+                                            id="availability"
+                                            className="form-control "
+                                            value={availability}
+                                            onChange={e => { setAvailability(e.target.value); }}
+                                            required
+                                        >
+                                            <option  >choose</option>
+                                            <option id="InStock" value="InStock" >InStock</option>
+                                            <option id="Out-of Stock" value="Out-of Stock">Out-of Stock</option>
+                                            <option id="Requested" value="Requested" >Requested</option>
+                                        </select>
+                                    </div>
+
                                 </div>
 
-                            </div>
-                           
                                 <div className="form-group col-md-4">
                                     <label className="form-label" for="quatntity">Quantity:</label>
-                               
-                                <div className="form-group">
-                                    <input
-                                        required
-                                        id="quatntity"
-                                        type="textarea"
-                                        className="form-control "
-                                        placeholder="quatntity"
-                                        value={quantity}
-                                        onChange={(e) => {
-                                            setQuantiity(e.target.value);
-                                        }}
-                                    />
-                                </div>
-                            </div>        
-                        </div>
-                            <div className="row">
-                                <div className="form-group col-md-4 ">
-                                    <label className="form-label" for="description">Description:</label>
-                                </div>
-                                <div className="form-group col-md-8 ">
-                                    <input
-                                        required
-                                        value={description}
-                                        id="description"
-                                        type="text"
-                                        className="form-control "
-                                        placeholder="description"
-                                        onChange={(e) => {
-                                            setDescription(e.target.value);
-                                        }}
-                                    />
+
+                                    <div className="form-group">
+                                        <input
+                                            required
+                                            id="quatntity"
+                                            type="textarea"
+                                            className="form-control "
+                                            placeholder="quatntity"
+                                            value={quantity}
+                                            onChange={(e) => {
+                                                setQuantiity(e.target.value);
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
+                            <div className="row mt-3 mb-3">
 
-                            <div className="row mb-4">
-                                <div className="col py-3 text-center">
-                                    <button type="submit" className="btn btn-ok" id="btn-update">
-                                        Update
-                                    </button>
-                                </div>
 
-                                <div className="col py-3 text-center">
-                                    <button type="reset" className="btn btn-reset" onClick={item.onHide}>
-                                        Cancel
-                                    </button>
-                                </div>
                             </div>
+                            <div>
+                                <div className="row">
+                                    <div className="form-group col-md-4 ">
+                                        <label className="form-label" for="description">Description: </label>
+                                    </div>
+                                    <div className="form-group col-md-8 ">
+                                        <input
+                                            required
+                                            value={description}
+                                            id="description"
+                                            type="text"
+                                            className="form-control "
+                                            placeholder="description"
+                                            onChange={(e) => {
+                                                setDescription(e.target.value);
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+
+                                <div className="row mb-4">
+                                    <div className="col py-3 text-center">
+                                        <button type="submit" className="btn btn-ok" id="btn-update">
+                                            Update
+                                        </button>
+                                    </div>
+
+                                    <div className="col py-3 text-center">
+                                        <button type="reset" className="btn btn-reset" onClick={item.onHide}>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+
                         </form>
-                    </div>
+                    </div >
                 </div>
+            </Modal.Body>
+        </div>
 
-            </Modal.Body >
-        </div >
     )
 }
 
