@@ -779,7 +779,7 @@ function PlaceAnOrder() {
                                             />
                                         </div>
                                         <div className="form-group col-md-1 " id="btnAdd1" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" onClick={addNewItem}>
+                                            <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem}>
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -844,12 +844,12 @@ function PlaceAnOrder() {
                                                 //disabled
                                                 onChange={(event) => { setAmount02(event.target.value); }}
                                                 value={amount2}
-                                                onDoubleClick={calculateTwoItemsAmount}
+                                            // onDoubleClick={calculateTwoItemsAmount}
 
                                             />
                                         </div>
                                         <div className="form-group col" id="btnAdd2" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" onClick={addNewItem2}>
+                                            <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem2}>
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -998,7 +998,7 @@ function PlaceAnOrder() {
 
 
                                 <div className="col py-3 text-center">
-                                    <button className="btn btn-reset"
+                                    <button type="button" className="btn btn-reset"
                                         onClick={() => { saveAsDraft() }
 
                                         }
