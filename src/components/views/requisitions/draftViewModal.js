@@ -5,7 +5,7 @@ import DatePicker from 'react-datetime';
 import moment from 'moment';
 import 'react-datetime/css/react-datetime.css';
 import { Modal } from "react-bootstrap";
-import { getAllDrafts } from "../../services/draftsService"
+import { getAllDrafts, updateDraft } from "../../services/draftsService"
 
 function DraftViewModal(emp) {
 
@@ -34,6 +34,8 @@ function DraftViewModal(emp) {
     const [amount2, setAmount02] = useState("");
     const [amount3, setAmount03] = useState("");
 
+    const [data, setData] = useState([])
+
     // const [Comment, setComment] = useState("");
 
 
@@ -47,24 +49,24 @@ function DraftViewModal(emp) {
 
     useEffect(() => {
 
-        try{
+        try {
+            setData(emp.data)
+            setSuppliername(emp.data.suppliername);
+            //setOrderdate(emp.data.requisiondate);
+            setOrderId(emp.data.requisitionid);
+            setTitle(emp.data.title);
+            setShipTo(emp.data.shipto);
+            setTotal(emp.data.total);
+            setComment(emp.data.comment);
 
-        setSuppliername(emp.data.suppliername);
-        //setOrderdate(emp.data.requisiondate);
-        setOrderId(emp.data.requisitionid);
-        setTitle(emp.data.title);
-        setShipTo(emp.data.shipto);
-        setTotal(emp.data.total);
-        setComment(emp.data.comment);
-
-        } catch(err) {
-                console.log(err);
+        } catch (err) {
+            console.log(err);
         }
-        
-        
+
+
     }, [emp.data])
 
-  
+
 
     useEffect(() => {
         setDrfatListData();
@@ -74,7 +76,7 @@ function DraftViewModal(emp) {
         try {
             await getAllDrafts().then((response) => {
                 console.log("data for table items", response.data);
-                
+
                 setDraftId(response.data.draftid.toUpperCase())
                 setOrderdate(response.data.modifydat)
                 // setItemID(response.data.draftdate)
@@ -87,39 +89,51 @@ function DraftViewModal(emp) {
 
     }
 
-    const sendData = (e) => {}
+    const sendData = (e) => { }
+
+    const saveAsDraft = () => {
+        const newDraft = {
+            draftid: orderid,
+            draftdate: orderdate,
+            modifydate: new Date().toISOString().slice(0, 10),
+            suppliername: suppliername,
+            title: title,
+            shipto: shipto,
+            status: "Waiting for Approval",
+            total: total,
+            comment: comment,
+            item01: item01,
+            item02: item02,
+            item03: item03,
+            itemName01: itemName01,
+            itemName02: itemName02,
+            itemName03: itemName03,
+            qty01: qty01,
+            qty02: qty02,
+            qty03: qty03,
+            amount01: amount1,
+            amount02: amount2,
+            amount03: amount3
+        }
+
+        updateDraft(orderid, newDraft).then(() => {
+            window.alert("successfully updated draft")
+        })
 
 
-
-
-    
-
-
-
-
-    
-
-
-
-
-
-
-
+    }
 
 
     return (
         <div>
             <Modal.Header closeButton>
-                <Modal.Title> Update a Draft : </Modal.Title>
+                <Modal.Title> Update a Draft : {title}</Modal.Title>
             </Modal.Header>
             <Modal.Body className="px-4">
 
-            <div className="page-component-body">
-            
-            {/* <div className="container input-main-form-emp mb-5"> */}
                 <div className="tab-content-emp" id="myTabContent">
                     <div className="container">
-                        
+
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
@@ -127,7 +141,7 @@ function DraftViewModal(emp) {
                                     <div className="row mt-5">
 
                                         <div className="form-group col-md-3">
-                                            <label className="form-label-emp " for="gender">Supplier:</label>
+                                            <label className="form-label-emp " for="gender">Supplier: </label>
                                         </div>
 
                                         <div className="form-group col-md-9">
@@ -136,7 +150,11 @@ function DraftViewModal(emp) {
                                                 className="form-control "
                                                 value={suppliername}
                                                 //tabindex="3"
-                                                // onChange={e => { setSuppliername(e.target.value); populate(); }}
+                                                onChange={e => {
+                                                    setSuppliername(e.target.value);
+                                                    //  populate()
+                                                    ;
+                                                }}
                                                 required
                                             >
                                                 <option  >choose</option>
@@ -160,11 +178,12 @@ function DraftViewModal(emp) {
                                             <div className="row">
 
                                                 <div className="form-group col-md-6">
-                                                    <label className="form-label-emp " for="orderId">Order Id:</label>
+                                                    <label className="form-label-emp " for="orderId">Order Id: </label>
                                                 </div>
 
                                                 <div className="form-group col-md-6">
                                                     <input
+                                                        value={data.draftid}
                                                         required
                                                         // onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
                                                         id="orderId"
@@ -201,7 +220,8 @@ function DraftViewModal(emp) {
                                                         name="orderDate"
                                                         onChange={(event) => { setOrderdate(event); }}
                                                         timeFormat={false}
-                                                        // isValidDate={disablePastDt}
+                                                        value={data.draftdate}
+                                                    // isValidDate={disablePastDt}
                                                     />
                                                 </div>
                                             </div>
@@ -213,7 +233,7 @@ function DraftViewModal(emp) {
 
                                     <div className="row mb-3">
                                         <div className="form-group col-md-3 ">
-                                            <label className="form-label" for="fName">PO Title:</label>
+                                            <label className="form-label" for="fName">PO Title: </label>
                                         </div>
                                         <div className="form-group col-md-9 ">
                                             <input
@@ -223,15 +243,17 @@ function DraftViewModal(emp) {
                                                 type="text"
                                                 className="form-control "
                                                 placeholder="poTitle"
+                                                value={data.title}
                                             />
                                         </div>
                                     </div>
                                     <div className="row mb-3">
                                         <div className="form-group col-md-3 ">
-                                            <label className="form-label" for="shipTo">Ship to:</label>
+                                            <label className="form-label" for="shipTo">Ship to: </label>
                                         </div>
                                         <div className="form-group col-md-9 ">
                                             <input
+                                                value={data.shipto}
                                                 required
                                                 id="shipTo"
                                                 type="text"
@@ -250,7 +272,7 @@ function DraftViewModal(emp) {
                                         </div>
 
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="item1">Item 01:</label>
+                                            <label class="form-label-emp" for="item1">Item 01: </label>
                                             <select
                                                 id="item1"
                                                 className="form-control "
@@ -263,7 +285,7 @@ function DraftViewModal(emp) {
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp ml-2" for="itemName1">Item Name:</label>
+                                            <label class="form-label-emp ml-2" for="itemName1">Item Name: </label>
                                             <div className="form-group">
                                                 <input
                                                     required
@@ -279,7 +301,7 @@ function DraftViewModal(emp) {
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity1">Quantity:</label>
+                                            <label class="form-label-emp" for="quantity1">Quantity: </label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
@@ -294,7 +316,7 @@ function DraftViewModal(emp) {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount1">Unit Price :</label>
+                                            <label class="form-label-emp" for="amount1">Unit Price: </label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -313,7 +335,7 @@ function DraftViewModal(emp) {
                                         <div className="form-group col-md-1 " id="btnAdd1" style={{ display: "block", margin: "15px 0 0 0" }}>
                                             <button class="btn btn-sm btn-primary" >
 
-                                            {/* onClick={addNewItem} */}
+                                                {/* onClick={addNewItem} */}
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -323,19 +345,19 @@ function DraftViewModal(emp) {
 
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="item2">Item 02:</label>
+                                            <label class="form-label-emp" for="item2">Item 02: </label>
                                             <select
                                                 id="item2"
                                                 className="form-control "
                                                 value={item02}
-                                                // onChange={e => { setItem02(e.target.value); ItemDetails() }}
+                                            // onChange={e => { setItem02(e.target.value); ItemDetails() }}
                                             //required
                                             >
 
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp" for="itemName2">Item Name:</label>
+                                            <label class="form-label-emp" for="itemName2">Item Name: </label>
                                             <div className="form-group ">
                                                 <input
                                                     //required
@@ -350,7 +372,7 @@ function DraftViewModal(emp) {
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity2">Quantity:</label>
+                                            <label class="form-label-emp" for="quantity2">Quantity: </label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
@@ -366,7 +388,7 @@ function DraftViewModal(emp) {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount2">Unit Price :</label>
+                                            <label class="form-label-emp" for="amount2">Unit Price: </label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -378,12 +400,12 @@ function DraftViewModal(emp) {
                                                 //disabled
                                                 //onChange={(event) => { setAmount02(event.target.value); }}
                                                 value={amount2}
-                                                // onDoubleClick={calculateTwoItemsAmount}
+                                            // onDoubleClick={calculateTwoItemsAmount}
 
                                             />
                                         </div>
                                         <div className="form-group col" id="btnAdd2" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" 
+                                            <button class="btn btn-sm btn-primary"
                                             // onClick={addNewItem2}
                                             >
                                                 <i className="fa fa-plus"></i>
@@ -395,19 +417,19 @@ function DraftViewModal(emp) {
 
                                         </div>
                                         <div class="form-group col-md-2 ">
-                                            <label class="form-label-emp" for="item3">Item 03:</label>
+                                            <label class="form-label-emp" for="item3">Item 03: </label>
                                             <select
                                                 id="item3"
                                                 className="form-control "
                                                 value={item03}
-                                                // onChange={e => {
-                                                //      setItem03(e.target.value); ItemDetails() }}
+                                            // onChange={e => {
+                                            //      setItem03(e.target.value); ItemDetails() }}
                                             //required
                                             >
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp" for="itemName3">Item Name:</label>
+                                            <label class="form-label-emp" for="itemName3">Item Name: </label>
                                             <div className="form-group  ">
                                                 <input
                                                     //required
@@ -422,7 +444,7 @@ function DraftViewModal(emp) {
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity3">Quantity:</label>
+                                            <label class="form-label-emp" for="quantity3">Quantity: </label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
@@ -437,7 +459,7 @@ function DraftViewModal(emp) {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount3">Unit Price :</label>
+                                            <label class="form-label-emp" for="amount3">Unit Price: </label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -464,7 +486,7 @@ function DraftViewModal(emp) {
                                         <div className=" col-8">
                                             <div className="row">
                                                 <div className="form-group col-md-4">
-                                                    <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount :</label>
+                                                    <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount: </label>
                                                 </div>
 
                                                 <div className="form-group col-md-7">
@@ -476,6 +498,7 @@ function DraftViewModal(emp) {
                                                         type="text"
                                                         className="form-control "
                                                         placeholder="totalAmount"
+                                                        value={data.total}
                                                         style={{ color: "black" }}
                                                     />
                                                     {/* <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
@@ -505,7 +528,7 @@ function DraftViewModal(emp) {
 
                                     <div className="row">
                                         <div className="form-group col-md-3">
-                                            <label className="form-label" for="CurrAdd">Comment:</label>
+                                            <label className="form-label" for="CurrAdd">Comment: </label>
                                         </div>
                                         <div className="form-group col-md-9">
                                             <input
@@ -514,6 +537,7 @@ function DraftViewModal(emp) {
                                                 type="textarea"
                                                 className="form-control "
                                                 placeholder="comment"
+                                                value={data.comment}
                                                 onChange={e => { setComment(e.target.value); }}
 
                                             />
@@ -532,20 +556,28 @@ function DraftViewModal(emp) {
                                         </div>
                                     </div>
                                 </form>
+
+                                <div className="col py-3 text-center">
+                                    <button className="btn btn-reset"
+                                        onClick={() => { saveAsDraft() }
+
+                                        }
+                                    >
+                                        Save as Draft
+                                    </button>
+                                </div>
                             </div >
                         </div >
                     </div >
                 </div >
-            {/* </div > */}
+
+
+
+
+
+            </Modal.Body >
 
         </div >
-           
-
-
-
-            </Modal.Body>
-            
-        </div>
     )
 }
 

@@ -16,6 +16,7 @@ import { createPayment } from "../../services/paymentService";
 
 
 import Header from '../../Header'
+import { addNewDraft } from "../../services/draftsService";
 
 function PlaceAnOrder() {
 
@@ -279,6 +280,37 @@ function PlaceAnOrder() {
     function calculateThreeItemsAmount() {
         var thirdAmount = (amount3 * qty03) + calculateTwoItemsAmount();
         document.getElementById("totalAmount").value = thirdAmount;
+    }
+
+    //to save as draft
+    const saveAsDraft = () => {
+        const newDraft = {
+            draftid: orderid,
+            draftdate: orderdate,
+            modifydate: new Date().toISOString().slice(0, 10),
+            suppliername: suppliername,
+            title: title,
+            shipto: shipto,
+            status: "Waiting for Approval",
+            total: total,
+            comment: comment,
+            item01: item01,
+            item02: item02,
+            item03: item03,
+            itemName01: itemName01,
+            itemName02: itemName02,
+            itemName03: itemName03,
+            qty01: qty01,
+            qty02: qty02,
+            qty03: qty03,
+            amount01: amount1,
+            amount02: amount2,
+            amount03: amount3
+        }
+
+        addNewDraft(newDraft).then((res) => {
+            window.alert("draft saved", res)
+        })
     }
 
     function sendData(e) {
@@ -571,7 +603,7 @@ function PlaceAnOrder() {
                                                 className="form-control "
                                                 //tabindex="3"
                                                 onChange={e => { setSuppliername(e.target.value); populate(); }}
-                                                required
+                                            // required
                                             >
                                                 <option  >choose</option>
                                                 <option id="KDH" value="KDH" >KDH Constructions</option>
@@ -599,7 +631,7 @@ function PlaceAnOrder() {
 
                                                 <div className="form-group col-md-6">
                                                     <input
-                                                        required
+                                                        // required
                                                         onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
                                                         id="orderId"
                                                         type="text"
@@ -631,7 +663,9 @@ function PlaceAnOrder() {
                                                 </div>
                                                 <div class="form-group col-md-6"  >
 
-                                                    <DatePicker required id="orderDate"
+                                                    <DatePicker
+                                                        // required 
+                                                        id="orderDate"
                                                         name="orderDate"
                                                         onChange={(event) => { setOrderdate(event); }}
                                                         timeFormat={false}
@@ -651,7 +685,7 @@ function PlaceAnOrder() {
                                         </div>
                                         <div className="form-group col-md-9 ">
                                             <input
-                                                required
+                                                // required
                                                 onChange={e => { setTitle(e.target.value); }}
                                                 id="poTitle"
                                                 type="text"
@@ -666,7 +700,7 @@ function PlaceAnOrder() {
                                         </div>
                                         <div className="form-group col-md-9 ">
                                             <input
-                                                required
+                                                // required
                                                 id="shipTo"
                                                 type="text"
                                                 className="form-control "
@@ -690,7 +724,7 @@ function PlaceAnOrder() {
                                                 className="form-control "
                                                 value={item01}
                                                 onChange={e => { setItem01(e.target.value); ItemDetails() }}
-                                                required
+                                            // required
                                             >
 
 
@@ -700,7 +734,7 @@ function PlaceAnOrder() {
                                             <label class="form-label-emp ml-2" for="itemName1">Item Name:</label>
                                             <div className="form-group">
                                                 <input
-                                                    required
+                                                    // required
                                                     id="itemName1"
                                                     type="text"
                                                     className="form-control "
@@ -723,7 +757,7 @@ function PlaceAnOrder() {
                                                 min="1"
                                                 //tabindex="5"
                                                 pattern="[0-9]"
-                                                required
+                                                // required
                                                 onChange={(event) => { setQty01(event.target.value); }}
                                             />
                                         </div>
@@ -736,8 +770,8 @@ function PlaceAnOrder() {
                                                 name="amount1"
                                                 placeholder="0.00"
                                                 value={amount1}
-                                            //tabindex="5"
-                                            //required
+                                                //tabindex="5"
+                                                required
                                             //disabled
                                             //onChange={(event) => { setAmount01(event.target.value); }}
 
@@ -761,7 +795,7 @@ function PlaceAnOrder() {
                                                 className="form-control "
                                                 value={item02}
                                                 onChange={e => { setItem02(e.target.value); ItemDetails() }}
-                                            //required
+                                                required
                                             >
 
                                             </select>
@@ -770,7 +804,7 @@ function PlaceAnOrder() {
                                             <label class="form-label-emp" for="itemName2">Item Name:</label>
                                             <div className="form-group ">
                                                 <input
-                                                    //required
+                                                    required
                                                     // value={shipToAddress}
                                                     id="itemName2"
                                                     type="text"
@@ -792,7 +826,7 @@ function PlaceAnOrder() {
                                                 min="1"
                                                 //tabindex="5"
                                                 pattern="[0-9]"
-                                                //required
+                                                required
                                                 onChange={e => { setQty02(e.target.value); }}
 
                                             />
@@ -806,7 +840,7 @@ function PlaceAnOrder() {
                                                 name="amount2"
                                                 placeholder="0.00"
                                                 //tabindex="5"
-                                                //required
+                                                required
                                                 //disabled
                                                 //onChange={(event) => { setAmount02(event.target.value); }}
                                                 value={amount2}
@@ -831,7 +865,7 @@ function PlaceAnOrder() {
                                                 className="form-control "
                                                 value={item03}
                                                 onChange={e => { setItem03(e.target.value); ItemDetails() }}
-                                            //required
+                                                required
                                             >
                                             </select>
                                         </div>
@@ -839,7 +873,7 @@ function PlaceAnOrder() {
                                             <label class="form-label-emp" for="itemName3">Item Name:</label>
                                             <div className="form-group  ">
                                                 <input
-                                                    //required
+                                                    required
                                                     // value={shipToAddress}
                                                     id="itemName3"
                                                     type="text"
@@ -861,7 +895,7 @@ function PlaceAnOrder() {
                                                 min="1"
                                                 //tabindex="5"
                                                 pattern="[0-9]"
-                                                //required
+                                                required
                                                 onChange={e => { setQty03(e.target.value); }}
                                             />
                                         </div>
@@ -874,8 +908,8 @@ function PlaceAnOrder() {
                                                 name="amount3"
                                                 placeholder="0.00"
                                                 value={amount3}
-                                            //tabindex="5"
-                                            //required
+                                                //tabindex="5"
+                                                required
                                             //disabled
                                             //onChange={(event) => { setAmount03(event.target.value); }}
                                             // onDoubleClick={calculateThreeItemsAmount}
@@ -898,7 +932,7 @@ function PlaceAnOrder() {
 
                                                 <div className="form-group col-md-7">
                                                     <input
-                                                        required
+                                                        // required
                                                         onClick={e => { setTotal(e.target.value); validateTotalID(e); }}
                                                         id="totalAmount"
                                                         type="text"
@@ -917,7 +951,7 @@ function PlaceAnOrder() {
 
                                         <div className="form-group col-md-8">
                                             <input
-                                                required
+                                                // required
                                                 onClick={e => { setTotal(e.target.value); }}
                                                 id="totalAmount"
                                                 type="text"
@@ -937,7 +971,7 @@ function PlaceAnOrder() {
                                         </div>
                                         <div className="form-group col-md-9">
                                             <input
-                                                required
+                                                // required
                                                 id="comment"
                                                 type="textarea"
                                                 className="form-control "
@@ -953,7 +987,7 @@ function PlaceAnOrder() {
                                                 Submit
                                             </button>
                                         </div>
-                                       
+
                                         <div className="col py-3 text-center">
                                             <button type="reset" className="btn btn-delete">
                                                 Reset
@@ -964,16 +998,14 @@ function PlaceAnOrder() {
 
 
                                 <div className="col py-3 text-center">
-                                            <button  className="btn btn-reset" 
-                                                    onClick={()=>{
-                                                        console.log("dhjfhuyduihf");
-                                                    }
-                                                        
-                                                    }
-                                            >
-                                                Save as Draft
-                                            </button>
-                                        </div>
+                                    <button className="btn btn-reset"
+                                        onClick={() => { saveAsDraft() }
+
+                                        }
+                                    >
+                                        Save as Draft
+                                    </button>
+                                </div>
                             </div >
                         </div >
                     </div >
