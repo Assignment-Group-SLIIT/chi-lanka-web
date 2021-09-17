@@ -1,9 +1,19 @@
-import React from 'react'
+import { React, useState, useEffect } from 'react'
 
 import MaterialTable from "material-table";
 import HeaderForReq from "./headerForReq"
 
-function requisitionDraftList() {
+function RequisitionDraftList() {
+
+    const [prList, setPrList] = useState([]);
+
+    useEffect(() => {
+        // getAllDrafts().then((res) => {
+        //     console.log("data for tableeeee", res.data.reverse())
+        //     setPrList(res.data.reverse())
+        // })
+    }, [])
+
     return (
         <div className="component-body">
             <HeaderForReq></HeaderForReq>
@@ -56,4 +66,4 @@ function requisitionDraftList() {
     )
 }
 
-export default requisitionDraftList
+export default RequisitionDraftList
