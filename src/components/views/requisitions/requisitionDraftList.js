@@ -2,16 +2,24 @@ import { React, useState, useEffect } from 'react'
 
 import MaterialTable from "material-table";
 import HeaderForReq from "./headerForReq"
+import { Modal } from "react-bootstrap";
+
+import { getAllDrafts } from '../../services/draftsService';
+
+import { draftModal } from "./draftViewModal"
 
 function RequisitionDraftList() {
 
-    const [prList, setPrList] = useState([]);
+    const [draftsList, setDraftsList] = useState([]);
+
+    const [modalStateUpdate, setModalStateUpdate] = useState(false);
+    const [currentOrderUpdate, setCurrentOrderUpdate] = useState();
 
     useEffect(() => {
-        // getAllDrafts().then((res) => {
-        //     console.log("data for tableeeee", res.data.reverse())
-        //     setPrList(res.data.reverse())
-        // })
+        getAllDrafts().then((res) => {
+            console.log("data for tableeeee", res.data)
+            setDraftsList(res.data.reverse())
+        })
     }, [])
 
     return (
@@ -40,26 +48,41 @@ function RequisitionDraftList() {
                             { title: "Comment", field: "comment", type: "string" },
                         ]}
 
-                        // data={prList}
+                        data={draftsList}
                         options={{
                             sorting: true,
                             actionsColumnIndex: -1,
                             exportButton: true,
                         }}
-                    // actions={[
-                    //     {
-                    //         icon: () => (
-                    //             <button class="btn btn-sm btn-warning">view</button>
-                    //         ),
-                    //         onClick: (event, rowData) => {
-                    //             setCurrentProductUpdate(rowData);
-                    //             setModalStateUpdate(true);
-                    //         },
-                    //     },
-                    // ]}
+                        actions={[
+                            {
+                                icon: () => (
+                                    <button class="btn btn-sm btn-warning">view</button>
+                                ),
+                                onClick: (event, rowData) => {
+                                    setCurrentOrderUpdate(rowData);
+                                    setModalStateUpdate(true);
+                                },
+                            },
+                        ]}
                     />
                 </table>
             </div>
+            <Modal show={modalStateUpdate}
+                onHide={() => setModalStateUpdate(false)}
+                size="lg"
+                aria-labelledby="containeed-modal-title-vcenter"
+                centered
+
+
+            >
+                <draftModal
+                    data={currentOrderUpdate}
+                    onHide={() => setModalStateUpdate(false)}
+
+                />
+
+            </Modal>
 
 
         </div>
