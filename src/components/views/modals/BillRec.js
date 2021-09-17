@@ -14,19 +14,42 @@ function BillRec(payload) {
     const [dataForModal, setDataForModal] = useState([])
     const [supplierData, setSupplierData] = useState([])
 
+    const [taxVal,settaxVal] = useState("");
+    const [totVal,settotVal] = useState("");
+
     useEffect(() => {
         setDataForModal(payload.data)
 
         getSupplier(payload.data.suppliername).then((res) => {
             setSupplierData(res.data);
-            console.log("suppppppppp", supplierData);
+            
 
         })
 
     }, [payload.data])
 
 
-    console.log("order data for bill modall", dataForModal);
+    
+    useEffect(()=>{
+
+        
+        calcTax(dataForModal.total);
+        
+    },[dataForModal.total])
+
+    function calcTax(Amount){
+
+        const taxval = Amount * (10/100)
+        const totVal = Amount + taxval
+
+        settaxVal(taxval)
+        settotVal(totVal)
+
+        
+
+}
+
+
 
     return (
 
@@ -183,6 +206,24 @@ function BillRec(payload) {
                                             <h5 className="text-left mb-1">Supplier :</h5>
                                         </div>
 
+                                         <div className="row ml-2">
+
+
+                                            <div className="form-group">
+                                                <input
+                                                    required
+                                                    value={supplierData.suppliername}
+                                                    id="requisition"
+                                                    type="text"
+                                                    className="form-control "
+                                                    placeholder="No.475, Uniojn Place,"
+                                                    disabled
+                                                />
+                                            </div>
+
+
+                                        </div>
+
                                         <div className="row ml-2">
 
 
@@ -312,19 +353,19 @@ function BillRec(payload) {
                                             <td>{dataForModal.item01}</td>
                                             <td >{dataForModal.itemName01}</td>
                                             <td >{dataForModal.qty01}</td>
-                                            <td >{dataForModal.unitPrice01}</td>
+                                            <td class="text-right">{dataForModal.unitPrice01}</td>
                                         </tr>
                                         <tr>
                                             <td >{dataForModal.item02}</td>
                                             <td >{dataForModal.itemName02}</td>
                                             <td >{dataForModal.qty02}</td>
-                                            <td >{dataForModal.unitPrice02}</td>
+                                            <td class="text-right">{dataForModal.unitPrice02}</td>
                                         </tr>
                                         <tr>
                                             <td >{dataForModal.item03}</td>
                                             <td >{dataForModal.itemName03}</td>
                                             <td >{dataForModal.qty03}</td>
-                                            <td >{dataForModal.unitPrice03}</td>
+                                            <td class="text-right">{dataForModal.unitPrice03}</td>
 
                                         </tr>
                                     </tbody>
@@ -374,7 +415,7 @@ function BillRec(payload) {
                                             <div className="form-group col-md-6 ">
                                                 <input
                                                     required
-                                                    // value={requisition}
+                                                    value={taxVal}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control text-right"
@@ -403,7 +444,7 @@ function BillRec(payload) {
                                             <div className="form-group col-md-6 " id="test">
                                                 <input
                                                     required
-                                                    // value={requisition}
+                                                    value={totVal}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control text-right"

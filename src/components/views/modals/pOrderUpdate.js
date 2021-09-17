@@ -43,7 +43,7 @@ function POrderUpdate(payload) {
             setComment(payload.data.comment)
             setStatus(payload.data.status)
             setTotal(payload.data.total)
-            setAddress(payload.data.status)
+            setAddress(payload.data.shipto)
 
         } catch (error) {
             console.log(error)

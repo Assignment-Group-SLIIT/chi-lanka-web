@@ -17,6 +17,7 @@ function BIllmodal(emp) {
      const [receiptdate, setreceiptdate] = useState("");
     
      const[supAdd, setSupAdd]=useState("");
+     const[supName, setSupName]=useState("");
      const[contactNO, setcontactNO]=useState("");
      const [shipTo,setshipTo] = useState("");
      const [Amount,setAmount] = useState("");
@@ -81,6 +82,7 @@ function BIllmodal(emp) {
                     console.log("data for table items", response.data);
                     setSupAdd(response.data.address)
                     setcontactNO(response.data.contactnumber)
+                    setSupName(response.data.suppliername)
                 })
     
             } catch (error) { }
@@ -277,12 +279,12 @@ function BIllmodal(emp) {
                                         <div className="form-group">
                                                 <input
                                                     required
-                                                    // value={requisition}
+                                                    value={supName}
                                                     id="requisition"
                                                     type="text"
                                                     className="form-control "
                                                     // placeholder="No.475, Uniojn Place,"
-                                                    value={supAdd}
+                                                    
                                                     disabled
                                                 />
                                         </div>
@@ -301,7 +303,7 @@ function BIllmodal(emp) {
                                                     type="text"
                                                     className="form-control "
                                                     placeholder="Colombo 02,"
-                                                    // value={orderID}
+                                                    value={supAdd}
                                                     disabled
                                                 />
                                         </div>
@@ -329,18 +331,7 @@ function BIllmodal(emp) {
                                     <div className="row ml-2">
 
                                         
-                                        <div className="form-group">
-                                                <input
-                                                    required
-                                                    // value={requisition}
-                                                    id="requisition"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="abc@gmail.com"
-                                                    // value={orderID}
-                                                    disabled
-                                                />
-                                        </div>
+                                        
                                         
 
                                     </div>
@@ -379,36 +370,14 @@ function BIllmodal(emp) {
                                     <div className="row ml-2">
 
                                         
-                                        <div className="form-group">
-                                                <input
-                                                    required
-                                                    // value={requisition}
-                                                    id="requisition"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="Colombo 02,"
-                                                    // value={orderID}
-                                                    disabled
-                                                />
-                                        </div>
+                                       
                                         
 
                                     </div>
                                     <div className="row ml-2">
 
                                         
-                                        <div className="form-group">
-                                                <input
-                                                    required
-                                                    // value={requisition}
-                                                    id="requisition"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="0771111111"
-                                                    // value={orderID}
-                                                    disabled
-                                                />
-                                        </div>
+                                       
                                         
 
                                     </div>
