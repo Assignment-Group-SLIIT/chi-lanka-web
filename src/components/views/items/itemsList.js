@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table'
-
+import Swal from 'sweetalert2';
 import Header from '../../Header'
 import axios from 'axios'
 import { Modal } from 'react-bootstrap';
 
 import ItemUpdate from "../items/itemUpdate"
-
+import { deleteItemPermenantly } from "../../services/itemServices";
 
 
 import { getItemsList } from "../../services/itemServices";
+import moment from 'moment';
+import { deleteSupplierItemPermenantly } from '../../services/supplierService';
+
 
 function ItemList() {
 
@@ -19,12 +22,13 @@ function ItemList() {
 
 
 
+
     useEffect(() => {
 
         getItemsList().then((res) => {
             console.log("data for table", res);
             if (res.ok) {
-                setItemsList(res.data.reverse());
+                setItemsList(res.data);
             }
         }).catch((error) => {
             alert(error.message);
@@ -32,6 +36,63 @@ function ItemList() {
 
     }, []);
 
+
+    function deleteItem(itemID) {
+        Swal.fire({
+            title: 'Do you want delete the Item details permanantly?',
+            showDenyButton: true,
+            showConfirmationButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: `Cancel`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteItemPermenantly(itemID.toUpperCase()).then((response) => {
+                    if (response.ok) {
+
+                        deleteSupplierItemPermenantly(itemID.toUpperCase()).then((response) => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    text: 'Success!',
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.reload()
+                                })
+
+                            } else {
+                                Swal.fire({
+                                    text: 'Oops!',
+                                    icon: 'error',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.reload()
+                                })
+
+                            }
+
+                        })
+
+
+                    } else {
+                        Swal.fire({
+                            text: 'Oops!',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            window.location.reload()
+                        })
+
+                    }
+                })
+
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
 
 
 
@@ -52,8 +113,9 @@ function ItemList() {
                     </div>
 
 
-                    <a href="/placeAnOrder" className="float-right">
+                    <a href="/addItems" className="float-right">
                         <button className="btn btn-ok white">
+
                             + Add New Items
                         </button>
                     </a>
@@ -88,7 +150,16 @@ function ItemList() {
                                     setCurrentItemUpdate(rowData);
                                     setModalStateUpdate(true);
                                 }
+
                             },
+                            {
+                                icon: () => (
+                                    <button class="btn btn-sm btn-danger">Remove</button>
+                                ),
+                                onClick: (event, rowData) => {
+                                    deleteItem(rowData.itemid);
+                                },
+                            }
                         ]}
 
 
@@ -114,6 +185,8 @@ function ItemList() {
 
 
             </Modal>
+
+
 
 
 

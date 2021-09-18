@@ -72,7 +72,7 @@ export const getOnePurchaseOrderRecord = async (rID) => {
         const response = await axios.get(`${HOST}/order/getOrderByID/${rID}`);
         return {
             ok: true,
-            data : response
+            data: response
         };
     } catch (error) {
         return {
@@ -80,4 +80,21 @@ export const getOnePurchaseOrderRecord = async (rID) => {
         };
     }
 }
+
+export const lastAddedOrder = async () => {
+
+    const response = await axios.get(`${HOST}/order/lastAddedOrder`);
+    console.log("dataa", response);
+    try {
+        return {
+            ok: true,
+            data: response.data[0]
+        }
+    } catch (error) {
+        return {
+            ok: false, err: error.response.data.status
+        }
+    }
+
+};
 

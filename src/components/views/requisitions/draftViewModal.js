@@ -3,12 +3,12 @@ import { useHistory } from "react-router";
 import Swal from 'sweetalert2';
 import DatePicker from 'react-datetime';
 import moment from 'moment';
+import { Modal } from 'react-bootstrap';
 import 'react-datetime/css/react-datetime.css';
-import { Modal } from "react-bootstrap";
 
-import { getAllDrafts, updateDraft } from "../../services/draftsService"
+
 import { addOrder } from "../../services/purchaseOrderService";
-import { addOrderItems, getOrderItemsforOrder } from "../../services/purchaseOrderItemsService";
+import { addOrderItems } from "../../services/purchaseOrderItemsService";
 import { getItemsFromSupplier } from "../../services/supplierService";
 import { getItemDetails } from "../../services/itemServices";
 import { addRequisition } from "../../services/requisitionService";
@@ -16,23 +16,15 @@ import { createPayment } from "../../services/paymentService";
 
 
 
+import Header from '../../Header'
+import { addNewDraft } from "../../services/draftsService";
 
-function DraftViewModal(emp) {
+function DraftViewModal() {
 
     let history = useHistory();
 
-    console.log("modal draft", emp.data);
-
-
     const [orderid, setOrderId] = useState("");
-    const [Draftid, setDraftId] = useState("");
-
-    
-
-
-    
-
-    const [draftDate, setDraftdate] = useState("");
+    const [orderdate, setOrderdate] = useState("");
     const [suppliername, setSuppliername] = useState("");
     const [title, setTitle] = useState("");
     const [shipto, setShipTo] = useState("");
@@ -52,117 +44,114 @@ function DraftViewModal(emp) {
     const [amount3, setAmount03] = useState("");
 
 
-    
-
-    const [data, setData] = useState([])
-
-    // const [Comment, setComment] = useState("");
-
-
     const [Supplier01List, setSupplier01List] = useState([]);
     const [Supplier02List, seSupplier02List] = useState([]);
     const [Supplier03List, setSupplier03List] = useState([]);
     const [Supplier04List, setSupplier04List] = useState([]);
     const [Supplier05List, setSupplier05List] = useState([]);
 
-    const [DraftList, setDraftList] = useState([]);
 
-
+    const [OrderIDErr, setOrderIDErr] = useState("");
 
     useEffect(() => {
-
-        try {
-            setData(emp.data)
-            setSuppliername(emp.data.suppliername);
-            //setOrderdate(emp.data.requisiondate);
-            setDraftId(emp.data.draftid);
-            setDraftdate(emp.data.draftdate);
-
-            setTitle(emp.data.title);
-            setShipTo(emp.data.shipto);
-            setTotal(emp.data.total);
-            setComment(emp.data.comment);
-            setItemName01(emp.data.itemName01);
-            setItemName02(emp.data.itemName02);
-            setItemName03(emp.data.itemName03);
-            setItem01(emp.data.item01);
-            setItem02(emp.data.item02);
-            setItem03(emp.data.item03);
-            setQty01(emp.data.qty01);
-            setQty02(emp.data.qty02);
-            setQty03(emp.data.qty03);
-            setAmount01(emp.data.amount01);
-            setAmount02(emp.data.amount02);
-            setAmount03(emp.data.amount03);
+        calculateItem1Amount()
+        calculateTwoItemsAmount()
+        calculateThreeItemsAmount()
 
 
-                                    
+        getItemsFromSupplier("KDH").then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setSupplier01List(res.data);
+            }
+        }).catch((error) => {
+            alert(error.message);
+        })
 
 
+        getItemsFromSupplier("PERERA").then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                seSupplier02List(res.data);
+            }
+        }).catch((error) => {
+            alert(error.message);
+        })
 
-            calculateItem1Amount()
-            calculateTwoItemsAmount()
-            calculateThreeItemsAmount()
-           
-            
+        getItemsFromSupplier("Manual Handlers").then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setSupplier03List(res.data);
+            }
+        }).catch((error) => {
+            alert(error.message);
+        })
 
+        getItemsFromSupplier("Builders Barn").then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setSupplier04List(res.data);
+            }
+        }).catch((error) => {
+            alert(error.message);
+        })
 
-
-
-            getItemsFromSupplier("KDH").then((res) => {
-                console.log("data for table", res);
-                if (res.ok) {
-                    setSupplier01List(res.data);
-                }
-            }).catch((error) => {
-                alert(error.message);
-            })
-    
-    
-            getItemsFromSupplier("PERERA").then((res) => {
-                console.log("data for table", res);
-                if (res.ok) {
-                    seSupplier02List(res.data);
-                }
-            }).catch((error) => {
-                alert(error.message);
-            })
-    
-            getItemsFromSupplier("Manual Handlers").then((res) => {
-                console.log("data for table", res);
-                if (res.ok) {
-                    setSupplier03List(res.data);
-                }
-            }).catch((error) => {
-                alert(error.message);
-            })
-    
-            getItemsFromSupplier("Builders Barn").then((res) => {
-                console.log("data for table", res);
-                if (res.ok) {
-                    setSupplier04List(res.data);
-                }
-            }).catch((error) => {
-                alert(error.message);
-            })
-    
-            getItemsFromSupplier("Pinnacle").then((res) => {
-                console.log("data for table", res);
-                if (res.ok) {
-                    setSupplier05List(res.data);
-                }
-            })
-
-        } catch (err) {
-            console.log(err);
-        }
+        getItemsFromSupplier("Pinnacle").then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setSupplier05List(res.data);
+            }
+        }).catch((error) => {
+            alert(error.message);
+        })
 
 
-    }, [emp.data])
+    }, [amount1, amount2, amount3, qty01, qty02, qty03]);
 
 
+    function ItemDetails() {
 
-    
+        //alert(document.getElementById('item1').value)
+
+        var itemCode1 = document.getElementById('item1').value.trim().toUpperCase();
+        var itemCode2 = document.getElementById('item2').value.trim().toUpperCase();
+        var itemCode3 = document.getElementById('item3').value.trim().toUpperCase();
+
+        getItemDetails(itemCode1).then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setItemName01(res.data.item.itemname);
+                setAmount01(res.data.item.price);
+            }
+        }).catch((error) => {
+            alert(error.message);
+
+        })
+
+        getItemDetails(itemCode2).then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setItemName02(res.data.item.itemname);
+                setAmount02(res.data.item.price);
+            }
+        }).catch((error) => {
+            alert(error.message);
+
+        })
+
+        getItemDetails(itemCode3).then((res) => {
+            console.log("data for table", res);
+            if (res.ok) {
+                setItemName03(res.data.item.itemname);
+                setAmount03(res.data.item.price);
+            }
+        }).catch((error) => {
+            alert(error.message);
+
+        })
+
+    }
+
     function populate() {
         var Stringsplit1 = Supplier01List.split(',')
         var Stringsplit2 = Supplier02List.split(",")
@@ -263,55 +252,6 @@ function DraftViewModal(emp) {
 
     }
 
-
-
-
-
-    function ItemDetails() {
-
-        //alert(document.getElementById('item1').value)
-
-        var itemCode1 = document.getElementById('item1').value.trim().toUpperCase();
-        var itemCode2 = document.getElementById('item2').value.trim().toUpperCase();
-        var itemCode3 = document.getElementById('item3').value.trim().toUpperCase();
-
-        getItemDetails(itemCode1).then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setItemName01(res.data.item.itemname);
-                setAmount01(res.data.item.price);
-            }
-        }).catch((error) => {
-            alert(error.message);
-
-        })
-
-        getItemDetails(itemCode2).then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setItemName02(res.data.item.itemname);
-                setAmount02(res.data.item.price);
-            }
-        }).catch((error) => {
-            alert(error.message);
-
-        })
-
-        getItemDetails(itemCode3).then((res) => {
-            console.log("data for table", res);
-            if (res.ok) {
-                setItemName03(res.data.item.itemname);
-                setAmount03(res.data.item.price);
-            }
-        }).catch((error) => {
-            alert(error.message);
-
-        })
-
-    }
-
-
-    
     const addNewItem = () => {
         console.log("button clicked")
         document.getElementById('btnAdd1').style.display = "none";
@@ -343,191 +283,11 @@ function DraftViewModal(emp) {
         document.getElementById("totalAmount").value = thirdAmount;
     }
 
-
-    const sendData = (e) => {
-        e.preventDefault();
-
-        alert("send data calling !!")
-
-        var status = "Pending"
-        
-        const newOrder = {
-            orderid : Draftid,
-            orderdate : draftDate,
-            suppliername,
-            title,
-            shipto,
-            status ,
-            total,
-            comment,
-        };
-
-
-        const newOrderItems = {
-            orderid : Draftid,
-            item01,
-            item02,
-            item03,
-            itemName01,
-            itemName02,
-            itemName03,
-            qty01,
-            qty02,
-            qty03,
-            amount1,
-            amount2,
-            amount3
-        }
-
-        const newPayment = {
-            orderid : Draftid,
-            total,
-            comment,
-            orderdate :draftDate,
-        }
-
-
-
-        if (total > 100000) {
-            Swal.fire({
-                title: "Order Amount Exceeds 100,000 Do you want to submit a purchase Requisition? ",
-                showConfirmButton: true,
-                showDenyButton: true,
-                confirmButtonText: "Yes",
-                denyButtonText: "Cancel",
-                confirmButtonColor: "#1fc191",
-
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-
-                    var requisitionid = orderid;
-                    var amount01 = amount1;
-                    var amount02 = amount2;
-                    var amount03 = amount3;
-                    status = "Waiting for Approval";
-
-                    alert(amount01 + amount02 + amount03)
-                    const newRequisition = {
-                        requisitionid : Draftid, orderdate : draftDate, suppliername, title, shipto, status, total, comment, item01, item02, item03, itemName01, itemName02, itemName03,
-                        qty01, qty02, qty03, amount01, amount02, amount03
-                    }
-
-                    addRequisition(newRequisition).then((response) => {
-                        const message = response.ok
-                            ? "Purchase Requisition was successful placed!"
-                            : response.err;
-
-                        if (response.ok) {
-                            Swal.fire({
-                                title: "Success! ",
-                                text: `${message}`,
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 1500
-
-                            })
-
-                            history.push("/prList")
-                        }
-                        else {
-                            Swal.fire({
-                                title: "Oops! ",
-                                text: `${response.err}`,
-                                icon: 'error',
-                                showConfirmButton: false,
-                                timer: 1500
-
-                            })
-                        }
-                    })
-
-
-                }
-
-            })
-
-        } else {
-
-            addOrder(newOrder).then((response) => {
-                const message = response.ok
-                    ? "Purchase Order insertion successful!"
-                    : response.err;
-
-                if (response.ok) {
-
-                    addOrderItems(newOrderItems).then(() => {
-                        const message = response.ok
-                            ? "Purchase Order Items insertion successful!"
-                            : response.err;
-
-                        if (response.ok) {
-
-                            createPayment(newPayment).then(() => {
-                                const message = response.ok
-                                    ? "Purchase Order was successfully Placed!"
-                                    : response.err;
-
-                                if (response.ok) {
-                                    Swal.fire({
-                                        title: 'Success!',
-                                        text: `${message}`,
-                                        icon: 'success',
-                                        confirmButtonColor: false,
-                                        timer: 30000
-                                    }
-                                    )
-                                } else {
-                                    Swal.fire({
-                                        title: 'Oops!',
-                                        text: `${response.err}`,
-                                        icon: 'error',
-                                        confirmButtonColor: false,
-                                        timer: 1500
-                                    })
-
-                                }
-
-                            })
-
-                        }
-                        else {
-                            Swal.fire({
-                                title: 'Oops!',
-                                text: `${response.err}`,
-                                icon: 'error',
-                                confirmButtonColor: false,
-                                timer: 1500
-                            }
-                            )
-                        }
-                    })
-
-                } else {
-                    Swal.fire({
-                        title: 'Oops!',
-                        text: `${response.err}`,
-                        icon: 'error',
-                        confirmButtonColor: false,
-                        timer: 1500
-                    }
-                    )
-                }
-            }
-            )
-        
-    }
-
-
-
-
-
-     }
-
+    //to save as draft
     const saveAsDraft = () => {
         const newDraft = {
-            Draftid,
-            draftDate,
+            draftid: orderid,
+            draftdate: orderdate,
             modifydate: new Date().toISOString().slice(0, 10),
             suppliername: suppliername,
             title: title,
@@ -549,24 +309,289 @@ function DraftViewModal(emp) {
             amount03: amount3
         }
 
-        updateDraft(orderid, newDraft).then(() => {
-            window.alert("successfully updated draft")
+        addNewDraft(newDraft).then((res) => {
+            window.alert("draft saved", res)
         })
+    }
+
+    function sendData(e) {
+        e.preventDefault();
+        //alert("function called")
+        var status = "Pending"
+
+        const OrderIDValid = OrderIDValidation();
+
+        if (OrderIDValid) {
+            const newOrder = {
+                orderid,
+                orderdate,
+                suppliername,
+                title,
+                shipto,
+                status,
+                total,
+                comment,
+            };
+
+
+            const newOrderItems = {
+                orderid,
+                item01,
+                item02,
+                item03,
+                itemName01,
+                itemName02,
+                itemName03,
+                qty01,
+                qty02,
+                qty03,
+                amount1,
+                amount2,
+                amount3
+            }
+
+            const newPayment = {
+                orderid,
+                total,
+                comment,
+                orderdate
+            }
+
+            if (total > 100000) {
+                Swal.fire({
+                    title: "Order Amount Exceeds 100,000 Do you want to submit a purchase Requisition? ",
+                    showConfirmButton: true,
+                    showDenyButton: true,
+                    confirmButtonText: "Yes",
+                    denyButtonText: "Cancel",
+                    confirmButtonColor: "#1fc191",
+
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        var requisitionid = orderid;
+                        var amount01 = amount1;
+                        var amount02 = amount2;
+                        var amount03 = amount3;
+                        status = "Waiting for Approval";
+
+                        alert(amount01 + amount02 + amount03)
+                        const newRequisition = {
+                            requisitionid, orderdate, suppliername, title, shipto, status, total, comment, item01, item02, item03, itemName01, itemName02, itemName03,
+                            qty01, qty02, qty03, amount01, amount02, amount03
+                        }
+
+                        addRequisition(newRequisition).then((response) => {
+                            const message = response.ok
+                                ? "Purchase Requisition was successful placed!"
+                                : response.err;
+
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: "Success! ",
+                                    text: `${message}`,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 1500
+
+                                })
+
+                                history.push("/prList")
+                            }
+                            else {
+                                Swal.fire({
+                                    title: "Oops! ",
+                                    text: `${response.err}`,
+                                    icon: 'error',
+                                    showConfirmButton: false,
+                                    timer: 1500
+
+                                })
+                            }
+                        })
+
+
+                    }
+
+                })
+
+            } else {
+
+                addOrder(newOrder).then((response) => {
+                    const message = response.ok
+                        ? "Purchase Order insertion successful!"
+                        : response.err;
+
+                    if (response.ok) {
+
+                        addOrderItems(newOrderItems).then(() => {
+                            const message = response.ok
+                                ? "Purchase Order Items insertion successful!"
+                                : response.err;
+
+                            if (response.ok) {
+
+                                createPayment(newPayment).then(() => {
+                                    const message = response.ok
+                                        ? "Purchase Order was successfully Placed!"
+                                        : response.err;
+
+                                    if (response.ok) {
+                                        Swal.fire({
+                                            title: 'Success!',
+                                            text: `${message}`,
+                                            icon: 'success',
+                                            confirmButtonColor: false,
+                                            timer: 30000
+                                        }
+                                        )
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Oops!',
+                                            text: `${response.err}`,
+                                            icon: 'error',
+                                            confirmButtonColor: false,
+                                            timer: 1500
+                                        })
+
+                                    }
+
+                                })
+
+                            }
+                            else {
+                                Swal.fire({
+                                    title: 'Oops!',
+                                    text: `${response.err}`,
+                                    icon: 'error',
+                                    confirmButtonColor: false,
+                                    timer: 1500
+                                }
+                                )
+                            }
+                        })
+
+                    } else {
+                        Swal.fire({
+                            title: 'Oops!',
+                            text: `${response.err}`,
+                            icon: 'error',
+                            confirmButtonColor: false,
+                            timer: 1500
+                        }
+                        )
+                    }
+                }
+                )
+            }
+        }
+    }
+
+    const yesterday = moment().subtract(1, 'day');
+    const disablePastDt = current => {
+        return current.isAfter(yesterday)
+    }
+
+
+
+    const [isOrderIDValid, setOrderIDIsValid] = useState(false);
+    const [Ordermessage, setOrderMessage] = useState('');
+
+    const OrderIdRegex = /^[O][I][0-9][0-9][0-9]$/;
+
+
+    const validateOrderID = (event) => {
+        const orderid = event.target.value;
+        if (OrderIdRegex.test(orderid)) {
+            setOrderIDIsValid(true);
+            setOrderMessage('Order ID Number looks good!');
+        }
+        else {
+            setOrderIDIsValid(false);
+            setOrderMessage('Please enter a valid Order ID Number !');
+        }
+    };
+
+
+    const OrderIDValidation = () => {//validate function
+
+        const OrderIDErr = {}; //State
+        let isValid = true; //setting flag
+
+
+        if (orderid.trim().length > 5) {
+
+            OrderIDErr.InValidOrderID = " *Invalid Order ID Number"; // error msg
+            // alert("**Invalid Vehicle Registration Number");
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...Invalid Order ID Number',
+                text: 'You enterd invalid Order ID Number , Try Again !!',
+                confirmButtonColor: '#1fc191',
+                // footer: '<a href=""#home">Why do I have this issue?</a>'
+            })
+            isValid = false;
+        } else if (orderid.trim().length < 5) {
+            OrderIDErr.InValidOrderID = " *Invalid Order ID Number"; // error msg
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...Invalid Order ID Number',
+                text: 'You enterd invalid Order ID Number , Try Again !!',
+                confirmButtonColor: '#1fc191',
+                // footer: '<a href=""#home">Why do I have this issue?</a>'
+            })
+            isValid = false;
+        }
+
+
+        setOrderIDErr(OrderIDErr);//update error objects
+        return isValid;
 
 
     }
 
 
+
+    const [istotAmtValid, setTotAmntValid] = useState(false);
+    const [Amtmessage, setAmtMessage] = useState('');
+
+
+
+
+    const validateTotalID = (event) => {
+        const total = event.target.value;
+        if (total < 100000) {
+            setTotAmntValid(true);
+            // setAmtMessage('This !');
+        }
+        else {
+            setTotAmntValid(false);
+            setAmtMessage('This will be conversion to the purchase requestion !');
+        }
+    };
+
+
+
+
+
     return (
-        <div>
+        <div className="page-component-body">
             <Modal.Header closeButton>
-                <Modal.Title> Update a Draft : {title}</Modal.Title>
+
+                <h5>Order Name : {}</h5>
+
             </Modal.Header>
             <Modal.Body className="px-4">
-
                 <div className="tab-content-emp" id="myTabContent">
                     <div className="container">
-
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                                <h3 className="text-left mt-4 mb-4">Draft Order</h3>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
@@ -574,20 +599,15 @@ function DraftViewModal(emp) {
                                     <div className="row mt-5">
 
                                         <div className="form-group col-md-3">
-                                            <label className="form-label-emp " for="gender">Supplier: </label>
+                                            <label className="form-label-emp " for="gender">Supplier:</label>
                                         </div>
 
                                         <div className="form-group col-md-9">
                                             <select
                                                 id="supplier"
                                                 className="form-control "
-                                                // value={suppliername}
                                                 //tabindex="3"
-                                                onChange={e => {
-                                                    setSuppliername(e.target.value); populate();;
-                                                    //  populate()
-                                                    ;
-                                                }}
+                                                onChange={e => { setSuppliername(e.target.value); populate(); }}
                                                 required
                                             >
                                                 <option  >choose</option>
@@ -611,14 +631,13 @@ function DraftViewModal(emp) {
                                             <div className="row">
 
                                                 <div className="form-group col-md-6">
-                                                    <label className="form-label-emp " for="orderId">Order Id: </label>
+                                                    <label className="form-label-emp " for="orderId">Order Id:</label>
                                                 </div>
 
                                                 <div className="form-group col-md-6">
                                                     <input
-                                                        value={Draftid}
                                                         required
-                                                        onChange={e => { setOrderId(e.target.value);  }}
+                                                        onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
                                                         id="orderId"
                                                         type="text"
                                                         className="form-control "
@@ -626,13 +645,13 @@ function DraftViewModal(emp) {
                                                     // pattern="OI[0-9]{3}"
                                                     />
 
-                                                    {/* <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
+                                                    <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
                                                         {Ordermessage}
                                                     </div>
 
                                                     {Object.keys(OrderIDErr).map((key) => {
                                                         // return<div style={{color :"red"}}>{RegNoErr[key]}</div>
-                                                    })} */}
+                                                    })}
 
                                                 </div>
                                             </div>
@@ -649,12 +668,13 @@ function DraftViewModal(emp) {
                                                 </div>
                                                 <div class="form-group col-md-6"  >
 
-                                                    <DatePicker required id="orderDate"
+                                                    <DatePicker
+                                                        required
+                                                        id="orderDate"
                                                         name="orderDate"
-                                                        onChange={(event) => { setDraftdate(event); }}
+                                                        onChange={(event) => { setOrderdate(event); }}
                                                         timeFormat={false}
-                                                        value={draftDate}
-                                                    // isValidDate={disablePastDt}
+                                                        isValidDate={disablePastDt}
                                                     />
                                                 </div>
                                             </div>
@@ -666,7 +686,7 @@ function DraftViewModal(emp) {
 
                                     <div className="row mb-3">
                                         <div className="form-group col-md-3 ">
-                                            <label className="form-label" for="fName">PO Title: </label>
+                                            <label className="form-label" for="fName">PO Title:</label>
                                         </div>
                                         <div className="form-group col-md-9 ">
                                             <input
@@ -676,17 +696,15 @@ function DraftViewModal(emp) {
                                                 type="text"
                                                 className="form-control "
                                                 placeholder="poTitle"
-                                                value={title}
                                             />
                                         </div>
                                     </div>
                                     <div className="row mb-3">
                                         <div className="form-group col-md-3 ">
-                                            <label className="form-label" for="shipTo">Ship to: </label>
+                                            <label className="form-label" for="shipTo">Ship to:</label>
                                         </div>
                                         <div className="form-group col-md-9 ">
                                             <input
-                                                value={shipto}
                                                 required
                                                 id="shipTo"
                                                 type="text"
@@ -705,13 +723,12 @@ function DraftViewModal(emp) {
                                         </div>
 
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="item1">Item 01: </label>
+                                            <label class="form-label-emp" for="item1">Item 01:</label>
                                             <select
                                                 id="item1"
                                                 className="form-control "
                                                 value={item01}
-                                                onChange={e => { setItem01(e.target.value); ItemDetails();}}
-                                                //ItemDetails() 
+                                                onChange={e => { setItem01(e.target.value); ItemDetails() }}
                                                 required
                                             >
 
@@ -719,7 +736,7 @@ function DraftViewModal(emp) {
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp ml-2" for="itemName1">Item Name: </label>
+                                            <label class="form-label-emp ml-2" for="itemName1">Item Name:</label>
                                             <div className="form-group">
                                                 <input
                                                     required
@@ -728,21 +745,20 @@ function DraftViewModal(emp) {
                                                     className="form-control "
                                                     placeholder="item name"
                                                     value={itemName01}
-                                                onChange={(e) => {
-                                                    setItemName01(e.target.value);
-                                                }}
+                                                    onChange={(e) => {
+                                                        setItemName01(e.target.value);
+                                                    }}
                                                 />
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity1">Quantity: </label>
+                                            <label class="form-label-emp" for="quantity1">Quantity:</label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
                                                 id="quantity1"
                                                 name="quantity1"
                                                 placeholder="Count"
-                                                value={qty01}
                                                 min="1"
                                                 //tabindex="5"
                                                 pattern="[0-9]"
@@ -751,7 +767,7 @@ function DraftViewModal(emp) {
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount1">Unit Price: </label>
+                                            <label class="form-label-emp" for="amount1">Unit Price :</label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -759,20 +775,16 @@ function DraftViewModal(emp) {
                                                 name="amount1"
                                                 placeholder="0.00"
                                                 value={amount1}
-                                            //tabindex="5"
-                                            //required
-                                            //disabled
-                                            onChange={(event) => { setAmount01(event.target.value); }}
+                                                //tabindex="5"
+                                                required
+                                                //disabled
+                                                onChange={(event) => { setAmount01(event.target.value); }}
 
                                             //pattern="[0-9]"
                                             />
                                         </div>
                                         <div className="form-group col-md-1 " id="btnAdd1" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary" 
-                                                onClick={addNewItem}
-                                            >
-
-                                                
+                                            <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem}>
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -782,22 +794,22 @@ function DraftViewModal(emp) {
 
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="item2">Item 02: </label>
+                                            <label class="form-label-emp" for="item2">Item 02:</label>
                                             <select
                                                 id="item2"
                                                 className="form-control "
                                                 value={item02}
-                                            onChange={e => { setItem02(e.target.value);  ItemDetails();}}
-                                            //required
+                                                onChange={e => { setItem02(e.target.value); ItemDetails() }}
+                                            // required
                                             >
 
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp" for="itemName2">Item Name: </label>
+                                            <label class="form-label-emp" for="itemName2">Item Name:</label>
                                             <div className="form-group ">
                                                 <input
-                                                    //required
+                                                    // required
                                                     // value={shipToAddress}
                                                     id="itemName2"
                                                     type="text"
@@ -809,7 +821,7 @@ function DraftViewModal(emp) {
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity2">Quantity: </label>
+                                            <label class="form-label-emp" for="quantity2">Quantity:</label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
@@ -819,14 +831,13 @@ function DraftViewModal(emp) {
                                                 min="1"
                                                 //tabindex="5"
                                                 pattern="[0-9]"
-                                                value={qty02}
-                                                //required
+                                                // required
                                                 onChange={e => { setQty02(e.target.value); }}
 
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount2">Unit Price: </label>
+                                            <label class="form-label-emp" for="amount2">Unit Price :</label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -834,7 +845,7 @@ function DraftViewModal(emp) {
                                                 name="amount2"
                                                 placeholder="0.00"
                                                 //tabindex="5"
-                                                //required
+                                                // required
                                                 //disabled
                                                 onChange={(event) => { setAmount02(event.target.value); }}
                                                 value={amount2}
@@ -843,9 +854,7 @@ function DraftViewModal(emp) {
                                             />
                                         </div>
                                         <div className="form-group col" id="btnAdd2" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button class="btn btn-sm btn-primary"
-                                             onClick={addNewItem2}
-                                            >
+                                            <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem2}>
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -855,22 +864,21 @@ function DraftViewModal(emp) {
 
                                         </div>
                                         <div class="form-group col-md-2 ">
-                                            <label class="form-label-emp" for="item3">Item 03: </label>
+                                            <label class="form-label-emp" for="item3">Item 03:</label>
                                             <select
                                                 id="item3"
                                                 className="form-control "
                                                 value={item03}
-                                            onChange={e => {
-                                                 setItem03(e.target.value);  ItemDetails();}}
-                                            //required
+                                                onChange={e => { setItem03(e.target.value); ItemDetails() }}
+                                            // required
                                             >
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label class="form-label-emp" for="itemName3">Item Name: </label>
+                                            <label class="form-label-emp" for="itemName3">Item Name:</label>
                                             <div className="form-group  ">
                                                 <input
-                                                    //required
+                                                    // required
                                                     // value={shipToAddress}
                                                     id="itemName3"
                                                     type="text"
@@ -882,7 +890,7 @@ function DraftViewModal(emp) {
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity3">Quantity: </label>
+                                            <label class="form-label-emp" for="quantity3">Quantity:</label>
                                             <input
                                                 type="number"
                                                 class="form-control formInput"
@@ -892,13 +900,12 @@ function DraftViewModal(emp) {
                                                 min="1"
                                                 //tabindex="5"
                                                 pattern="[0-9]"
-                                                //required
-                                                value={qty03}
+                                                // required
                                                 onChange={e => { setQty03(e.target.value); }}
                                             />
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount3">Unit Price: </label>
+                                            <label class="form-label-emp" for="amount3">Unit Price :</label>
                                             <input
                                                 type="text"
                                                 class="form-control formInput"
@@ -906,10 +913,10 @@ function DraftViewModal(emp) {
                                                 name="amount3"
                                                 placeholder="0.00"
                                                 value={amount3}
-                                            //tabindex="5"
-                                            //required
-                                            //disabled
-                                            onChange={(event) => { setAmount03(event.target.value); }}
+                                                //tabindex="5"
+                                                // required
+                                                //disabled
+                                                onChange={(event) => { setAmount03(event.target.value); }}
                                             // onDoubleClick={calculateThreeItemsAmount}
                                             //pattern="[0-9]"
                                             />
@@ -925,24 +932,22 @@ function DraftViewModal(emp) {
                                         <div className=" col-8">
                                             <div className="row">
                                                 <div className="form-group col-md-4">
-                                                    <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount: </label>
+                                                    <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount :</label>
                                                 </div>
 
                                                 <div className="form-group col-md-7">
                                                     <input
                                                         required
-                                                        onClick={e => { 
-                                                            setTotal(e.target.value); }}
+                                                        onClick={e => { setTotal(e.target.value); validateTotalID(e); }}
                                                         id="totalAmount"
                                                         type="text"
                                                         className="form-control "
                                                         placeholder="totalAmount"
-                                                        value={total}
                                                         style={{ color: "black" }}
                                                     />
-                                                    {/* <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
+                                                    <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
                                                         {Amtmessage}
-                                                    </div> */}
+                                                    </div>
 
                                                 </div>
                                                 {/* <div className="form-group col-md-4">
@@ -951,7 +956,7 @@ function DraftViewModal(emp) {
 
                                         <div className="form-group col-md-8">
                                             <input
-                                                required
+                                                // required
                                                 onClick={e => { setTotal(e.target.value); }}
                                                 id="totalAmount"
                                                 type="text"
@@ -967,16 +972,15 @@ function DraftViewModal(emp) {
 
                                     <div className="row">
                                         <div className="form-group col-md-3">
-                                            <label className="form-label" for="CurrAdd">Comment: </label>
+                                            <label className="form-label" for="CurrAdd">Comment:</label>
                                         </div>
                                         <div className="form-group col-md-9">
                                             <input
-                                                required
+                                                // required
                                                 id="comment"
                                                 type="textarea"
                                                 className="form-control "
                                                 placeholder="comment"
-                                                value={comment}
                                                 onChange={e => { setComment(e.target.value); }}
 
                                             />
@@ -988,16 +992,18 @@ function DraftViewModal(emp) {
                                                 Submit
                                             </button>
                                         </div>
+
                                         <div className="col py-3 text-center">
-                                            <button type="reset" className="btn btn-reset">
-                                                Cancel
+                                            <button type="reset" className="btn btn-delete">
+                                                Reset
                                             </button>
                                         </div>
                                     </div>
                                 </form>
 
+
                                 <div className="col py-3 text-center">
-                                    <button className="btn btn-reset"
+                                    <button type="button" className="btn btn-reset"
                                         onClick={() => { saveAsDraft() }
 
                                         }
@@ -1009,14 +1015,11 @@ function DraftViewModal(emp) {
                         </div >
                     </div >
                 </div >
+                </Modal.Body>
+            </div >
+            
 
-
-
-
-
-            </Modal.Body >
-
-        </div >
+        
     )
 }
 

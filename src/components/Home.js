@@ -9,6 +9,7 @@ import PlaceAnOrder from "./views/purchaseOrder/placeAnOrder";
 import ItemList from "./views/items/itemsList";
 import addRequisition from "./views/requisitions/addRequisition";
 import requisitionList from "./views/requisitions/requisitionDraftList";
+import AddItem from "./views/items/addItems";
 
 
 
@@ -26,6 +27,8 @@ function Home() {
                 <Route path="/placeAnOrder" exact component={PlaceAnOrder} />
                 <Route path="/itemsList" exact component={ItemList} />
                 <Route path="/sendRequisition" exact component={addRequisition} />
+                <Route path="/addItems" exact component={AddItem}
+                />
             </Switch >
         </Router >
     );

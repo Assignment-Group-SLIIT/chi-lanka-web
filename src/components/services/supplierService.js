@@ -2,6 +2,21 @@ import axios from "axios";
 
 const HOST = "http://localhost:4000";
 
+export const addSupplierItem = async (supplierPayload) => {
+    try {
+        const response = await axios.post(`${HOST}/supplier/addSupplier`, supplierPayload);
+        console.log("dataaaaaaaa", response)
+        return {
+            ok: true
+        }
+    } catch (error) {
+        return {
+            ok: false, err: error.response.data.error
+        }
+
+    }
+}
+
 //for retrieving items for supplier1
 export const getItemsFromSupplier = async (suppliername) => {
     console.log("data",);
@@ -49,4 +64,19 @@ export const getSupplier = async (suppliername) => {
             ok: false,
         };
     }
+};
+
+export const deleteSupplierItemPermenantly = async (itemId) => {
+    console.log("dataa", itemId);
+    await axios.delete(`${HOST}/supplier/removeSupplier/${itemId}`);
+    try {
+        return {
+            ok: true,
+        }
+    } catch (error) {
+        return {
+            ok: false, err: error.response.data.status
+        }
+    }
+
 };
