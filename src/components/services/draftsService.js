@@ -50,3 +50,19 @@ export const updateDraft = async (draftID, payload) => {
     }
 
 }
+
+export const getDraftDetail = async (draftID) => {
+    console.log("data",);
+    try {
+        const response = await axios.get(`${HOST}/draft/getDraftByID/${draftID}`);
+        console.log(response, "res");
+        return {
+            ok: true,
+            data: response.data,
+        };
+    } catch (error) {
+        return {
+            ok: false, err: error.response.data.status
+        };
+    }
+};
