@@ -17,9 +17,11 @@ import { createPayment } from "../../services/paymentService";
 
 
 import Header from '../../Header'
-import { addNewDraft } from "../../services/draftsService";
+import { addNewDraft, updateDraft } from "../../services/draftsService";
 
-function DraftViewModal() {
+function DraftViewModal(data) {
+
+    console.log("data for view modal", data)
 
     let history = useHistory();
 
@@ -54,6 +56,40 @@ function DraftViewModal() {
     const [OrderIDErr, setOrderIDErr] = useState("");
 
     useEffect(() => {
+
+        setOrderId(data.data.draftid)
+        setOrderdate(data.data.draftdate)
+        setSuppliername(data.data.suppliername)
+        setTitle(data.data.title)
+        setShipTo(data.data.shipto)
+        // setTotal(data.data.total)
+        setComment(data.data.comment)
+        // setItem01(data.data.item01)
+        // setItem02(data.data.item02)
+        // setItem03(data.data.item03)
+        // setItemName01(data.data.itemName01)
+        // setItemName02(data.data.itemName02)
+        // setItemName03(data.data.itemName03)
+        setQty01(data.data.qty01)
+        setQty02(data.data.qty02)
+        setQty03(data.data.qty03)
+        // setAmount01(data.data.amount1)
+        // setAmount02(data.data.amount2)
+        // setAmount03(data.data.amount3)
+
+
+        ItemDetails()
+
+
+
+
+
+
+    }, [data.data, total]);
+
+    useEffect(() => {
+
+        console.log("totalllllll", total);
         calculateItem1Amount()
         calculateTwoItemsAmount()
         calculateThreeItemsAmount()
@@ -104,9 +140,10 @@ function DraftViewModal() {
         }).catch((error) => {
             alert(error.message);
         })
-
-
-    }, [amount1, amount2, amount3, qty01, qty02, qty03]);
+        console.log("item one", calculateItem1Amount());
+        console.log("item two", calculateTwoItemsAmount());
+        console.log("item three", calculateThreeItemsAmount());
+    }, [suppliername, amount1, amount2, amount3, qty01, qty02, qty03])
 
 
     function ItemDetails() {
@@ -124,7 +161,7 @@ function DraftViewModal() {
                 setAmount01(res.data.item.price);
             }
         }).catch((error) => {
-            alert(error.message);
+            // alert(error.message);
 
         })
 
@@ -135,7 +172,7 @@ function DraftViewModal() {
                 setAmount02(res.data.item.price);
             }
         }).catch((error) => {
-            alert(error.message);
+            // alert(error.message);
 
         })
 
@@ -146,7 +183,7 @@ function DraftViewModal() {
                 setAmount03(res.data.item.price);
             }
         }).catch((error) => {
-            alert(error.message);
+            // alert(error.message);
 
         })
 
@@ -281,7 +318,12 @@ function DraftViewModal() {
     function calculateThreeItemsAmount() {
         var thirdAmount = (amount3 * qty03) + calculateTwoItemsAmount();
         document.getElementById("totalAmount").value = thirdAmount;
+        return thirdAmount;
     }
+
+    // function setNewTotal() {
+    //     setTotal(calculateThreeItemsAmount());
+    // }
 
     //to save as draft
     const saveAsDraft = () => {
@@ -309,7 +351,7 @@ function DraftViewModal() {
             amount03: amount3
         }
 
-        addNewDraft(newDraft).then((res) => {
+        updateDraft(orderid, newDraft).then((res) => {
             window.alert("draft saved", res)
         })
     }
@@ -581,376 +623,384 @@ function DraftViewModal() {
         <div className="page-component-body">
             <Modal.Header closeButton>
 
-                <h5>Order Name : {}</h5>
+                <h5>Order Name : {title}</h5>
 
             </Modal.Header>
             <Modal.Body className="px-4">
                 <div className="tab-content-emp" id="myTabContent">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <h3 className="text-left mt-4 mb-4">Draft Order</h3>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
+                    <div className="row">
+                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <form id="addEmp-form" action="post" className="form" onSubmit={sendData}>
 
-                                    <div className="row mt-5">
+                                <div className="row mt-5">
 
-                                        <div className="form-group col-md-3">
-                                            <label className="form-label-emp " for="gender">Supplier:</label>
-                                        </div>
-
-                                        <div className="form-group col-md-9">
-                                            <select
-                                                id="supplier"
-                                                className="form-control "
-                                                //tabindex="3"
-                                                onChange={e => { setSuppliername(e.target.value); populate(); }}
-                                                required
-                                            >
-                                                <option  >choose</option>
-                                                <option id="KDH" value="KDH" >KDH Constructions</option>
-                                                <option id="PERERA" value="PERERA">PERERA Constructions</option>
-                                                <option id="Manual Handlers" value="Manual Handlers" >Manual Handlers</option>
-                                                <option id="Builders Barn" value="Builders Barn">Builders Barn Constructions</option>
-                                                <option id="Pinnacle" value="Pinnacle" >Pinnacle Constructions</option>
-                                            </select>
-
-                                        </div>
+                                    <div className="form-group col-md-3">
+                                        <label className="form-label-emp " for="gender">Supplier:</label>
                                     </div>
 
-                                    <hr></hr>
+                                    <div className="form-group col-md-9">
+                                        <select
+                                            value={suppliername}
+                                            id="supplier"
+                                            className="form-control "
+                                            //tabindex="3"
+                                            onChange={e => { setSuppliername(e.target.value); }}
+                                            onClick={() => { populate(); }}
+                                            required
+                                        >
+                                            <option  >choose</option>
+                                            <option id="KDH" value="KDH" >KDH Constructions</option>
+                                            <option id="PERERA" value="PERERA">PERERA Constructions</option>
+                                            <option id="Manual Handlers" value="Manual Handlers" >Manual Handlers</option>
+                                            <option id="Builders Barn" value="Builders Barn">Builders Barn Constructions</option>
+                                            <option id="Pinnacle" value="Pinnacle" >Pinnacle Constructions</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <hr></hr>
 
 
 
-                                    <div className="row mt-3 mb-3">
-                                        <div className="col-md-6 float-right">
+                                <div className="row mt-3 mb-3">
+                                    <div className="col-md-6 float-right">
 
-                                            <div className="row">
+                                        <div className="row">
 
-                                                <div className="form-group col-md-6">
-                                                    <label className="form-label-emp " for="orderId">Order Id:</label>
-                                                </div>
-
-                                                <div className="form-group col-md-6">
-                                                    <input
-                                                        required
-                                                        onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
-                                                        id="orderId"
-                                                        type="text"
-                                                        className="form-control "
-                                                        placeholder="orderId"
-                                                    // pattern="OI[0-9]{3}"
-                                                    />
-
-                                                    <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
-                                                        {Ordermessage}
-                                                    </div>
-
-                                                    {Object.keys(OrderIDErr).map((key) => {
-                                                        // return<div style={{color :"red"}}>{RegNoErr[key]}</div>
-                                                    })}
-
-                                                </div>
+                                            <div className="form-group col-md-6">
+                                                <label className="form-label-emp " for="orderId">Order Id:</label>
                                             </div>
 
+                                            <div className="form-group col-md-6">
+                                                <input
+                                                    value={orderid}
+                                                    required
+                                                    onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
+                                                    id="orderId"
+                                                    type="text"
+                                                    className="form-control "
+                                                    placeholder="orderId"
+                                                // pattern="OI[0-9]{3}"
+                                                />
 
-                                        </div>
-
-                                        <div className="col-md-6 float-right">
-
-                                            <div className="row">
-                                                <div class="form-group col-md-6"  >
-                                                    <label for="rfrom" class="form-label-emp float-right mr-5">Order Date</label>
-
+                                                <div className={`message ${isOrderIDValid ? 'success' : 'error'}`}>
+                                                    {Ordermessage}
                                                 </div>
-                                                <div class="form-group col-md-6"  >
 
-                                                    <DatePicker
-                                                        required
-                                                        id="orderDate"
-                                                        name="orderDate"
-                                                        onChange={(event) => { setOrderdate(event); }}
-                                                        timeFormat={false}
-                                                        isValidDate={disablePastDt}
-                                                    />
-                                                </div>
+                                                {Object.keys(OrderIDErr).map((key) => {
+                                                    // return<div style={{color :"red"}}>{RegNoErr[key]}</div>
+                                                })}
+
                                             </div>
+                                        </div>
 
+
+                                    </div>
+
+                                    <div className="col-md-6 float-right">
+
+                                        <div className="row">
+                                            <div class="form-group col-md-6"  >
+                                                <label for="rfrom" class="form-label-emp float-right mr-5">Order Date</label>
+
+                                            </div>
+                                            <div class="form-group col-md-6"  >
+
+                                                <DatePicker
+                                                    value={orderdate}
+                                                    required
+                                                    id="orderDate"
+                                                    name="orderDate"
+                                                    onChange={(event) => { setOrderdate(event); }}
+                                                    timeFormat={false}
+                                                    isValidDate={disablePastDt}
+                                                />
+                                            </div>
                                         </div>
 
                                     </div>
 
+                                </div>
 
-                                    <div className="row mb-3">
-                                        <div className="form-group col-md-3 ">
-                                            <label className="form-label" for="fName">PO Title:</label>
-                                        </div>
-                                        <div className="form-group col-md-9 ">
-                                            <input
-                                                required
-                                                onChange={e => { setTitle(e.target.value); }}
-                                                id="poTitle"
-                                                type="text"
-                                                className="form-control "
-                                                placeholder="poTitle"
-                                            />
-                                        </div>
+
+                                <div className="row mb-3">
+                                    <div className="form-group col-md-3 ">
+                                        <label className="form-label" for="fName">PO Title:</label>
                                     </div>
-                                    <div className="row mb-3">
-                                        <div className="form-group col-md-3 ">
-                                            <label className="form-label" for="shipTo">Ship to:</label>
-                                        </div>
-                                        <div className="form-group col-md-9 ">
+                                    <div className="form-group col-md-9 ">
+                                        <input
+                                            value={title}
+                                            required
+                                            onChange={e => { setTitle(e.target.value); }}
+                                            id="poTitle"
+                                            type="text"
+                                            className="form-control "
+                                            placeholder="poTitle"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="form-group col-md-3 ">
+                                        <label className="form-label" for="shipTo">Ship to:</label>
+                                    </div>
+                                    <div className="form-group col-md-9 ">
+                                        <input
+                                            value={shipto}
+                                            required
+                                            id="shipTo"
+                                            type="text"
+                                            className="form-control "
+                                            placeholder="ship to"
+                                            onChange={(e) => {
+                                                setShipTo(e.target.value);
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="row border pt-3" id="hide1">
+                                    <div className="col-md-1">
+
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        <label class="form-label-emp" for="item1">Item 01:</label>
+                                        <select
+                                            id="item1"
+                                            className="form-control "
+                                            value={item01}
+                                            onChange={e => { setItem01(e.target.value); ItemDetails() }}
+                                            required
+                                        >
+
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="form-label-emp ml-2" for="itemName1">Item Name:</label>
+                                        <div className="form-group">
                                             <input
                                                 required
-                                                id="shipTo"
+                                                id="itemName1"
                                                 type="text"
                                                 className="form-control "
-                                                placeholder="ship to"
+                                                placeholder="item name"
+                                                value={itemName01}
                                                 onChange={(e) => {
-                                                    setShipTo(e.target.value);
+                                                    setItemName01(e.target.value);
                                                 }}
                                             />
                                         </div>
                                     </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="form-label-emp" for="quantity1">Quantity:</label>
+                                        <input
+                                            value={qty01}
+                                            type="number"
+                                            class="form-control formInput"
+                                            id="quantity1"
+                                            name="quantity1"
+                                            placeholder="Count"
+                                            min="1"
+                                            //tabindex="5"
+                                            pattern="[0-9]"
+                                            required
+                                            onChange={(event) => { setQty01(event.target.value); }}
+                                        />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="form-label-emp" for="amount1">Unit Price :</label>
+                                        <input
+                                            type="text"
+                                            class="form-control formInput"
+                                            id="amount1"
+                                            name="amount1"
+                                            placeholder="0.00"
+                                            value={amount1}
+                                            //tabindex="5"
+                                            required
+                                            //disabled
+                                            onChange={(event) => { setAmount01(event.target.value); }}
 
-                                    <div class="row border pt-3" id="hide1">
-                                        <div className="col-md-1">
+                                        //pattern="[0-9]"
+                                        />
+                                    </div>
+                                    <div className="form-group col-md-1 " id="btnAdd1" style={{ display: "block", margin: "15px 0 0 0" }}>
+                                        <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem}>
+                                            <i className="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row border pt-3" id="hide2" style={{ display: "none" }}>
+                                    <div className="col-md-1">
 
-                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="form-label-emp" for="item2">Item 02:</label>
+                                        <select
+                                            id="item2"
+                                            className="form-control "
+                                            value={item02}
+                                            onChange={e => { setItem02(e.target.value); ItemDetails() }}
+                                        // required
+                                        >
 
-                                        <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="item1">Item 01:</label>
-                                            <select
-                                                id="item1"
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="form-label-emp" for="itemName2">Item Name:</label>
+                                        <div className="form-group ">
+                                            <input
+                                                // required
+                                                // value={shipToAddress}
+                                                id="itemName2"
+                                                type="text"
                                                 className="form-control "
-                                                value={item01}
-                                                onChange={e => { setItem01(e.target.value); ItemDetails() }}
-                                                required
-                                            >
-
-
-                                            </select>
+                                                placeholder="item name"
+                                                onChange={e => { setItemName02(e.target.value); }}
+                                                value={itemName02}
+                                            />
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label class="form-label-emp ml-2" for="itemName1">Item Name:</label>
-                                            <div className="form-group">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="form-label-emp" for="quantity2">Quantity:</label>
+                                        <input
+                                            value={qty02}
+                                            type="number"
+                                            class="form-control formInput"
+                                            id="quantity2"
+                                            name="quantity2"
+                                            placeholder="Count"
+                                            min="1"
+                                            //tabindex="5"
+                                            pattern="[0-9]"
+                                            // required
+                                            onChange={e => { setQty02(e.target.value); }}
+
+                                        />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="form-label-emp" for="amount2">Unit Price :</label>
+                                        <input
+                                            type="text"
+                                            class="form-control formInput"
+                                            id="amount2"
+                                            name="amount2"
+                                            placeholder="0.00"
+                                            //tabindex="5"
+                                            // required
+                                            //disabled
+                                            onChange={(event) => { setAmount02(event.target.value); }}
+                                            value={amount2}
+                                        // onDoubleClick={calculateTwoItemsAmount}
+
+                                        />
+                                    </div>
+                                    <div className="form-group col" id="btnAdd2" style={{ display: "block", margin: "15px 0 0 0" }}>
+                                        <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem2}>
+                                            <i className="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row border pt-3" id="hide3" style={{ display: "none" }}>
+                                    <div className="col-md-1">
+
+                                    </div>
+                                    <div class="form-group col-md-2 ">
+                                        <label class="form-label-emp" for="item3">Item 03:</label>
+                                        <select
+                                            id="item3"
+                                            className="form-control "
+                                            value={item03}
+                                            onChange={e => { setItem03(e.target.value); ItemDetails() }}
+                                        // required
+                                        >
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="form-label-emp" for="itemName3">Item Name:</label>
+                                        <div className="form-group  ">
+                                            <input
+                                                // required
+                                                // value={shipToAddress}
+                                                id="itemName3"
+                                                type="text"
+                                                className="form-control "
+                                                placeholder="item name"
+                                                onChange={e => { setItemName03(e.target.value); }}
+                                                value={itemName03}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="form-label-emp" for="quantity3">Quantity:</label>
+                                        <input
+                                            value={qty03}
+                                            type="number"
+                                            class="form-control formInput"
+                                            id="quantity3"
+                                            name="quantity3"
+                                            placeholder="Count"
+                                            min="1"
+                                            //tabindex="5"
+                                            pattern="[0-9]"
+                                            // required
+                                            onChange={e => { setQty03(e.target.value); }}
+                                        />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="form-label-emp" for="amount3">Unit Price :</label>
+                                        <input
+                                            type="text"
+                                            class="form-control formInput"
+                                            id="amount3"
+                                            name="amount3"
+                                            placeholder="0.00"
+                                            value={amount3}
+                                            //tabindex="5"
+                                            // required
+                                            //disabled
+                                            onChange={(event) => { setAmount03(event.target.value); }}
+                                        // onDoubleClick={calculateThreeItemsAmount}
+                                        //pattern="[0-9]"
+                                        />
+                                    </div>
+                                </div>
+
+
+                                <div className="row mt-3 mb-3">
+
+                                    <div className=" col-3">
+
+                                    </div>
+                                    <div className=" col-8">
+                                        <div className="row">
+                                            <div className="form-group col-md-4">
+                                                <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount :</label>
+                                            </div>
+
+                                            <div className="form-group col-md-7">
                                                 <input
+                                                    value={total}
                                                     required
-                                                    id="itemName1"
+
+                                                    onClick={() => { setTotal(calculateThreeItemsAmount()) }}
+
+                                                    // onChange={(e) => { setTotal(e.target.value) }}
+                                                    // onClick={e => { setTotal(e.target.value); validateTotalID(e); }}
+                                                    id="totalAmount"
                                                     type="text"
                                                     className="form-control "
-                                                    placeholder="item name"
-                                                    value={itemName01}
-                                                    onChange={(e) => {
-                                                        setItemName01(e.target.value);
-                                                    }}
+                                                    placeholder="totalAmount"
+                                                    style={{ color: "black" }}
                                                 />
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity1">Quantity:</label>
-                                            <input
-                                                type="number"
-                                                class="form-control formInput"
-                                                id="quantity1"
-                                                name="quantity1"
-                                                placeholder="Count"
-                                                min="1"
-                                                //tabindex="5"
-                                                pattern="[0-9]"
-                                                required
-                                                onChange={(event) => { setQty01(event.target.value); }}
-                                            />
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount1">Unit Price :</label>
-                                            <input
-                                                type="text"
-                                                class="form-control formInput"
-                                                id="amount1"
-                                                name="amount1"
-                                                placeholder="0.00"
-                                                value={amount1}
-                                                //tabindex="5"
-                                                required
-                                                //disabled
-                                                onChange={(event) => { setAmount01(event.target.value); }}
-
-                                            //pattern="[0-9]"
-                                            />
-                                        </div>
-                                        <div className="form-group col-md-1 " id="btnAdd1" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem}>
-                                                <i className="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row border pt-3" id="hide2" style={{ display: "none" }}>
-                                        <div className="col-md-1">
-
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="item2">Item 02:</label>
-                                            <select
-                                                id="item2"
-                                                className="form-control "
-                                                value={item02}
-                                                onChange={e => { setItem02(e.target.value); ItemDetails() }}
-                                            // required
-                                            >
-
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label class="form-label-emp" for="itemName2">Item Name:</label>
-                                            <div className="form-group ">
-                                                <input
-                                                    // required
-                                                    // value={shipToAddress}
-                                                    id="itemName2"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="item name"
-                                                    onChange={e => { setItemName02(e.target.value); }}
-                                                    value={itemName02}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity2">Quantity:</label>
-                                            <input
-                                                type="number"
-                                                class="form-control formInput"
-                                                id="quantity2"
-                                                name="quantity2"
-                                                placeholder="Count"
-                                                min="1"
-                                                //tabindex="5"
-                                                pattern="[0-9]"
-                                                // required
-                                                onChange={e => { setQty02(e.target.value); }}
-
-                                            />
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount2">Unit Price :</label>
-                                            <input
-                                                type="text"
-                                                class="form-control formInput"
-                                                id="amount2"
-                                                name="amount2"
-                                                placeholder="0.00"
-                                                //tabindex="5"
-                                                // required
-                                                //disabled
-                                                onChange={(event) => { setAmount02(event.target.value); }}
-                                                value={amount2}
-                                            // onDoubleClick={calculateTwoItemsAmount}
-
-                                            />
-                                        </div>
-                                        <div className="form-group col" id="btnAdd2" style={{ display: "block", margin: "15px 0 0 0" }}>
-                                            <button type="button" class="btn btn-sm btn-primary" onClick={addNewItem2}>
-                                                <i className="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row border pt-3" id="hide3" style={{ display: "none" }}>
-                                        <div className="col-md-1">
-
-                                        </div>
-                                        <div class="form-group col-md-2 ">
-                                            <label class="form-label-emp" for="item3">Item 03:</label>
-                                            <select
-                                                id="item3"
-                                                className="form-control "
-                                                value={item03}
-                                                onChange={e => { setItem03(e.target.value); ItemDetails() }}
-                                            // required
-                                            >
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label class="form-label-emp" for="itemName3">Item Name:</label>
-                                            <div className="form-group  ">
-                                                <input
-                                                    // required
-                                                    // value={shipToAddress}
-                                                    id="itemName3"
-                                                    type="text"
-                                                    className="form-control "
-                                                    placeholder="item name"
-                                                    onChange={e => { setItemName03(e.target.value); }}
-                                                    value={itemName03}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="quantity3">Quantity:</label>
-                                            <input
-                                                type="number"
-                                                class="form-control formInput"
-                                                id="quantity3"
-                                                name="quantity3"
-                                                placeholder="Count"
-                                                min="1"
-                                                //tabindex="5"
-                                                pattern="[0-9]"
-                                                // required
-                                                onChange={e => { setQty03(e.target.value); }}
-                                            />
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label class="form-label-emp" for="amount3">Unit Price :</label>
-                                            <input
-                                                type="text"
-                                                class="form-control formInput"
-                                                id="amount3"
-                                                name="amount3"
-                                                placeholder="0.00"
-                                                value={amount3}
-                                                //tabindex="5"
-                                                // required
-                                                //disabled
-                                                onChange={(event) => { setAmount03(event.target.value); }}
-                                            // onDoubleClick={calculateThreeItemsAmount}
-                                            //pattern="[0-9]"
-                                            />
-                                        </div>
-                                    </div>
-
-
-                                    <div className="row mt-3 mb-3">
-
-                                        <div className=" col-3">
-
-                                        </div>
-                                        <div className=" col-8">
-                                            <div className="row">
-                                                <div className="form-group col-md-4">
-                                                    <label className="form-label-emp mt-2 ml-4 " for="totalAmount">Total Amount :</label>
+                                                <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
+                                                    {Amtmessage}
                                                 </div>
 
-                                                <div className="form-group col-md-7">
-                                                    <input
-                                                        required
-                                                        onClick={e => { setTotal(e.target.value); validateTotalID(e); }}
-                                                        id="totalAmount"
-                                                        type="text"
-                                                        className="form-control "
-                                                        placeholder="totalAmount"
-                                                        style={{ color: "black" }}
-                                                    />
-                                                    <div className={`message ${istotAmtValid ? 'success' : 'error'}`}>
-                                                        {Amtmessage}
-                                                    </div>
-
-                                                </div>
-                                                {/* <div className="form-group col-md-4">
+                                            </div>
+                                            {/* <div className="form-group col-md-4">
                                             <label className="form-label-emp " for="totalAmount">Total Amount :</label>
                                         </div>
 
@@ -964,62 +1014,61 @@ function DraftViewModal() {
                                                 placeholder="totalAmount"
                                             /> */}
 
-                                            </div>
                                         </div>
                                     </div>
-
-
-
-                                    <div className="row">
-                                        <div className="form-group col-md-3">
-                                            <label className="form-label" for="CurrAdd">Comment:</label>
-                                        </div>
-                                        <div className="form-group col-md-9">
-                                            <input
-                                                // required
-                                                id="comment"
-                                                type="textarea"
-                                                className="form-control "
-                                                placeholder="comment"
-                                                onChange={e => { setComment(e.target.value); }}
-
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row mb-4 mt-3">
-                                        <div className="col py-3 text-center">
-                                            <button type="submit" className="btn btn-ok"  >
-                                                Submit
-                                            </button>
-                                        </div>
-
-                                        <div className="col py-3 text-center">
-                                            <button type="reset" className="btn btn-delete">
-                                                Reset
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-
-
-                                <div className="col py-3 text-center">
-                                    <button type="button" className="btn btn-reset"
-                                        onClick={() => { saveAsDraft() }
-
-                                        }
-                                    >
-                                        Save as Draft
-                                    </button>
                                 </div>
-                            </div >
+
+
+
+                                <div className="row">
+                                    <div className="form-group col-md-3">
+                                        <label className="form-label" for="CurrAdd">Comment:</label>
+                                    </div>
+                                    <div className="form-group col-md-9">
+                                        <input
+                                            // required
+                                            id="comment"
+                                            type="textarea"
+                                            className="form-control "
+                                            placeholder="comment"
+                                            onChange={e => { setComment(e.target.value); }}
+
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row mb-4 mt-3">
+                                    <div className="col py-3 text-center">
+                                        <button type="submit" className="btn btn-ok"  >
+                                            Submit
+                                        </button>
+                                    </div>
+
+                                    <div className="col py-3 text-center">
+                                        <button type="reset" className="btn btn-delete">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                            <div className="col py-3 text-center">
+                                <button type="button" className="btn btn-reset"
+                                    onClick={() => { saveAsDraft() }
+
+                                    }
+                                >
+                                    Save as Draft
+                                </button>
+                            </div>
                         </div >
                     </div >
                 </div >
-                </Modal.Body>
-            </div >
-            
+            </Modal.Body>
+        </div >
 
-        
+
+
     )
 }
 
