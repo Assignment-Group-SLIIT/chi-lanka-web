@@ -66,3 +66,18 @@ export const getDraftDetail = async (draftID) => {
         };
     }
 };
+
+export const deleteDraftPermenantly = async (draftid) => {
+    console.log("dataa", draftid);
+    await axios.delete(`${HOST}/draft/deleteDraft/${draftid}`);
+    try {
+        return {
+            ok: true,
+        }
+    } catch (error) {
+        return {
+            ok: false, err: error.response.data.status
+        }
+    }
+
+};

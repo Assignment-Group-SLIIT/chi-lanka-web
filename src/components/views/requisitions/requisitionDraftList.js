@@ -1,12 +1,12 @@
 import { React, useState, useEffect } from 'react'
-
+import Swal from 'sweetalert2';
 import MaterialTable from "material-table";
 import HeaderForReq from "./headerForReq"
 import { Modal } from "react-bootstrap";
 
-import { getAllDrafts } from '../../services/draftsService';
+import { deleteDraftPermenantly, getAllDrafts } from '../../services/draftsService';
 
-import  DraftModal  from "./draftViewModal";
+import DraftModal from "./draftViewModal";
 
 function RequisitionDraftList() {
 
@@ -22,6 +22,47 @@ function RequisitionDraftList() {
         })
     }, [])
 
+
+    function deleteDraft(draftid) {
+        Swal.fire({
+            title: 'Do you want delete the Item details permanantly?',
+            showDenyButton: true,
+            showConfirmationButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: `Cancel`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteDraftPermenantly(draftid.toUpperCase()).then((response) => {
+                    if (response.ok) {
+                        Swal.fire({
+                            text: 'Successfully removed the draft!',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            window.location.reload()
+                        })
+
+                    } else {
+                        Swal.fire({
+                            text: 'Oops!',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            window.location.reload()
+                        })
+
+                    }
+                })
+
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
+
+
     return (
         <div className="component-body">
             <HeaderForReq></HeaderForReq>
@@ -34,7 +75,7 @@ function RequisitionDraftList() {
                         <h3>Drafts</h3>
                     </div>
 
-                    
+
                     <a href="/placeAnOrder" className="float-right">
                         <button className="btn btn-ok white">
                             + Purchase Order
@@ -46,7 +87,8 @@ function RequisitionDraftList() {
                         title=""
                         columns={[
                             { title: "Requisition", field: "draftid", type: "string" },
-                            { title: "Date", field: "draftdate", type: "string" },
+                            { title: "Drafted Date", field: "draftdate", type: "string" },
+                            { title: "Last Modified", field: "modifydate", type: "string" },
                             { title: "Supplier", field: "suppliername", type: "string" },
                             { title: "Title", field: "title", type: "string" },
                             { title: "Ship to Address", field: "shipto", type: "string" },
@@ -72,6 +114,14 @@ function RequisitionDraftList() {
                                     setModalStateUpdate(true);
                                 },
                             },
+                            {
+                                icon: () => (
+                                    <button class="btn btn-sm btn-danger">Remove</button>
+                                ),
+                                onClick: (event, rowData) => {
+                                    deleteDraft(rowData.draftid);
+                                },
+                            }
                         ]}
                     />
                 </table>

@@ -64,28 +64,23 @@ function DraftViewModal(data) {
         setShipTo(data.data.shipto)
         // setTotal(data.data.total)
         setComment(data.data.comment)
-        // setItem01(data.data.item01)
-        // setItem02(data.data.item02)
-        // setItem03(data.data.item03)
-        // setItemName01(data.data.itemName01)
-        // setItemName02(data.data.itemName02)
-        // setItemName03(data.data.itemName03)
+        setItem01(data.data.item01)
+        setItem02(data.data.item02)
+        setItem03(data.data.item03)
+        setItemName01(data.data.itemName01)
+        setItemName02(data.data.itemName02)
+        setItemName03(data.data.itemName03)
         setQty01(data.data.qty01)
         setQty02(data.data.qty02)
         setQty03(data.data.qty03)
-        // setAmount01(data.data.amount1)
-        // setAmount02(data.data.amount2)
-        // setAmount03(data.data.amount3)
+        setAmount01(data.data.amount1)
+        setAmount02(data.data.amount2)
+        setAmount03(data.data.amount3)
 
 
         ItemDetails()
 
-
-
-
-
-
-    }, [data.data, total]);
+    }, [data.data]);
 
     useEffect(() => {
 
@@ -93,7 +88,7 @@ function DraftViewModal(data) {
         calculateItem1Amount()
         calculateTwoItemsAmount()
         calculateThreeItemsAmount()
-
+        ItemDetails()
 
         getItemsFromSupplier("KDH").then((res) => {
             console.log("data for table", res);
@@ -321,15 +316,24 @@ function DraftViewModal(data) {
         return thirdAmount;
     }
 
-    // function setNewTotal() {
-    //     setTotal(calculateThreeItemsAmount());
-    // }
+    function setTotalValue() {
+        if ((qty02 == 0) && (qty03 == 0)) {
+            setTotal(amount1 * qty01)
+            document.getElementById("totalAmount").value = total;
+        } else if (qty03 == 0) {
+            setTotal((amount1 * qty01) + (amount2 * qty02))
+            document.getElementById("totalAmount").value = total;
+        } else {
+            setTotal((amount1 * qty01) + (amount2 * qty02) + (amount3 * qty03))
+            document.getElementById("totalAmount").value = total;
+        }
+    }
 
-    //to save as draft
+
     const saveAsDraft = () => {
         const newDraft = {
             draftid: orderid,
-            draftdate: orderdate,
+            draftdate: new Date(orderdate).toISOString().slice(0, 10),
             modifydate: new Date().toISOString().slice(0, 10),
             suppliername: suppliername,
             title: title,
@@ -352,7 +356,30 @@ function DraftViewModal(data) {
         }
 
         updateDraft(orderid, newDraft).then((res) => {
-            window.alert("draft saved", res)
+            if (res.ok) {
+                const message = "Draft Saved Succesfully"
+                Swal.fire({
+                    title: "Success! ",
+                    text: `${message}`,
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1000
+
+                }).then(() => {
+                    window.location.reload();
+                })
+
+
+            } else {
+                Swal.fire({
+                    title: "Oops! ",
+                    text: `${res.err}`,
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 1500
+
+                })
+            }
         })
     }
 
@@ -644,7 +671,7 @@ function DraftViewModal(data) {
                                             id="supplier"
                                             className="form-control "
                                             //tabindex="3"
-                                            onChange={e => { setSuppliername(e.target.value); }}
+                                            onChange={e => { setSuppliername(e.target.value); setTotalValue() }}
                                             onClick={() => { populate(); }}
                                             required
                                         >
@@ -676,7 +703,7 @@ function DraftViewModal(data) {
                                                 <input
                                                     value={orderid}
                                                     required
-                                                    onChange={e => { setOrderId(e.target.value); validateOrderID(e) }}
+                                                    onChange={e => { setOrderId(e.target.value); validateOrderID(e); setTotalValue(); }}
                                                     id="orderId"
                                                     type="text"
                                                     className="form-control "
@@ -712,7 +739,7 @@ function DraftViewModal(data) {
                                                     required
                                                     id="orderDate"
                                                     name="orderDate"
-                                                    onChange={(event) => { setOrderdate(event); }}
+                                                    onChange={(event) => { setOrderdate(event); setTotalValue(); ItemDetails(); }}
                                                     timeFormat={false}
                                                     isValidDate={disablePastDt}
                                                 />
@@ -732,7 +759,7 @@ function DraftViewModal(data) {
                                         <input
                                             value={title}
                                             required
-                                            onChange={e => { setTitle(e.target.value); }}
+                                            onChange={e => { setTitle(e.target.value); setTotalValue() }}
                                             id="poTitle"
                                             type="text"
                                             className="form-control "
@@ -753,7 +780,7 @@ function DraftViewModal(data) {
                                             className="form-control "
                                             placeholder="ship to"
                                             onChange={(e) => {
-                                                setShipTo(e.target.value);
+                                                setShipTo(e.target.value); setTotalValue()
                                             }}
                                         />
                                     </div>
@@ -770,7 +797,7 @@ function DraftViewModal(data) {
                                             id="item1"
                                             className="form-control "
                                             value={item01}
-                                            onChange={e => { setItem01(e.target.value); ItemDetails() }}
+                                            onChange={e => { setItem01(e.target.value); ItemDetails(); setTotalValue() }}
                                             required
                                         >
 
@@ -788,7 +815,7 @@ function DraftViewModal(data) {
                                                 placeholder="item name"
                                                 value={itemName01}
                                                 onChange={(e) => {
-                                                    setItemName01(e.target.value);
+                                                    setItemName01(e.target.value); setTotalValue()
                                                 }}
                                             />
                                         </div>
@@ -806,7 +833,7 @@ function DraftViewModal(data) {
                                             //tabindex="5"
                                             pattern="[0-9]"
                                             required
-                                            onChange={(event) => { setQty01(event.target.value); }}
+                                            onChange={(event) => { setQty01(event.target.value); setTotalValue() }}
                                         />
                                     </div>
                                     <div class="form-group col-md-2">
@@ -985,7 +1012,7 @@ function DraftViewModal(data) {
                                                     value={total}
                                                     required
 
-                                                    onClick={() => { setTotal(calculateThreeItemsAmount()) }}
+                                                    onChangeCapture={(e) => { setTotal(e.target.value); setTotalValue() }}
 
                                                     // onChange={(e) => { setTotal(e.target.value) }}
                                                     // onClick={e => { setTotal(e.target.value); validateTotalID(e); }}
@@ -1031,7 +1058,7 @@ function DraftViewModal(data) {
                                             type="textarea"
                                             className="form-control "
                                             placeholder="comment"
-                                            onChange={e => { setComment(e.target.value); }}
+                                            onChange={e => { setComment(e.target.value); setTotalValue() }}
 
                                         />
                                     </div>
@@ -1042,6 +1069,13 @@ function DraftViewModal(data) {
                                             Submit
                                         </button>
                                     </div>
+                                    <div className="col py-3 text-center">
+                                        <button type="button" className="btn btn-reset"
+                                            onClick={() => { saveAsDraft() }}>
+                                            Save as Draft
+                                        </button>
+                                    </div>
+
 
                                     <div className="col py-3 text-center">
                                         <button type="reset" className="btn btn-delete">
@@ -1049,18 +1083,10 @@ function DraftViewModal(data) {
                                         </button>
                                     </div>
                                 </div>
+
                             </form>
 
 
-                            <div className="col py-3 text-center">
-                                <button type="button" className="btn btn-reset"
-                                    onClick={() => { saveAsDraft() }
-
-                                    }
-                                >
-                                    Save as Draft
-                                </button>
-                            </div>
                         </div >
                     </div >
                 </div >

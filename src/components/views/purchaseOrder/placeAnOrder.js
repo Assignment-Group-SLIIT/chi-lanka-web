@@ -6,7 +6,7 @@ import moment from 'moment';
 import 'react-datetime/css/react-datetime.css';
 
 
-import { addOrder } from "../../services/purchaseOrderService";
+import { addOrder, lastAddedOrder } from "../../services/purchaseOrderService";
 import { addOrderItems } from "../../services/purchaseOrderItemsService";
 import { getItemsFromSupplier } from "../../services/supplierService";
 import { getItemDetails } from "../../services/itemServices";
@@ -52,11 +52,13 @@ function PlaceAnOrder() {
 
     const [OrderIDErr, setOrderIDErr] = useState("");
 
+    //var [id, setID] = useState("");
+
     useEffect(() => {
         calculateItem1Amount()
         calculateTwoItemsAmount()
         calculateThreeItemsAmount()
-
+        //nextOrderId();
 
         getItemsFromSupplier("KDH").then((res) => {
             console.log("data for table", res);
@@ -282,6 +284,20 @@ function PlaceAnOrder() {
         document.getElementById("totalAmount").value = thirdAmount;
     }
 
+    // function nextOrderId() {
+    //     lastAddedOrder().then((response) => {
+    //         if (response.ok) {
+    //             setID(response.data.orderid)
+    //             console.log("iddddd", response.data.orderid)
+    //         }
+
+    //         // id = id.substring(2, 5)
+    //         // id = Number(id) + 1;
+    //         // var id2 = "IT0" + id;
+    //         // setOrderId(id2)
+    //         alert(id)
+    //     })
+    // }
     //to save as draft
     const saveAsDraft = () => {
         const newDraft = {
@@ -987,6 +1003,12 @@ function PlaceAnOrder() {
                                                 Submit
                                             </button>
                                         </div>
+                                        <div className="col py-3 text-center">
+                                            <button type="button" className="btn btn-reset"
+                                                onClick={() => { saveAsDraft() }}>
+                                                Save as Draft
+                                            </button>
+                                        </div>
 
                                         <div className="col py-3 text-center">
                                             <button type="reset" className="btn btn-delete">
@@ -997,15 +1019,7 @@ function PlaceAnOrder() {
                                 </form>
 
 
-                                <div className="col py-3 text-center">
-                                    <button type="button" className="btn btn-reset"
-                                        onClick={() => { saveAsDraft() }
 
-                                        }
-                                    >
-                                        Save as Draft
-                                    </button>
-                                </div>
                             </div >
                         </div >
                     </div >
