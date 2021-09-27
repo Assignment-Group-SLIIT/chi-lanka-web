@@ -7,6 +7,7 @@ import { Modal } from "react-bootstrap";
 import { deleteDraftPermenantly, getAllDrafts } from '../../services/draftsService';
 
 import DraftModal from "./draftViewModal";
+import { Link } from 'react-router-dom';
 
 function RequisitionDraftList() {
 
@@ -76,11 +77,11 @@ function RequisitionDraftList() {
                     </div>
 
 
-                    <a href="/placeAnOrder" className="float-right">
+                    <Link to="/placeAnOrder" className="float-right">
                         <button className="btn btn-ok white">
                             + Purchase Order
                         </button>
-                    </a>
+                    </Link>
                 </div>
                 <table class="table table-hover">
                     <MaterialTable
