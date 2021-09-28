@@ -90,10 +90,10 @@ function Login() {
                                                 <input id="loginPassword" type="password" placeholder="Password" required="" class="login-form-input px-4 text-primary"
                                                     onChange={(event) => { setPassword(event.target.value); }} />
                                             </div>
-                                            <div className="text-right">
+                                            {/* <div className="text-right">
                                                 <p><a href="#" className="text-danger">Forget Password? </a></p>
                                                 <br></br><br></br>
-                                            </div>
+                                            </div> */}
                                             <div>
                                                 <center>
                                                     <button type="submit" class="btn btn-block text-uppercase text-light btn-login">Sign in</button>

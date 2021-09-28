@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
+
 import MaterialTable from 'material-table'
 import Swal from 'sweetalert2';
 import Header from '../../Header'
-import axios from 'axios'
 import { Modal } from 'react-bootstrap';
 
 import ItemUpdate from "../items/itemUpdate"
@@ -10,8 +10,8 @@ import { deleteItemPermenantly } from "../../services/itemServices";
 
 
 import { getItemsList } from "../../services/itemServices";
-import moment from 'moment';
 import { deleteSupplierItemPermenantly } from '../../services/supplierService';
+import { Link } from 'react-router-dom';
 
 
 function ItemList() {
@@ -113,12 +113,12 @@ function ItemList() {
                     </div>
 
 
-                    <a href="/addItems" className="float-right">
+                    <Link to="/addItems" className="float-right">
                         <button className="btn btn-ok white">
 
                             + Add New Items
                         </button>
-                    </a>
+                    </Link>
                 </div>
 
                 <table class="table table-hover">

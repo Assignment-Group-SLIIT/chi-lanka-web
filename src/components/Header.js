@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom"
 import "./styles.scss";
 
 
@@ -46,11 +46,11 @@ function Header(props) {
           <ul>
             <hr></hr>
             <li>
-              <a href="/dashboard">
+              <Link to="/dashboard">
                 <i className="fa fa-home fa-2x fa-cog stroke-transparent"></i>
                 <span className="nav-text">Dashboard</span>
                 <i className="fa fa-angle-right fa-2x"></i>
-              </a>
+              </Link>
             </li>
             <hr></hr>
             <li className="has-subnav">
@@ -62,7 +62,7 @@ function Header(props) {
             <hr></hr>
             <li className="has-subnav">
               <li data-toggle="collapse" data-target="#new2" className="collapsed">
-                <a href="/itemsList" >  <i className="fa fa-tags fa-2x fa-cog stroke-transparent"></i> <span className="nav-text">Items</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
+                <Link to="/itemsList" >  <i className="fa fa-tags fa-2x fa-cog stroke-transparent"></i> <span className="nav-text">Items</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></Link>
               </li>
 
               <li>
@@ -71,7 +71,7 @@ function Header(props) {
             <hr></hr>
             <li className="has-subnav">
               <li data-toggle="collapse" data-target="#new3" className="collapsed">
-                <a href="/prList">  <i className="fa fa-file-text-o fa-2x"></i> <span className="nav-text">Requisition</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
+                <Link to="/prList">  <i className="fa fa-file-text-o fa-2x"></i> <span className="nav-text">Requisition</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></Link>
               </li>
 
               <li>
@@ -80,62 +80,24 @@ function Header(props) {
             <hr></hr>
             <li className="has-subnav">
               <li data-toggle="collapse" data-target="#new4" className="collapsed">
-                <a href="/pOrders">  <i className="fa fa-file-archive-o fa-2x"></i> <span className="nav-text">Purchase Orders</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
+                <Link to="/pOrders">  <i className="fa fa-file-archive-o fa-2x"></i> <span className="nav-text">Purchase Orders</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></Link>
               </li>
 
             </li>
             <hr></hr>
             <li className="has-subnav">
               <li data-toggle="collapse" data-target="#new4" className="collapsed">
-                <a href="/bills">  <i className="fa fa-newspaper-o fa-2x"></i> <span className="nav-text">Bills</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
+                <Link to="/bills">  <i className="fa fa-newspaper-o fa-2x"></i> <span className="nav-text">Bills</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></Link>
               </li>
 
-            </li>
-            <hr></hr>
-
-            <li className="has-subnav">
-              <li data-toggle="collapse" data-target="#new" className="collapsed">
-                <a href="javascript:void(0)">  <i className="fa fa-file-pdf-o fa-2x"></i> <span className="nav-text">Reports</span> <i className="fa fa-angle-right fa-animate fa-2x"></i></a>
-              </li>
-              <ul className="sub-menu collapse" id="new">
-                <li className="has-subnav ">
-                  <a href="/employee/report">
-                    <i className="fa"></i>
-                    <span className="nav-text">Employees</span>
-                    <i className="fa fa-angle-right fa-3x"></i>
-                  </a>
-                </li>
-                <li className="has-subnav">
-                  <a href="/rental/report">
-                    <i className="fa  fa-2x"></i>
-                    <span className="nav-text">Rentals</span>
-                    <i className="fa fa-angle-right fa-2x"></i>
-                  </a>
-                </li>
-                <li className="has-subnav">
-                  <a href="/reservation/report">
-                    <i className="fa fa-2x"></i>
-                    <span className="nav-text">Reservations</span>
-                    <i className="fa fa-angle-right fa-2x"></i>
-                  </a>
-                </li>
-                <li className="has-subnav">
-                  <a href="/vehicle/report">
-                    <i className="fa fa-2x"></i>
-                    <span className="nav-text">Vehicle Inventory</span>
-                    <i className="fa fa-angle-right fa-2x"></i>
-                  </a>
-                </li>
-
-              </ul>
             </li>
             <hr></hr>
             <li>
-              <a href="/makeInquiry">
+              <Link to="/makeInquiry">
                 <i className="fa fa-power-off fa-2x"></i>
                 <span className="nav-text">Log out</span>
                 <i className="fa fa-angle-right fa-2x"></i>
-              </a>
+              </Link>
             </li>
             <hr></hr>
           </ul>

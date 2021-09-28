@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import MaterialTable from "material-table";
 import { Modal } from "react-bootstrap";
-import moment from 'moment';
 
 import ReceiptModal from '../modals/BIllmodal'
 import Swal from 'sweetalert2';
@@ -82,7 +81,7 @@ function Bills() {
                                     setModalStateUpdate(true);
                                 }
                             },
-                            
+
                         ]}
 
 
