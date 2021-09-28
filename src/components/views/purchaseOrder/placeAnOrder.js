@@ -52,12 +52,13 @@ function PlaceAnOrder() {
 
     const [OrderIDErr, setOrderIDErr] = useState("");
 
-    //var [id, setID] = useState("");
+    var [id, setID] = useState("");
 
     useEffect(() => {
         calculateItem1Amount()
         calculateTwoItemsAmount()
         calculateThreeItemsAmount()
+
         //nextOrderId();
 
         getItemsFromSupplier("KDH").then((res) => {
@@ -107,7 +108,7 @@ function PlaceAnOrder() {
         })
 
 
-    }, [amount1, amount2, amount3, qty01, qty02, qty03]);
+    }, [amount1, amount2, amount3, qty01, qty02, qty03, orderid]);
 
 
     function ItemDetails() {
@@ -291,11 +292,11 @@ function PlaceAnOrder() {
     //             console.log("iddddd", response.data.orderid)
     //         }
 
-    //         // id = id.substring(2, 5)
-    //         // id = Number(id) + 1;
-    //         // var id2 = "IT0" + id;
-    //         // setOrderId(id2)
-    //         alert(id)
+    //         id = id.substring(2, 5)
+    //         id = Number(id) + 1;
+    //         var id2 = "OI00" + id;
+    //         setOrderId(id2)
+    //         //alert(id2)
     //     })
     // }
     //to save as draft

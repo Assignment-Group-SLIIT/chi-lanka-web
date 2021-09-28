@@ -647,7 +647,7 @@ function DraftViewModal(data) {
 
 
     return (
-        <div className="page-component-body">
+        <div >
             <Modal.Header closeButton>
 
                 <h5>Order Name : {title}</h5>
