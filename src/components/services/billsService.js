@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime'
 import axios from "axios";
 
 const HOST = "http://localhost:4000";
@@ -5,7 +6,7 @@ const HOST = "http://localhost:4000";
 
 //for creating of a Receipt for a payment
 export const createReceiptService = async (receiptPayload) => {
-    console.log(receiptPayload, "<<<<<<<<<<<<<<<<<<<<<<<<");
+    // console.log(receiptPayload, "<<<<<<<<<<<<<<<<<<<<<<<<");
     try {
         await axios.post(`${HOST}/receipt/addReceipt`, receiptPayload);
         return {
@@ -21,10 +22,10 @@ export const createReceiptService = async (receiptPayload) => {
 
 //for viewing all the bills available 
 export const getAllReceipts = async () => {
-    console.log("data",);
+    // console.log("data",);
     try {
         const response = await axios.get(`${HOST}/receipt/displayReceipts`);
-        console.log(response, "res");
+        // console.log(response, "res");
         return {
             ok: true,
             data: response.data,
