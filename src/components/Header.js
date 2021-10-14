@@ -30,7 +30,7 @@ function Header(props) {
             <div class="collapse navbar-collapse" id="navbarResponsive">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <button class="btn text-light" href="/">
+                  <button class="btn text-light" href="#">
                     Profile <span class="sr-only">(current)</span>
                   </button>
                 </li>
@@ -46,7 +46,7 @@ function Header(props) {
           <ul>
             <hr></hr>
             <li>
-              <Link to="/dashboard">
+              <Link to="#">
                 <i className="fa fa-home fa-2x fa-cog stroke-transparent"></i>
                 <span className="nav-text">Dashboard</span>
                 <i className="fa fa-angle-right fa-2x"></i>
@@ -93,7 +93,7 @@ function Header(props) {
             </li>
             <hr></hr>
             <li>
-              <Link to="/makeInquiry">
+              <Link to="/">
                 <i className="fa fa-power-off fa-2x"></i>
                 <span className="nav-text">Log out</span>
                 <i className="fa fa-angle-right fa-2x"></i>

@@ -129,7 +129,7 @@ function headerForReq(props) {
                         </li>
                         <hr></hr>
                         <li>
-                            <a href="#">
+                            <a href="/">
                                 <i className="fa fa-power-off fa-2x"></i>
                                 <span className="nav-text">Log out</span>
                                 <i className="fa fa-angle-right fa-2x"></i>
